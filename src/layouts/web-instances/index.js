@@ -23,10 +23,10 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Table from "examples/Tables/Table";
 // Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
-import projectsTableData from "layouts/tables/data/projectsTableData";
+import authorsTableData from "layouts/web-instances/data/authorsTableData";
+import projectsTableData from "layouts/web-instances/data/projectsTableData";
 
-function Tables() {
+function WebInstances() {
   const { columns, rows } = authorsTableData;
   const { columns: prCols, rows: prRows } = projectsTableData;
 
@@ -86,4 +86,4 @@ function Tables() {
   );
 }
 
-export default Tables;
+export default WebInstances;

@@ -21,12 +21,12 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
+import routesConfig from "routes";
 
 import { Link } from "react-router-dom";
 
 function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
-
   return (
     <SoftBox mr={{ xs: 0, xl: 8 }}>
       <MuiBreadcrumbs
@@ -70,7 +70,7 @@ function Breadcrumbs({ icon, title, route, light }) {
           color={light ? "white" : "dark"}
           sx={{ lineHeight: 0 }}
         >
-          {title.replace("-", " ")}
+          {routesConfig.find((route) => route.key == title)?.name}
         </SoftTypography>
       </MuiBreadcrumbs>
       <SoftTypography
@@ -80,7 +80,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         color={light ? "white" : "dark"}
         noWrap
       >
-        {title.replace("-", " ")}
+        {routesConfig.find((route) => route.key == title)?.name}
       </SoftTypography>
     </SoftBox>
   );

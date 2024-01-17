@@ -19,11 +19,9 @@ import Link from "@mui/material/Link";
 import List from "@mui/material/List";
 // Orange APi components
 import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 // Orange APi context
 import { useSoftUIController, setMiniSidenav } from "context";
-import SidenavCard from "examples/Sidenav/SidenavCard";
 // Orange APi examples
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 // Custom styles for the Sidenav
@@ -163,22 +161,6 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       </SoftBox>
       <Divider />
       <List>{renderRoutes}</List>
-      <SoftBox pt={2} my={2} mx={2} mt="auto">
-        <SidenavCard />
-        <SoftBox mt={2}>
-          <SoftButton
-            component="a"
-            href="https://creative-tim.com/product/soft-ui-dashboard-pro-react"
-            target="_blank"
-            rel="noreferrer"
-            variant="gradient"
-            color={color}
-            fullWidth
-          >
-            upgrade to pro
-          </SoftButton>
-        </SoftBox>
-      </SoftBox>
     </SidenavRoot>
   );
 }
