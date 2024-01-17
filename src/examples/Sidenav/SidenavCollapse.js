@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -19,9 +19,9 @@ import Icon from "@mui/material/Icon";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
-// Soft UI Dashboard React context
+// Orange APi context
 import { useSoftUIController } from "context";
 // Custom styles for the SidenavCollapse
 import {

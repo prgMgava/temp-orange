@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -19,10 +19,10 @@ import Tooltip from "@mui/material/Tooltip";
 import sunCloud from "assets/images/small-logos/icon-sun-cloud.png";
 // Images
 import team1 from "assets/images/team-1.jpg";
-// Soft UI Dashboard React base styles
+// Orange APi base styles
 import typography from "assets/theme/base/typography";
 import SoftAvatar from "components/SoftAvatar";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";

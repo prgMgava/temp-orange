@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -12,9 +12,9 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
-// Soft UI Dashboard React context
+// Orange APi context
 import { useSoftUIController, setLayout } from "context";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";

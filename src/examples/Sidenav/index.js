@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -17,14 +17,14 @@ import Icon from "@mui/material/Icon";
 import Link from "@mui/material/Link";
 // @mui material components
 import List from "@mui/material/List";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
-// Soft UI Dashboard React context
+// Orange APi context
 import { useSoftUIController, setMiniSidenav } from "context";
 import SidenavCard from "examples/Sidenav/SidenavCard";
-// Soft UI Dashboard React examples
+// Orange APi examples
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";

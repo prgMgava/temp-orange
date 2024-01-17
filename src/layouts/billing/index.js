@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -14,13 +14,13 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import Grid from "@mui/material/Grid";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
-// Soft UI Dashboard React components
+// Orange APi components
 import MasterCard from "examples/Cards/MasterCard";
 import Footer from "examples/Footer";
-// Soft UI Dashboard React examples
+// Orange APi examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import BillingInformation from "layouts/billing/components/BillingInformation";

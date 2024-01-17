@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 /** 
-  All of the routes for the Soft UI Dashboard React are added here,
+  All of the routes for the Orange APi are added here,
   You can add a new route, customize the routes and delete the routes here.
 
   Once you add a new route on this file it will be visible automatically on
@@ -34,14 +34,14 @@ Coded by www.creative-tim.com
   10. The `title` key is only for the item with the type of `title` and its used for the title text on the Sidenav.
   10. The `component` key is used to store the component of its route.
 */
-// Soft UI Dashboard React layouts
+// Orange APi layouts
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import Document from "examples/Icons/Document";
 import Office from "examples/Icons/Office";
 import Settings from "examples/Icons/Settings";
-// Soft UI Dashboard React icons
+// Orange APi icons
 import Shop from "examples/Icons/Shop";
 import SpaceShip from "examples/Icons/SpaceShip";
 import SignIn from "layouts/authentication/sign-in";

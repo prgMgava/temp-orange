@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,13 +15,13 @@ Coded by www.creative-tim.com
 // @mui material components
 import Container from "@mui/material/Container";
 import Icon from "@mui/material/Icon";
-// Soft UI Dashboard React base styles
+// Orange APi base styles
 import breakpoints from "assets/theme/base/breakpoints";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
-// Soft UI Dashboard React examples
+// Orange APi examples
 import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
 import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMobile";
 // prop-types is a library for typechecking of props.
@@ -106,7 +106,7 @@ function DefaultNavbar({ transparent, light, action }) {
             fontWeight="bold"
             color={light ? "white" : "dark"}
           >
-            Soft UI Dashboard
+            Orange APi
           </SoftTypography>
         </SoftBox>
         <SoftBox

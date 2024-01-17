@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,9 +15,9 @@ Coded by www.creative-tim.com
 // porp-types is a library for typechecking of props
 // @mui material components
 import Icon from "@mui/material/Icon";
-// Soft UI Dashboard React base styles
+// Orange APi base styles
 import typography from "assets/theme/base/typography";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftProgress from "components/SoftProgress";
 import SoftTypography from "components/SoftTypography";

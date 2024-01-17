@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -17,7 +17,7 @@ import Fade from "@mui/material/Fade";
 import SoftAlertCloseIcon from "components/SoftAlert/SoftAlertCloseIcon";
 // Custom styles for the SoftAlert
 import SoftAlertRoot from "components/SoftAlert/SoftAlertRoot";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";

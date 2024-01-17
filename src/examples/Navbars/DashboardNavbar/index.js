@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -21,18 +21,18 @@ import Toolbar from "@mui/material/Toolbar";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 // Images
 import team2 from "assets/images/team-2.jpg";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftInput from "components/SoftInput";
 import SoftTypography from "components/SoftTypography";
-// Soft UI Dashboard React context
+// Orange APi context
 import {
   useSoftUIController,
   setTransparentNavbar,
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
-// Soft UI Dashboard React examples
+// Orange APi examples
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
 // Custom styles for DashboardNavbar

@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,11 +15,11 @@ Coded by www.creative-tim.com
 // prop-types is a library for typechecking of props
 // @mui material components
 import Grid from "@mui/material/Grid";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import PageLayout from "examples/LayoutContainers/PageLayout";
-// Soft UI Dashboard React examples
+// Orange APi examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 // Authentication layout components
 import Footer from "layouts/authentication/components/Footer";

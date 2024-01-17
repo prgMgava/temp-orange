@@ -8,7 +8,7 @@ import logoSlack from "assets/images/small-logos/logo-slack.svg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import logoWebDev from "assets/images/small-logos/logo-webdev.svg";
 import logoXD from "assets/images/small-logos/logo-xd.svg";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftProgress from "components/SoftProgress";
 import SoftTypography from "components/SoftTypography";

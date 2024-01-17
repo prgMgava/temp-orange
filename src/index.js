@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Soft UI Dashboard React - v4.0.1
+* Orange APi - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -18,7 +18,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 
-// Soft UI Dashboard React Context Provider
+// Orange APi Context Provider
 import { SoftUIControllerProvider } from "./context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

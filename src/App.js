@@ -1,17 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -20,21 +6,21 @@ import Icon from "@mui/material/Icon";
 import { ThemeProvider } from "@mui/material/styles";
 // Images
 import brand from "assets/images/logo-ct.png";
-// Soft UI Dashboard React themes
+// Orange APi themes
 import theme from "assets/theme";
 import themeRTL from "assets/theme/theme-rtl";
-// Soft UI Dashboard React components
+// Orange APi components
 import SoftBox from "components/SoftBox";
-// Soft UI Dashboard React contexts
+// Orange APi contexts
 import {
   useSoftUIController,
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
 import Configurator from "examples/Configurator";
-// Soft UI Dashboard React examples
+// Orange APi examples
 import Sidenav from "examples/Sidenav";
-// Soft UI Dashboard React routes
+// Orange APi routes
 import routes from "routes";
 // RTL plugins
 import rtlPlugin from "stylis-plugin-rtl";
@@ -145,7 +131,7 @@ export default function App() {
             <Sidenav
               color={sidenavColor}
               brand={brand}
-              brandName="Soft UI Dashboard"
+              brandName="Orange APi"
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
@@ -169,7 +155,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={brand}
-            brandName="Soft UI Dashboard"
+            brandName="Orange APi"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
