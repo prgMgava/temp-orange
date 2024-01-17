@@ -1,0 +1,33 @@
+{
+  "endOfLine": "auto",
+  "printWidth": 80,
+  "importOrder": [
+    "^react",
+    "^@/pages",
+    "^@/examples",
+    "^@/components",
+    "^@/api",
+    "^@/endpoints",
+    "^@/types",
+    "^@/helpers",
+    "^@/assets",
+    "^./App",
+    "^[./]"
+  ],
+  "importSortOrder": [
+    "^react",
+    "^@/pages",
+    "^@/examples",
+    "^@/components",
+    "^@/api",
+    "^@/endpoints",
+    "^@/types",
+    "^@/helpers",
+    "^@/assets",
+    "^./App",
+    "^[./]"
+  ],
+  "strict": true,
+  "importOrderSeparation": true,
+  "semi": true
+}
