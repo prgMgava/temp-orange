@@ -26,7 +26,7 @@ function MiniStatisticsCard({
   bgColor,
   title,
   count,
-  percentage,
+  description,
   icon,
   direction,
 }) {
@@ -68,17 +68,15 @@ function MiniStatisticsCard({
                 </SoftTypography>
                 <SoftTypography
                   variant="h5"
-                  fontWeight="bold"
                   color={bgColor === "white" ? "dark" : "white"}
                 >
                   {count}{" "}
-                  <SoftTypography
-                    variant="button"
-                    color={percentage.color}
-                    fontWeight="bold"
-                  >
-                    {percentage.text}
-                  </SoftTypography>
+                </SoftTypography>
+                <SoftTypography
+                  color={description.color}
+                  style={{ fontSize: "12px" }}
+                >
+                  {description.text}
                 </SoftTypography>
               </SoftBox>
             </Grid>
@@ -104,6 +102,37 @@ function MiniStatisticsCard({
               </Grid>
             ) : null}
           </Grid>
+          <div
+            style={{ display: "flex", width: "100%", justifyContent: "end" }}
+          >
+            <SoftTypography
+              component="a"
+              href="/web-instances"
+              variant="button"
+              color="text"
+              fontWeight="medium"
+              style={{ textAlign: "end" }}
+              sx={{
+                mt: "auto",
+                display: "inline-flex",
+                alignItems: "center",
+                cursor: "pointer",
+                "& .material-icons-round": {
+                  fontSize: "1.125rem",
+                  transform: `translate(2px, -0.5px)`,
+                  transition: "transform 0.2s cubic-bezier(0.34,1.61,0.7,1.3)",
+                },
+
+                "&:hover .material-icons-round, &:focus  .material-icons-round":
+                  {
+                    transform: `translate(6px, -0.5px)`,
+                  },
+              }}
+            >
+              Ver
+              <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
+            </SoftTypography>
+          </div>
         </SoftBox>
       </SoftBox>
     </Card>
@@ -117,7 +146,7 @@ MiniStatisticsCard.defaultProps = {
     fontWeight: "medium",
     text: "",
   },
-  percentage: {
+  description: {
     color: "success",
     text: "",
   },
@@ -141,7 +170,7 @@ MiniStatisticsCard.propTypes = {
     text: PropTypes.string,
   }),
   count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  percentage: PropTypes.shape({
+  description: PropTypes.shape({
     color: PropTypes.oneOf([
       "primary",
       "secondary",
