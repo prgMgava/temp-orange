@@ -1,17 +1,3 @@
-/**
-=========================================================
-* Orange APi - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
@@ -28,7 +14,7 @@ import Footer from "examples/Footer";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // Dashboard layout components
-import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
+import FilterWebInstances from "layouts/dashboard/components/FilterWebInstances";
 import OrderOverview from "layouts/dashboard/components/OrderOverview";
 import Projects from "layouts/dashboard/components/Projects";
 import WorkWithTheRockets from "layouts/dashboard/components/WorkWithTheRockets";
@@ -36,9 +22,12 @@ import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData"
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 
+import { useState } from "react";
+
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  const [filters, setFilters] = useState([]);
 
   return (
     <DashboardLayout>
@@ -83,10 +72,10 @@ function Dashboard() {
         </SoftBox>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={7}>
-              <BuildByDevelopers />
+            <Grid item xs={12} lg={8}>
+              <FilterWebInstances filters={filters} />
             </Grid>
-            <Grid item xs={12} lg={5}>
+            <Grid item xs={12} lg={4}>
               <WorkWithTheRockets />
             </Grid>
           </Grid>
