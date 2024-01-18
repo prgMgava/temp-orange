@@ -5,15 +5,12 @@ import Icon from "@mui/material/Icon";
 // Dashboard layout components
 import FilterWebInstances from "layouts/dashboard/components/FilterWebInstances";
 import InfoMessages from "layouts/dashboard/components/InfoMessages";
-import OrderOverview from "layouts/dashboard/components/OrderOverview";
+import SendedMessages from "layouts/dashboard/components/SendedMessages";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 
 import { useState } from "react";
 
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
 import Footer from "examples/Footer";
 // Orange APi examples
@@ -24,12 +21,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
-// Orange APi base styles
-import typography from "assets/theme/base/typography";
-
 function Dashboard() {
-  const { size } = typography;
-  const { chart, items } = reportsBarChartData;
   const [filters, setFilters] = useState([]);
 
   return (
@@ -97,15 +89,15 @@ function Dashboard() {
         </SoftBox>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} lg={7}>
+          <Grid item xs={12} md={8} lg={8}>
             <GradientLineChart
               title="Total recebidos/enviados hoje"
               height="20.25rem"
               chart={gradientLineChartData}
             />
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <OrderOverview />
+          <Grid item xs={12} md={4} lg={4}>
+            <SendedMessages />
           </Grid>
         </Grid>
       </SoftBox>
