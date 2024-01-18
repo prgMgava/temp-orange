@@ -17,13 +17,13 @@ const gradientLineChartData = {
   labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   datasets: [
     {
-      label: "Mobile apps",
+      label: "Qtd. recebidas",
       color: "info",
       data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
     },
     {
-      label: "Websites",
-      color: "dark",
+      label: "Qtd. Enviadas",
+      color: "primary",
       data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
     },
   ],

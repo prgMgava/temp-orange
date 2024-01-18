@@ -26,7 +26,12 @@ function configs(labels, datasets) {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: false,
+          display: true,
+          labels: {
+            boxWidth: 10,
+            boxHeight: 10,
+            borderRadius: 8,
+          },
         },
       },
       interaction: {
