@@ -1,11 +1,17 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
-// Orange APi base styles
-import typography from "assets/theme/base/typography";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
+// Dashboard layout components
+import FilterWebInstances from "layouts/dashboard/components/FilterWebInstances";
+import InfoMessages from "layouts/dashboard/components/InfoMessages";
+import OrderOverview from "layouts/dashboard/components/OrderOverview";
+import Projects from "layouts/dashboard/components/Projects";
+import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
+// Data
+import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
+
+import { useState } from "react";
+
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
 import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import PieChart from "examples/Charts/PieChart";
@@ -13,16 +19,13 @@ import Footer from "examples/Footer";
 // Orange APi examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-// Dashboard layout components
-import FilterWebInstances from "layouts/dashboard/components/FilterWebInstances";
-import OrderOverview from "layouts/dashboard/components/OrderOverview";
-import Projects from "layouts/dashboard/components/Projects";
-import WorkWithTheRockets from "layouts/dashboard/components/WorkWithTheRockets";
-import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 
-import { useState } from "react";
+// Orange APi components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+
+// Orange APi base styles
+import typography from "assets/theme/base/typography";
 
 function Dashboard() {
   const { size } = typography;
@@ -72,11 +75,11 @@ function Dashboard() {
         </SoftBox>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={8}>
+            <Grid item xs={12} lg={7}>
               <FilterWebInstances filters={filters} />
             </Grid>
-            <Grid item xs={12} lg={4}>
-              <WorkWithTheRockets />
+            <Grid item xs={12} lg={5}>
+              <InfoMessages />
             </Grid>
           </Grid>
         </SoftBox>

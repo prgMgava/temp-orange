@@ -21,19 +21,6 @@
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       },
       "eslint-import-resolver-custom-alias": {
-        "alias": {
-          "@/api": "./src/services/api",
-          "@/pages": "./src/pages",
-          "@/examples": "/examples",
-          "@/components": "./src/components",
-          "@/helpers": "./src/utils/helpers",
-          "@/types": "./src/utils/types",
-          "@/styles": "./src/styles",
-          "@/mocks": "./src/mocks",
-          "@/config": "./src/config",
-          "@/assets": "./src/assets",
-          "@/routes": "./src/routes"
-        },
         "extensions": [".js", ".jsx", ".ts", ".tsx"],
         "packages": ["packages/*"]
       }
