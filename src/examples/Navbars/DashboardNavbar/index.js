@@ -18,13 +18,6 @@ import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
-// Images
-import team2 from "assets/images/team-2.jpg";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftInput from "components/SoftInput";
-import SoftTypography from "components/SoftTypography";
 // Orange APi context
 import {
   useSoftUIController,
@@ -32,8 +25,15 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
-// Orange APi examples
+// prop-types is a library for typechecking of props.
+import PropTypes from "prop-types";
+
+import { useState, useEffect } from "react";
+// react-router components
+import { useLocation, Link } from "react-router-dom";
+
 import Breadcrumbs from "examples/Breadcrumbs";
+// Orange APi examples
 import NotificationItem from "examples/Items/NotificationItem";
 // Custom styles for DashboardNavbar
 import {
@@ -43,12 +43,14 @@ import {
   navbarIconButton,
   navbarMobileMenu,
 } from "examples/Navbars/DashboardNavbar/styles";
-// prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
 
-import { useState, useEffect } from "react";
-// react-router components
-import { useLocation, Link } from "react-router-dom";
+// Orange APi components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+
+import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
+// Images
+import team2 from "assets/images/team-2.jpg";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();

@@ -13,7 +13,6 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 // Orange APi components
-import SoftBox from "components/SoftBox";
 // Orange APi context
 import { useSoftUIController, setLayout } from "context";
 // prop-types is a library for typechecking of props.
@@ -22,6 +21,8 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 // react-router-dom components
 import { useLocation } from "react-router-dom";
+
+import SoftBox from "components/SoftBox";
 
 function PageLayout({ background, children }) {
   const [, dispatch] = useSoftUIController();

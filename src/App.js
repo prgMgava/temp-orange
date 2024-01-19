@@ -1,51 +1,39 @@
-import createCache from "@emotion/cache";
-import { CacheProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
-// Images
-import brand from "assets/images/logo-ct.png";
-// Orange APi themes
-import theme from "assets/theme";
-import themeRTL from "assets/theme/theme-rtl";
-// Orange APi components
-import SoftBox from "components/SoftBox";
 // Orange APi contexts
 import {
   useSoftUIController,
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
+// Orange APi routes
+import routes from "routes";
+
+// RTL plugins
+import { useState, useEffect } from "react";
+// react-router components
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+
 import Configurator from "examples/Configurator";
 // Orange APi examples
 import Sidenav from "examples/Sidenav";
-// Orange APi routes
-import routes from "routes";
-// RTL plugins
-import rtlPlugin from "stylis-plugin-rtl";
 
-import { useState, useEffect, useMemo } from "react";
-// react-router components
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+// Orange APi components
+import SoftBox from "components/SoftBox";
+
+// Images
+import brand from "assets/images/logo-ct.png";
+// Orange APi themes
+import theme from "assets/theme";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } =
     controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
-  const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-
-  // Cache for the rtl
-  useMemo(() => {
-    const cacheRtl = createCache({
-      key: "rtl",
-      stylisPlugins: [rtlPlugin],
-    });
-
-    setRtlCache(cacheRtl);
-  }, []);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -122,32 +110,7 @@ export default function App() {
     </SoftBox>
   );
 
-  return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={themeRTL}>
-        <CssBaseline />
-        {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={brand}
-              brandName="Orange APi"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
-        )}
-        {layout === "vr" && <Configurator />}
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
-        </Routes>
-      </ThemeProvider>
-    </CacheProvider>
-  ) : (
+  return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {layout === "dashboard" && (

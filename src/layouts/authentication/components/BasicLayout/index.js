@@ -15,15 +15,17 @@ Coded by www.creative-tim.com
 // prop-types is a library for typechecking of props
 // @mui material components
 import Grid from "@mui/material/Grid";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import PageLayout from "examples/LayoutContainers/PageLayout";
-// Orange APi examples
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 // Authentication layout components
 import Footer from "layouts/authentication/components/Footer";
 import PropTypes from "prop-types";
+
+import PageLayout from "examples/LayoutContainers/PageLayout";
+// Orange APi examples
+import DefaultNavbar from "examples/Navbars/DefaultNavbar";
+
+// Orange APi components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 function BasicLayout({ title, description, image, children }) {
   return (

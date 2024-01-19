@@ -14,17 +14,22 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import Card from "@mui/material/Card";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import Footer from "examples/Footer";
-// Orange APi examples
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Table from "examples/Tables/Table";
+import Grid from "@mui/material/Grid";
 // Data
 import authorsTableData from "layouts/web-instances/data/authorsTableData";
 import projectsTableData from "layouts/web-instances/data/projectsTableData";
+
+// Orange APi examples
+import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
+import Footer from "examples/Footer";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import Table from "examples/Tables/Table";
+import WebInstancesInfo from "examples/WebInstances";
+
+// Orange APi components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 function WebInstances() {
   const { columns, rows } = authorsTableData;
@@ -33,6 +38,8 @@ function WebInstances() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <WebInstancesInfo />
+
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
