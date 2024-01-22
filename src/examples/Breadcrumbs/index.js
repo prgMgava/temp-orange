@@ -16,17 +16,19 @@ Coded by www.creative-tim.com
 // @mui material components
 import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
 import Icon from "@mui/material/Icon";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 import routesConfig from "routes";
 
 import { Link } from "react-router-dom";
 
+// Orange APi components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+
 function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
+
   return (
     <SoftBox mr={{ xs: 0, xl: 8 }}>
       <MuiBreadcrumbs
@@ -70,7 +72,11 @@ function Breadcrumbs({ icon, title, route, light }) {
           color={light ? "white" : "dark"}
           sx={{ lineHeight: 0 }}
         >
-          {routesConfig.find((route) => route.key == title)?.name}
+          {routesConfig.find((route) => route.key == title)?.name ||
+            (routesConfig.find(
+              (item) => item.dynamicRoute && route.includes(item.key)
+            ) &&
+              title)}
         </SoftTypography>
       </MuiBreadcrumbs>
       <SoftTypography

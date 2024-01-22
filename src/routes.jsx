@@ -38,13 +38,16 @@ Coded by www.creative-tim.com
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import CreditCard from "examples/Icons/CreditCard";
-import Settings from "examples/Icons/Settings";
 // Orange APi icons
 import Billing from "layouts/billing";
 import Dashboard from "layouts/dashboard";
 import Profile from "layouts/profile";
 import WebInstances from "layouts/web-instances";
+
+import CreditCard from "examples/Icons/CreditCard";
+import Settings from "examples/Icons/Settings";
+
+import WebInstance from "./layouts/web-instance";
 
 const routes = [
   { type: "title", title: "Menu Principal", key: "main-menu" },
@@ -97,6 +100,14 @@ const routes = [
     icon: <MenuBookIcon size="12px" />,
     component: <Dashboard />,
     noCollapse: true,
+  },
+  {
+    type: "route",
+    name: "Visualização de Instância Web",
+    key: "web-instances",
+    route: "/web-instances/:webInstanceId",
+    component: <WebInstance />,
+    dynamicRoute: true,
   },
 ];
 

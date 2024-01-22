@@ -112,11 +112,16 @@ const authorsTableData = {
       ),
       visualizar: (
         <SoftBox display="flex" justifyContent="center" alignItems="center">
-          <button style={{ marginTop: "16px" }}>
+          <SoftTypography
+            style={{ marginTop: "16px" }}
+            component="a"
+            href={`/web-instances/4206ea92`}
+            variant="button"
+          >
             <Icon fontSize="small" color="info">
               visibility
             </Icon>
-          </button>
+          </SoftTypography>
         </SoftBox>
       ),
     },
@@ -190,11 +195,16 @@ const authorsTableData = {
       ),
       visualizar: (
         <SoftBox display="flex" justifyContent="center" alignItems="center">
-          <button style={{ marginTop: "16px" }}>
+          <SoftTypography
+            style={{ marginTop: "16px" }}
+            component="a"
+            href={`/web-instances/4206ea92`}
+            variant="button"
+          >
             <Icon fontSize="small" color="info">
               visibility
             </Icon>
-          </button>
+          </SoftTypography>
         </SoftBox>
       ),
     },
