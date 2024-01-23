@@ -48,6 +48,7 @@ import CreditCard from "examples/Icons/CreditCard";
 import Settings from "examples/Icons/Settings";
 
 import WebInstance from "./layouts/web-instance";
+import WebInstancePayment from "./layouts/web-instances-payment";
 
 const routes = [
   { type: "title", title: "Menu Principal", key: "main-menu" },
@@ -107,6 +108,14 @@ const routes = [
     key: "web-instances",
     route: "/web-instances/:webInstanceId",
     component: <WebInstance />,
+    dynamicRoute: true,
+  },
+  {
+    type: "route",
+    name: "Lista de pagamentos",
+    key: "web-instances",
+    route: "/web-instances/:webInstanceId/payment",
+    component: <WebInstancePayment />,
     dynamicRoute: true,
   },
 ];

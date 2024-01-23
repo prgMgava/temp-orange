@@ -14,31 +14,25 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
 // Data
-import authorsTableData from "layouts/web-instances/data/authorsTableData";
-import projectsTableData from "layouts/web-instances/data/projectsTableData";
+import authorsTableData from "layouts/web-instances-payment/data/authorsTableData";
 
 // Orange APi examples
-import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
 import Footer from "examples/Footer";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Table from "examples/Tables/Table";
-import WebInstancesInfo from "examples/WebInstances";
 
 // Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
-function WebInstances() {
+function WebInstancePayment() {
   const { columns, rows } = authorsTableData;
-  const { columns: prCols, rows: prRows } = projectsTableData;
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <WebInstancesInfo />
 
       <SoftBox py={3}>
         <SoftBox mb={3}>
@@ -62,7 +56,7 @@ function WebInstances() {
                   opacity={0.8}
                   padding={4}
                 >
-                  Nenhuma Instância Web encontrada
+                  Nenhum pagamento encontrado
                 </SoftTypography>
               )}
             </SoftBox>
@@ -74,4 +68,4 @@ function WebInstances() {
   );
 }
 
-export default WebInstances;
+export default WebInstancePayment;

@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 // @mui material components
-import { Icon, Menu, MenuItem } from "@mui/material";
+import { Icon, Link, Menu, MenuItem } from "@mui/material";
 import Card from "@mui/material/Card";
 
 import { useState } from "react";
@@ -115,13 +115,23 @@ function WebInstance() {
                 </SoftBox>
                 Editar
               </MenuItem>
-              <MenuItem onClick={closeMenu}>
+              <MenuItem
+                onClick={closeMenu}
+                component={Link}
+                href={`/web-instances/4260ea235/payment`}
+              >
                 {" "}
-                <SoftBox color="text" px={2} display="flex">
+                <SoftTypography
+                  color="text"
+                  px={2}
+                  display="flex"
+                  component={Link}
+                  href={`/payment`}
+                >
                   <Icon sx={{ cursor: "pointer" }} fontSize="small">
                     credit_card
                   </Icon>
-                </SoftBox>
+                </SoftTypography>
                 Pagamentos
               </MenuItem>
               <MenuItem onClick={closeMenu}>

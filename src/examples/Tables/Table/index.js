@@ -17,20 +17,22 @@ import { Table as MuiTable } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
-import borders from "assets/theme/base/borders";
-// Orange APi base styles
-import colors from "assets/theme/base/colors";
-import typography from "assets/theme/base/typography";
-import SoftAvatar from "components/SoftAvatar";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 // uuid is a library for generating unique id
 import { v4 as uuidv4 } from "uuid";
 
 import { useMemo } from "react";
+
+import SoftAvatar from "components/SoftAvatar";
+// Orange APi components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+
+import borders from "assets/theme/base/borders";
+// Orange APi base styles
+import colors from "assets/theme/base/colors";
+import typography from "assets/theme/base/typography";
 
 function Table({ columns, rows }) {
   const { light } = colors;
