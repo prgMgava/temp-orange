@@ -115,24 +115,18 @@ function WebInstance() {
                 </SoftBox>
                 Editar
               </MenuItem>
-              <MenuItem
-                onClick={closeMenu}
-                component={Link}
-                href={`/web-instances/4260ea235/payment`}
-              >
-                {" "}
-                <SoftTypography
-                  color="text"
-                  px={2}
-                  display="flex"
-                  component={Link}
-                  href={`/payment`}
+              <MenuItem onClick={closeMenu}>
+                <Link
+                  href={`/web-instances/4260ea235/payment`}
+                  sx={{ display: "flex" }}
                 >
-                  <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                    credit_card
-                  </Icon>
-                </SoftTypography>
-                Pagamentos
+                  <SoftTypography color="text" px={2} display="flex">
+                    <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                      credit_card
+                    </Icon>
+                  </SoftTypography>
+                  Pagamentos
+                </Link>
               </MenuItem>
               <MenuItem onClick={closeMenu}>
                 {" "}

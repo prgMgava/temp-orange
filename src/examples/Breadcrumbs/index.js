@@ -29,6 +29,8 @@ import SoftTypography from "components/SoftTypography";
 function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
 
+  console.log(`/${routes[0]}`);
+
   return (
     <SoftBox mr={{ xs: 0, xl: 8 }}>
       <MuiBreadcrumbs
@@ -50,8 +52,18 @@ function Breadcrumbs({ icon, title, route, light }) {
             <Icon>{icon}</Icon>
           </SoftTypography>
         </Link>
-        {routes.map((el) => (
-          <Link to={`/${el}`} key={el}>
+        {routes.map((el, i) => (
+          <Link
+            to={`${
+              i != 0 &&
+              routesConfig.find(
+                (item) => item.dynamicRoute && route.includes(item.key)
+              ).dynamicRoute
+                ? `/${routes[0]}/${routes.slice(1, 1 + i).join("/")}`
+                : `/${el}`
+            }`}
+            key={el}
+          >
             <SoftTypography
               component="span"
               variant="button"
