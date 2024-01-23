@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 // @mui material components
-import { Icon, Link, Menu, MenuItem } from "@mui/material";
+import { Box, Icon, Link, Menu, MenuItem } from "@mui/material";
 import Card from "@mui/material/Card";
 
 import { useState } from "react";
@@ -24,6 +24,7 @@ import Footer from "examples/Footer";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
+import { ModalActionConfirmation } from "components/ModalActionConfirmation";
 // Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
@@ -31,6 +32,7 @@ import SoftTypography from "components/SoftTypography";
 
 function WebInstance() {
   const [menu, setMenu] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
@@ -128,7 +130,12 @@ function WebInstance() {
                   Pagamentos
                 </Link>
               </MenuItem>
-              <MenuItem onClick={closeMenu}>
+              <MenuItem
+                onClick={() => {
+                  closeMenu();
+                  setOpen(true);
+                }}
+              >
                 {" "}
                 <SoftBox color="text" px={2} display="flex">
                   <Icon sx={{ cursor: "pointer" }} fontSize="small">
@@ -142,6 +149,25 @@ function WebInstance() {
         </SoftBox>
       </SoftBox>
       <Footer />
+      <ModalActionConfirmation
+        title={"Realmente deseja cancelar?"}
+        handleModal={{ onClose: () => setOpen(false), open: open }}
+      >
+        <Box textAlign={"center"}>
+          <SoftTypography color="text" variant="caption" opacity={0.8}>
+            A instância web será excluída, porém a assinatura não será
+            reembolsada, permanecendo ativa até o momento do vencimento
+          </SoftTypography>
+          <br />
+          <SoftTypography color="text" variant="button">
+            Para continuar digite{" "}
+            <SoftTypography color="error" variant="caption" fontWeight="bold">
+              CANCELAR{" "}
+            </SoftTypography>
+            no campo abaixo
+          </SoftTypography>
+        </Box>
+      </ModalActionConfirmation>
     </DashboardLayout>
   );
 }

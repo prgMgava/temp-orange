@@ -28,7 +28,7 @@ export default styled("div")(({ theme, ownerState }) => {
       size === "small"
         ? `${pxToRem(4)} ${pxToRem(10)}`
         : `${pxToRem(8)} ${pxToRem(10)}`,
-    width: pxToRem(39),
+    width: size === "small" ? pxToRem(15) : pxToRem(39),
     height: "100%",
     color: dark.main,
   };

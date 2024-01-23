@@ -19,11 +19,7 @@
     "outDir": "dist",
     "baseUrl": "./src",
     "rootDir": "./src",
-    "noImplicitAny": false,
-    //Alias para paths:
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "noImplicitAny": false
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.jsx", "src/**/*.js"],
   "references": [
