@@ -15,7 +15,7 @@ Coded by www.creative-tim.com
 // @mui material components
 import Card from "@mui/material/Card";
 // Data
-import authorsTableData from "layouts/web-instances-payment/data/authorsTableData";
+import authorsTableData from "layouts/web-instance-payment/data/authorsTableData";
 
 // Orange APi examples
 import Footer from "examples/Footer";

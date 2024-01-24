@@ -42,13 +42,13 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import Billing from "layouts/billing";
 import Dashboard from "layouts/dashboard";
 import Profile from "layouts/profile";
+import WebInstance from "layouts/web-instance";
+import WebInstanceForm from "layouts/web-instance-form";
+import WebInstancePayment from "layouts/web-instance-payment";
 import WebInstances from "layouts/web-instances";
 
 import CreditCard from "examples/Icons/CreditCard";
 import Settings from "examples/Icons/Settings";
-
-import WebInstance from "./layouts/web-instance";
-import WebInstancePayment from "./layouts/web-instances-payment";
 
 const routes = [
   { type: "title", title: "Menu Principal", key: "main-menu" },
@@ -116,6 +116,22 @@ const routes = [
     key: "web-instances",
     route: "/web-instances/:webInstanceId/payment",
     component: <WebInstancePayment />,
+    dynamicRoute: true,
+  },
+  {
+    type: "route",
+    name: "Lista de pagamentos",
+    key: "web-instances",
+    route: "/web-instances/register",
+    component: <WebInstanceForm />,
+    dynamicRoute: true,
+  },
+  {
+    type: "route",
+    name: "Edição da instância web",
+    key: "web-instances",
+    route: "/web-instances/:webInstanceId/edit",
+    component: <WebInstanceForm />,
     dynamicRoute: true,
   },
 ];

@@ -1,16 +1,7 @@
 /* eslint-disable react/prop-types */
 // Orange APi components
-// Images
-import Icon from "@mui/material/Icon";
-import { textResume } from "utils/text.utils";
-
-import SoftBadge from "components/SoftBadge";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
 
 function WebInstanceName({ icon, name }) {
   return (

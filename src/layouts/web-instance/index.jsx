@@ -110,12 +110,17 @@ function WebInstance() {
             >
               <MenuItem onClick={closeMenu}>
                 {" "}
-                <SoftBox color="text" px={2} display="flex">
-                  <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                    edit
-                  </Icon>
-                </SoftBox>
-                Editar
+                <Link
+                  href={`/web-instances/4260ea235/edit`}
+                  sx={{ display: "flex" }}
+                >
+                  <SoftTypography color="text" px={2} display="flex">
+                    <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                      edit
+                    </Icon>
+                  </SoftTypography>
+                  Editar
+                </Link>
               </MenuItem>
               <MenuItem onClick={closeMenu}>
                 <Link
