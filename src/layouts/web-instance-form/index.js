@@ -21,10 +21,11 @@ import Switch from "@mui/material/Switch";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import PropTypes from "prop-types";
+import { isEmpty } from "utils/object.utils";
 import { textResume } from "utils/text.utils";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
 // Data
@@ -79,7 +80,10 @@ function WebInstanceForm() {
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    control,
   } = useForm();
+
+  const rejectCallWatch = useWatch({ control, name: "rejectCall" });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -90,8 +94,10 @@ function WebInstanceForm() {
   };
 
   const onSubmit = (data) => {
-    console.log(datas);
+    console.log(data);
   };
+
+  console.log(errors);
 
   return (
     <DashboardLayout>
@@ -104,12 +110,15 @@ function WebInstanceForm() {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Instância" {...a11yProps(0)} />
+            <Tab
+              label={isEmpty(errors) ? "Instância *" : "Instância"}
+              {...a11yProps(0)}
+            />
             <Tab label="Web hooks" {...a11yProps(1)} />
           </Tabs>
         </SoftBox>
         <CustomTabPanel value={value} index={0} style={{ padding: 0 }}>
-          <Card component={"form"} onSubmit={handleSubmit(onSubmit)}>
+          <Card>
             <SoftBox
               display="flex"
               gap="16px"
@@ -129,7 +138,12 @@ function WebInstanceForm() {
                   width={"100%"}
                 >
                   <SoftBox pt={1} mb={1} display="flex" alignItems="center">
-                    <SoftTypography variant="caption" color="text">
+                    <SoftTypography
+                      variant="caption"
+                      color="text"
+                      component="label"
+                      htmlFor="name"
+                    >
                       Nome da instância <span>*</span>
                     </SoftTypography>
                     <button style={{ cursor: "auto" }}>
@@ -150,6 +164,7 @@ function WebInstanceForm() {
                       placeholder="Nome"
                       {...register("name", { required: true })}
                       error={!!errors.name}
+                      id="name"
                     ></SoftInput>
                   </SoftBox>
                 </Grid>
@@ -185,7 +200,7 @@ function WebInstanceForm() {
                     <SoftBox mb={0}>
                       <SoftInput
                         type="text"
-                        icon={{ component: "storage", direction: "left" }}
+                        icon={{ component: "grid_3x3", direction: "left" }}
                         placeholder="Nome"
                         value={textResume(webInstanceId, 30)}
                         disabled={!!webInstanceId}
@@ -306,19 +321,251 @@ function WebInstanceForm() {
                     </SoftTypography>
                   </SoftBox>
                 </Grid>
+
+                {rejectCallWatch && (
+                  <Grid
+                    item
+                    sm={12}
+                    md={12}
+                    display="flex"
+                    flexDirection="column"
+                    width={"100%"}
+                  >
+                    <SoftBox mb={0}>
+                      <SoftInput
+                        type="text"
+                        icon={{ component: "sms", direction: "left" }}
+                        placeholder="Mensagem de resposta padrão"
+                        {...register("defaultResponseMessage")}
+                      ></SoftInput>
+                    </SoftBox>
+                  </Grid>
+                )}
               </Grid>
             </SoftBox>
             <SoftButton
               color="dark"
-              type="submit"
+              type="button"
               style={{ transform: "scale(1.02", marginTop: "16px" }}
+              onClick={() => setValue(1)}
             >
-              {"Salvar"}
+              {"Continuar"}
             </SoftButton>
           </Card>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Web hooks
+          <Card component={"form"} onSubmit={handleSubmit(onSubmit)}>
+            <SoftBox
+              display="flex"
+              gap="16px"
+              sx={{ padding: "16px", flexDirection: "column", gap: "4px" }}
+            >
+              <SoftTypography color="dark">
+                3. Configure webhooks
+              </SoftTypography>
+              <SoftTypography color="dark" variant="caption">
+                Se quiser, você pode configurar webhooks para sua instância,
+                isso te permite ouvir eventos dela.
+              </SoftTypography>
+              <Grid container spacing={2} mt={1}>
+                <Grid
+                  item
+                  sm={12}
+                  md={6}
+                  display="flex"
+                  flexDirection="column"
+                  height="100%"
+                  width={"100%"}
+                >
+                  <SoftBox pt={1} mb={1} display="flex" alignItems="center">
+                    <SoftTypography
+                      variant="caption"
+                      color="text"
+                      component="label"
+                      htmlFor="whSending"
+                    >
+                      Ao enviar
+                    </SoftTypography>
+                  </SoftBox>
+
+                  <SoftBox mb={0}>
+                    <SoftInput
+                      type="text"
+                      icon={{
+                        component: "keyboard_double_arrow_right",
+                        direction: "left",
+                      }}
+                      {...register("whSending")}
+                      id="whSending"
+                    ></SoftInput>
+                  </SoftBox>
+                </Grid>
+
+                <Grid
+                  item
+                  sm={12}
+                  md={6}
+                  display="flex"
+                  flexDirection="column"
+                  height="100%"
+                  width={"100%"}
+                >
+                  <SoftBox pt={1} mb={1} display="flex" alignItems="center">
+                    <SoftTypography
+                      variant="caption"
+                      color="text"
+                      component="label"
+                      htmlFor="whReceiving"
+                    >
+                      Ao receber
+                    </SoftTypography>
+                  </SoftBox>
+
+                  <SoftBox mb={0}>
+                    <SoftInput
+                      type="text"
+                      icon={{
+                        component: "keyboard_double_arrow_left",
+                        direction: "left",
+                      }}
+                      {...register("whReceiving")}
+                      id="whReceiving"
+                    ></SoftInput>
+                  </SoftBox>
+                </Grid>
+
+                <Grid
+                  item
+                  sm={12}
+                  md={6}
+                  display="flex"
+                  flexDirection="column"
+                  height="100%"
+                  width={"100%"}
+                >
+                  <SoftBox pt={1} mb={1} display="flex" alignItems="center">
+                    <SoftTypography
+                      variant="caption"
+                      color="text"
+                      component="label"
+                      htmlFor="whChatPresence"
+                    >
+                      Presença de chat
+                    </SoftTypography>
+                  </SoftBox>
+
+                  <SoftBox mb={0}>
+                    <SoftInput
+                      type="text"
+                      icon={{ component: "chat_bubble", direction: "left" }}
+                      {...register("whChatPresence")}
+                      id="whChatPresence"
+                    ></SoftInput>
+                  </SoftBox>
+                </Grid>
+
+                <Grid
+                  item
+                  sm={12}
+                  md={6}
+                  display="flex"
+                  flexDirection="column"
+                  height="100%"
+                  width={"100%"}
+                >
+                  <SoftBox pt={1} mb={1} display="flex" alignItems="center">
+                    <SoftTypography
+                      variant="caption"
+                      color="text"
+                      component="label"
+                      htmlFor="whStatusMessage"
+                    >
+                      Receber status da mensagem
+                    </SoftTypography>
+                  </SoftBox>
+
+                  <SoftBox mb={0}>
+                    <SoftInput
+                      type="text"
+                      icon={{ component: "mark_chat_read", direction: "left" }}
+                      {...register("whStatusMessage")}
+                      id="whStatusMessage"
+                    ></SoftInput>
+                  </SoftBox>
+                </Grid>
+
+                <Grid
+                  item
+                  sm={12}
+                  md={6}
+                  display="flex"
+                  flexDirection="column"
+                  height="100%"
+                  width={"100%"}
+                >
+                  <SoftBox pt={1} mb={1} display="flex" alignItems="center">
+                    <SoftTypography
+                      variant="caption"
+                      color="text"
+                      component="label"
+                      htmlFor="whConnecting"
+                    >
+                      Ao conectar
+                    </SoftTypography>
+                  </SoftBox>
+
+                  <SoftBox mb={0}>
+                    <SoftInput
+                      type="text"
+                      icon={{ component: "power", direction: "left" }}
+                      {...register("whConnecting")}
+                      id="whConnecting"
+                    ></SoftInput>
+                  </SoftBox>
+                </Grid>
+
+                <Grid
+                  item
+                  sm={12}
+                  md={6}
+                  display="flex"
+                  flexDirection="column"
+                  height="100%"
+                  width={"100%"}
+                >
+                  <SoftBox pt={1} mb={1} display="flex" alignItems="center">
+                    <SoftTypography
+                      variant="caption"
+                      color="text"
+                      component="label"
+                      htmlFor="whDisconnecting"
+                    >
+                      Ao desconectar
+                    </SoftTypography>
+                  </SoftBox>
+
+                  <SoftBox mb={0}>
+                    <SoftInput
+                      type="text"
+                      icon={{ component: "power_off", direction: "left" }}
+                      {...register("whDisconnecting")}
+                      id="whDisconnecting"
+                    ></SoftInput>
+                  </SoftBox>
+                </Grid>
+              </Grid>
+            </SoftBox>
+
+            <SoftButton
+              color="dark"
+              type={value == 0 ? "button" : "submit"}
+              style={{ transform: "scale(1.02", marginTop: "16px" }}
+              onClick={() => setValue(1)}
+              disabled={!isValid}
+            >
+              {value == 0 ? "Continuar" : "Salvar"}
+            </SoftButton>
+          </Card>
         </CustomTabPanel>
       </SoftBox>
       <Footer />
