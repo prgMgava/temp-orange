@@ -64,7 +64,6 @@ export default styled(Typography)(({ theme, ownerState }) => {
     opacity,
     textTransform,
     verticalAlign,
-    textDecoration: "none",
     color:
       color === "inherit" || !palette[color] ? "inherit" : palette[color].main,
     fontWeight: fontWeights[fontWeight] && fontWeights[fontWeight],
