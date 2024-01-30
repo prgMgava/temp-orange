@@ -41,6 +41,6 @@
     "no-debugger": "off"
   },
   "parser": "@typescript-eslint/parser",
-  "ignorePatterns": ["**/*.js", "**/*.css"],
+  "ignorePatterns": ["**/*.js", "**/*.css", "**/*.png"],
   "root": true
 }
