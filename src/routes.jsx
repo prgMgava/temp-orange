@@ -39,6 +39,7 @@ import EqualizerIcon from "@mui/icons-material/Equalizer";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import SignIn from "layouts/authentication/sign-in";
+import SignUp from "layouts/authentication/sign-up";
 // Orange APi icons
 import Billing from "layouts/billing";
 import Dashboard from "layouts/dashboard";
@@ -54,12 +55,21 @@ import Settings from "examples/Icons/Settings";
 const routes = [
   {
     type: "route",
-    name: "Sign In",
+    name: "Login",
     key: "sign-in",
     route: "/login",
     component: <SignIn />,
     noCollapse: true,
   },
+  {
+    type: "rote",
+    name: "Sair",
+    key: "sign-up",
+    route: "/sign-up",
+    component: <SignUp />,
+    noCollapse: true,
+  },
+
   { type: "title", title: "Menu Principal", key: "main-menu" },
 
   {
@@ -111,6 +121,7 @@ const routes = [
     component: <Dashboard />,
     noCollapse: true,
   },
+
   {
     type: "route",
     name: "Visualização de Instância Web",

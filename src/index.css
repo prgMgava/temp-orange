@@ -5,3 +5,17 @@ button {
   cursor: pointer;
   margin: 0;
 }
+
+/** PHONE INTERNATIONAL INPUT **/
+
+input.react-international-phone-input {
+  flex: 1;
+  border-bottom-right-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
+
+.react-international-phone-input-container
+  .react-international-phone-country-selector-button {
+  border-bottom-left-radius: 8px !important;
+  border-top-left-radius: 8px !important;
+}

@@ -1,5 +1,4 @@
 // @mui material components
-import Switch from "@mui/material/Switch";
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
@@ -18,10 +17,6 @@ import SoftTypography from "components/SoftTypography";
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
 function SignIn() {
-  const [rememberMe, setRememberMe] = useState(true);
-
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
   const {
     handleSubmit,
     formState: { errors },

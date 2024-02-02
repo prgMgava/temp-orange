@@ -15,77 +15,105 @@ Coded by www.creative-tim.com
 // @mui material components
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
-// Images
-import curved6 from "assets/images/curved-images/curved14.jpg";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
-import SoftInput from "components/SoftInput";
-import SoftTypography from "components/SoftTypography";
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 import Separator from "layouts/authentication/components/Separator";
 import Socials from "layouts/authentication/components/Socials";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { PhoneInput } from "react-international-phone";
 // react-router-dom components
 import { Link } from "react-router-dom";
 
+// Orange APi components
+import SoftBox from "components/SoftBox";
+import SoftButton from "components/SoftButton";
+import SoftInput from "components/SoftInput";
+import SoftTypography from "components/SoftTypography";
+
+// Images
+import curved6 from "assets/images/curved-images/curved14.jpg";
+
 function SignUp() {
   const [agreement, setAgremment] = useState(true);
+  const [phone, setPhone] = useState("");
 
   const handleSetAgremment = () => setAgremment(!agreement);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  //TODO: validar telefone
+
   return (
     <BasicLayout
-      title="Welcome!"
-      description="Use these awesome forms to login or create new account in your project for free."
+      title="Bem vindo!"
+      description="Com a Orange Api você tem inúmeras possibilidades de agregar funcionalidades ao seu negócio."
       image={curved6}
     >
-      <Card>
+      <Card onSubmit={handleSubmit(onSubmit)}>
         <SoftBox p={3} mb={1} textAlign="center">
           <SoftTypography variant="h5" fontWeight="medium">
-            Register with
+            Registre sua conta
           </SoftTypography>
         </SoftBox>
-        <SoftBox mb={2}>
-          <Socials />
-        </SoftBox>
-        <Separator />
         <SoftBox pt={2} pb={3} px={3}>
-          <SoftBox component="form" role="form">
+          <SoftBox
+            component="form"
+            role="form"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <SoftBox mb={2}>
-              <SoftInput placeholder="Name" />
+              <SoftInput
+                placeholder="Nome"
+                {...register("name", { required: true })}
+                error={errors?.name}
+                icon={{ component: "person", direction: "left" }}
+              />
             </SoftBox>
             <SoftBox mb={2}>
-              <SoftInput type="email" placeholder="Email" />
+              <SoftInput
+                type="email"
+                placeholder="Email"
+                {...register("email", { required: true })}
+                error={errors?.email}
+                icon={{ component: "email", direction: "left" }}
+              />
             </SoftBox>
             <SoftBox mb={2}>
-              <SoftInput type="password" placeholder="Password" />
+              <PhoneInput
+                value={phone}
+                onChange={(phone) => setPhone(phone)}
+                defaultCountry="br"
+                name="phoneNumber"
+              />
             </SoftBox>
-            <SoftBox display="flex" alignItems="center">
-              <Checkbox checked={agreement} onChange={handleSetAgremment} />
-              <SoftTypography
-                variant="button"
-                fontWeight="regular"
-                onClick={handleSetAgremment}
-                sx={{ cursor: "poiner", userSelect: "none" }}
-              >
-                &nbsp;&nbsp;I agree the&nbsp;
-              </SoftTypography>
-              <SoftTypography
-                component="a"
-                href="#"
-                variant="button"
-                fontWeight="bold"
-                textGradient
-              >
-                Terms and Conditions
-              </SoftTypography>
+            <SoftBox mb={2}>
+              <SoftInput
+                type="password"
+                placeholder="Password"
+                {...register("password", { required: true })}
+                error={errors.password}
+                icon={{ component: "lock", direction: "left" }}
+              />
             </SoftBox>
+            <SoftBox display="flex" alignItems="center"></SoftBox>
             <SoftBox mt={4} mb={1}>
-              <SoftButton variant="gradient" color="dark" fullWidth>
-                sign up
+              <SoftButton
+                variant="gradient"
+                color="dark"
+                fullWidth
+                type="submit"
+              >
+                Cadastrar
               </SoftButton>
             </SoftBox>
             <SoftBox mt={3} textAlign="center">
@@ -94,16 +122,16 @@ function SignUp() {
                 color="text"
                 fontWeight="regular"
               >
-                Already have an account?&nbsp;
+                Já possui uma conta?&nbsp;
                 <SoftTypography
                   component={Link}
-                  to="/authentication/sign-in"
+                  to="/login"
                   variant="button"
                   color="dark"
                   fontWeight="bold"
                   textGradient
                 >
-                  Sign in
+                  Login
                 </SoftTypography>
               </SoftTypography>
             </SoftBox>

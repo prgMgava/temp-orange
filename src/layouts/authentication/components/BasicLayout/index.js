@@ -20,8 +20,6 @@ import Footer from "layouts/authentication/components/Footer";
 import PropTypes from "prop-types";
 
 import PageLayout from "examples/LayoutContainers/PageLayout";
-// Orange APi examples
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 
 // Orange APi components
 import SoftBox from "components/SoftBox";
@@ -30,15 +28,6 @@ import SoftTypography from "components/SoftTypography";
 function BasicLayout({ title, description, image, children }) {
   return (
     <PageLayout>
-      <DefaultNavbar
-        action={{
-          type: "external",
-          route: "https://creative-tim.com/product/soft-ui-dashboard-react",
-          label: "free download",
-        }}
-        transparent
-        light
-      />
       <SoftBox
         width="calc(100% - 2rem)"
         minHeight="50vh"
