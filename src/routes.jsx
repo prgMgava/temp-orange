@@ -38,6 +38,7 @@ Coded by www.creative-tim.com
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import SignIn from "layouts/authentication/sign-in";
 // Orange APi icons
 import Billing from "layouts/billing";
 import Dashboard from "layouts/dashboard";
@@ -51,6 +52,14 @@ import CreditCard from "examples/Icons/CreditCard";
 import Settings from "examples/Icons/Settings";
 
 const routes = [
+  {
+    type: "route",
+    name: "Sign In",
+    key: "sign-in",
+    route: "/login",
+    component: <SignIn />,
+    noCollapse: true,
+  },
   { type: "title", title: "Menu Principal", key: "main-menu" },
 
   {
@@ -123,6 +132,14 @@ const routes = [
     name: "Lista de pagamentos",
     key: "web-instances",
     route: "/web-instances/register",
+    component: <WebInstanceForm />,
+    dynamicRoute: true,
+  },
+  {
+    type: "route",
+    name: "Edição da instância web",
+    key: "web-instances",
+    route: "/web-instances/:webInstanceId/edit",
     component: <WebInstanceForm />,
     dynamicRoute: true,
   },

@@ -20,6 +20,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import Grid from "@mui/material/Grid";
+
 // Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
@@ -42,37 +43,7 @@ function Footer() {
                 variant="body2"
                 color="secondary"
               >
-                Company
-              </SoftTypography>
-            </SoftBox>
-            <SoftBox mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography
-                component="a"
-                href="#"
-                variant="body2"
-                color="secondary"
-              >
-                About Us
-              </SoftTypography>
-            </SoftBox>
-            <SoftBox mr={{ xs: 0, lg: 3, xl: 6 }}>
-              <SoftTypography
-                component="a"
-                href="#"
-                variant="body2"
-                color="secondary"
-              >
-                Team
-              </SoftTypography>
-            </SoftBox>
-            <SoftBox mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography
-                component="a"
-                href="#"
-                variant="body2"
-                color="secondary"
-              >
-                Product
+                Documentação
               </SoftTypography>
             </SoftBox>
             <SoftBox mr={{ xs: 2, lg: 3, xl: 6 }}>
@@ -83,16 +54,6 @@ function Footer() {
                 color="secondary"
               >
                 Blog
-              </SoftTypography>
-            </SoftBox>
-            <SoftBox>
-              <SoftTypography
-                component="a"
-                href="#"
-                variant="body2"
-                color="secondary"
-              >
-                Pricing
               </SoftTypography>
             </SoftBox>
           </SoftBox>
@@ -118,7 +79,7 @@ function Footer() {
         </Grid>
         <Grid item xs={12} lg={8} sx={{ textAlign: "center" }}>
           <SoftTypography variant="body2" color="secondary">
-            Copyright &copy; 2021 Soft by Creative Tim.
+            Copyright &copy; 2024 Orange Api.
           </SoftTypography>
         </Grid>
       </Grid>
