@@ -14,13 +14,11 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import Card from "@mui/material/Card";
-import Checkbox from "@mui/material/Checkbox";
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
-import Separator from "layouts/authentication/components/Separator";
-import Socials from "layouts/authentication/components/Socials";
 
 import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { PhoneInput } from "react-international-phone";
 // react-router-dom components
@@ -51,6 +49,14 @@ function SignUp() {
     console.log(data);
   };
 
+  //TODO: verify captcha
+  const [captcha, setCaptcha] = useState("");
+
+  function onClick() {
+    if (captcha) alert("captcha resolvido");
+    else alert("captcha pendente");
+  }
+
   //TODO: validar telefone
 
   return (
@@ -59,8 +65,13 @@ function SignUp() {
       description="Com a Orange Api você tem inúmeras possibilidades de agregar funcionalidades ao seu negócio."
       image={curved6}
     >
+      <button onClick={onClick}>Click Me</button>
+      <ReCAPTCHA
+        sitekey={process.env.REACT_APP_SITE_KEY}
+        onChange={setCaptcha}
+      />
       <Card onSubmit={handleSubmit(onSubmit)}>
-        <SoftBox p={3} mb={1} textAlign="center">
+        <SoftBox p={3} pb={2} textAlign="center">
           <SoftTypography variant="h5" fontWeight="medium">
             Registre sua conta
           </SoftTypography>
@@ -75,7 +86,7 @@ function SignUp() {
               <SoftInput
                 placeholder="Nome"
                 {...register("name", { required: true })}
-                error={errors?.name}
+                error={!!errors?.name}
                 icon={{ component: "person", direction: "left" }}
               />
             </SoftBox>
