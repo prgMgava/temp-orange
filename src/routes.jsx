@@ -38,6 +38,8 @@ Coded by www.creative-tim.com
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import ForgotPassword from "layouts/authentication/forgot-password";
+import RecoveryPassword from "layouts/authentication/recovery-password";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 // Orange APi icons
@@ -67,6 +69,22 @@ const routes = [
     key: "sign-up",
     route: "/sign-up",
     component: <SignUp />,
+    noCollapse: true,
+  },
+  {
+    type: "rote",
+    name: "Esqueceu sua senha?",
+    key: "forgot-password",
+    route: "/forgot-password",
+    component: <ForgotPassword />,
+    noCollapse: true,
+  },
+  {
+    type: "rote",
+    name: "Esqueceu sua senha?",
+    key: "recovery-password",
+    route: "/recovery-password",
+    component: <RecoveryPassword />,
     noCollapse: true,
   },
 

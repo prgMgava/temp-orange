@@ -65,7 +65,6 @@ function SignUp() {
       description="Com a Orange Api você tem inúmeras possibilidades de agregar funcionalidades ao seu negócio."
       image={curved6}
     >
-      <button onClick={onClick}>Click Me</button>
       <ReCAPTCHA
         sitekey={process.env.REACT_APP_SITE_KEY}
         onChange={setCaptcha}
