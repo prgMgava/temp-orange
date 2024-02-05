@@ -17,19 +17,56 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 
+import { useSearchParams } from "react-router-dom";
+
 // Orange APi examples
 import TimelineItem from "examples/Timeline/TimelineItem";
 
+import SoftBadge from "components/SoftBadge";
 // Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 function SendedMessages() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sendedParams = searchParams.get("message") || "sended";
+
+  const handleParams = (key, value) => {
+    const params = searchParams.get(key);
+    if (!params) {
+      setSearchParams((prevParams) => [...prevParams.entries(), [key, value]]);
+    } else {
+      searchParams.set(key, value);
+      setSearchParams(searchParams);
+    }
+  };
   return (
     <Card className="h-100">
       <SoftBox pt={3} px={3}>
         <SoftTypography variant="h6" fontWeight="medium">
-          Mensagens enviadas
+          Mensagens {sendedParams == "sended" ? "enviadas" : "recebidas"}
+          <SoftBox pt={1} mb={0.5} display="flex" flexWrap="wrap" gap="8px">
+            <button onClick={() => handleParams("message", "sended")}>
+              <SoftBadge
+                variant="contained"
+                color={`${sendedParams == "sended" ? "info" : "secondary"}`}
+                size="sm"
+                badgeContent={"Enviadas"}
+                circular
+                container
+              />
+            </button>
+            <button onClick={() => handleParams("message", "received")}>
+              <SoftBadge
+                variant="contained"
+                color={`${sendedParams == "received" ? "info" : "secondary"}`}
+                size="sm"
+                badgeContent={"Recebidas"}
+                circular
+                container
+              />
+            </button>
+          </SoftBox>
         </SoftTypography>
         <SoftBox mt={1} mb={2}>
           <SoftTypography

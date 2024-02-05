@@ -17,10 +17,11 @@ Coded by www.creative-tim.com
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
+import PropTypes from "prop-types";
+
 // Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import PropTypes from "prop-types";
 
 function MiniStatisticsCard({
   bgColor,
@@ -29,7 +30,9 @@ function MiniStatisticsCard({
   description,
   icon,
   direction,
+  type,
 }) {
+  const searchParams = type ? `?state=${type}` : "";
   return (
     <Card>
       <SoftBox bgColor={bgColor} variant="gradient">
@@ -107,7 +110,7 @@ function MiniStatisticsCard({
           >
             <SoftTypography
               component="a"
-              href="/web-instances"
+              href={`/web-instances${searchParams ? searchParams : ""}`}
               variant="button"
               color="text"
               fontWeight="medium"
@@ -196,6 +199,7 @@ MiniStatisticsCard.propTypes = {
     component: PropTypes.node.isRequired,
   }).isRequired,
   direction: PropTypes.oneOf(["right", "left"]),
+  type: PropTypes.oneOfType(["connecting", "close"]),
 };
 
 export default MiniStatisticsCard;

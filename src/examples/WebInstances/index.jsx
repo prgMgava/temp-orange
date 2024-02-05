@@ -43,6 +43,7 @@ const WebInstancesInfo = () => {
                 text: "Total de instâncias web conectadas",
               }}
               icon={{ color: "success", component: "check_circle" }}
+              type={"connecting"}
             />
           </Grid>
           <Grid item xs={12} sm={6} xl={4}>
@@ -54,6 +55,7 @@ const WebInstancesInfo = () => {
                 text: "Total de instâncias web desconectadas",
               }}
               icon={{ color: "error", component: "power_settings_new" }}
+              type={"close"}
             />
           </Grid>
         </Grid>
