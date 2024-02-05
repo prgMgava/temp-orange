@@ -9,7 +9,7 @@ import {
   setOpenConfigurator,
 } from "context";
 // Orange APi routes
-import routes from "routes";
+import routes from "routes/routes";
 
 // RTL plugins
 import { useState, useEffect } from "react";

@@ -38,6 +38,7 @@ Coded by www.creative-tim.com
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import NotFound404 from "layouts/404";
 import ForgotPassword from "layouts/authentication/forgot-password";
 import RecoveryPassword from "layouts/authentication/recovery-password";
 import SignIn from "layouts/authentication/sign-in";
@@ -85,6 +86,14 @@ const routes = [
     key: "recovery-password",
     route: "/recovery-password",
     component: <RecoveryPassword />,
+    noCollapse: true,
+  },
+  {
+    type: "rote",
+    name: "Not found",
+    key: "not-found",
+    route: "/404",
+    component: <NotFound404 />,
     noCollapse: true,
   },
 

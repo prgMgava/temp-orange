@@ -18,7 +18,7 @@ import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
 import Icon from "@mui/material/Icon";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
-import routesConfig from "routes";
+import routesConfig from "routes/routes";
 
 import { Link } from "react-router-dom";
 
