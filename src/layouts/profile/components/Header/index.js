@@ -18,15 +18,9 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-// Images
-import burceMars from "assets/images/bruce-mars.jpg";
-import curved0 from "assets/images/curved-images/curved0.jpg";
-// Orange APi base styles
-import breakpoints from "assets/theme/base/breakpoints";
-import SoftAvatar from "components/SoftAvatar";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
+
+import { useState, useEffect } from "react";
+
 // Orange APi icons
 import Cube from "examples/Icons/Cube";
 import Document from "examples/Icons/Document";
@@ -34,7 +28,16 @@ import Settings from "examples/Icons/Settings";
 // Orange APi examples
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-import { useState, useEffect } from "react";
+import SoftAvatar from "components/SoftAvatar";
+// Orange APi components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+
+// Images
+import burceMars from "assets/images/bruce-mars.jpg";
+import curved0 from "assets/images/curved-images/curved0.jpg";
+// Orange APi base styles
+import breakpoints from "assets/theme/base/breakpoints";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -117,20 +120,6 @@ function Header() {
                 CEO / Co-Founder
               </SoftTypography>
             </SoftBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
-            <AppBar position="static">
-              <Tabs
-                orientation={tabsOrientation}
-                value={tabValue}
-                onChange={handleSetTabValue}
-                sx={{ background: "transparent" }}
-              >
-                <Tab label="App" icon={<Cube />} />
-                <Tab label="Message" icon={<Document />} />
-                <Tab label="Settings" icon={<Settings />} />
-              </Tabs>
-            </AppBar>
           </Grid>
         </Grid>
       </Card>
