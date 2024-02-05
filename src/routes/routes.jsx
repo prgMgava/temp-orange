@@ -118,15 +118,15 @@ const routes = [
     noCollapse: true,
   },
 
-  {
-    type: "collapse",
-    name: "Pagamento",
-    key: "billing",
-    route: "/billing",
-    icon: <CreditCard size="12px" />,
-    component: <Billing />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Pagamento",
+  //   key: "billing",
+  //   route: "/billing",
+  //   icon: <CreditCard size="12px" />,
+  //   component: <Billing />,
+  //   noCollapse: true,
+  // },
 
   {
     type: "collapse",

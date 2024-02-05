@@ -16,12 +16,14 @@ Coded by www.creative-tim.com
 import Icon from "@mui/material/Icon";
 // @mui material components
 import Link from "@mui/material/Link";
-// Orange APi base styles
-import typography from "assets/theme/base/typography";
+import PropTypes from "prop-types";
+
 // Orange APi components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import PropTypes from "prop-types";
+
+// Orange APi base styles
+import typography from "assets/theme/base/typography";
 
 function Footer({ company, links }) {
   const { href, name } = company;
@@ -95,12 +97,10 @@ function Footer({ company, links }) {
 
 // Setting default values for the props of Footer
 Footer.defaultProps = {
-  company: { href: "https://www.creative-tim.com/", name: "Creative Tim" },
+  company: { href: "https://www.creative-tim.com/", name: "Orange API" },
   links: [
-    { href: "https://www.creative-tim.com/", name: "Creative Tim" },
-    { href: "https://www.creative-tim.com/presentation", name: "About Us" },
-    { href: "https://www.creative-tim.com/blog", name: "Blog" },
-    { href: "https://www.creative-tim.com/license", name: "License" },
+    { href: "#", name: "Documentação" },
+    { href: "#", name: "Blog" },
   ],
 };
 
