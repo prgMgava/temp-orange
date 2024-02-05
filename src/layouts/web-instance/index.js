@@ -277,7 +277,7 @@ function WebInstance() {
                               : "Leia o QRCode"}
                           </SoftTypography>
                         </Grid>
-                        <Grid item sm={12}>
+                        <Grid item sm={12} md={10} maxWidth={"200px"}>
                           <SoftTypography variant="caption">
                             {connectWithPhoneNumber
                               ? "Conecte sua instância pelo número de telefone"
