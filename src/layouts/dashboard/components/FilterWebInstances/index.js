@@ -23,10 +23,28 @@ import SoftTypography from "components/SoftTypography";
 function FilterWebInstances({ filters }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const periodParam = searchParams.get("period") || "today";
+  const webInstanceParam = searchParams.getAll("web_instance") || null;
+
+  const selectOptions = [
+    { value: "all", label: "Todas" },
+    { value: "1", label: "web instance 01" },
+  ];
 
   const handleParams = (key, value) => {
     const params = searchParams.get(key);
-    if (!params) {
+    if (key == "web_instance") {
+      const values = value.map((item) => item.value);
+      const valuesParams = [];
+
+      for (let i = 0; i < values.length; i++) {
+        valuesParams.push([key, values[i]]);
+      }
+
+      setSearchParams((prevParams) => [
+        ...prevParams.entries(),
+        ...valuesParams,
+      ]);
+    } else if (!params) {
       setSearchParams((prevParams) => [...prevParams.entries(), [key, value]]);
     } else {
       searchParams.set(key, value);
@@ -53,20 +71,25 @@ function FilterWebInstances({ filters }) {
               <SoftBox component="form" role="form">
                 <SoftBox mb={2}>
                   <SoftSelect
-                    options={[
-                      { value: "all", label: "Todas" },
-                      { value: "1", label: "web instance 01" },
-                    ]}
+                    options={selectOptions}
                     isSearchable
                     isMulti
                     onChange={(e) => {
                       if (e.length > 0) {
-                        handleParams("web_instance", e[0].value);
+                        searchParams.delete("web_instance");
+                        handleParams("web_instance", e);
                       } else {
                         searchParams.delete("web_instance");
                         setSearchParams(searchParams);
                       }
                     }}
+                    value={
+                      webInstanceParam
+                        ? webInstanceParam.map((item) =>
+                            selectOptions.find((_) => _.value == item)
+                          )
+                        : null
+                    }
                   ></SoftSelect>
                 </SoftBox>
               </SoftBox>
