@@ -46,11 +46,14 @@ import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
 import SoftTypography from "components/SoftTypography";
 
+import ModalSendMessage from "./components/ModalSendMessage";
+
 function WebInstance() {
   const [menu, setMenu] = useState(null);
   const [open, setOpen] = useState(false);
-  const [paid, setPaid] = useState(false);
-  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [paid, setPaid] = useState(true);
+  const [openSendMessage, setOpenSendMessage] = useState(false);
+
   const [confirmationDetails, setConfirmationDetails] = useState(null);
 
   const [connectWithPhoneNumber, setConnectWithPhoneNumber] = useState(true);
@@ -228,7 +231,7 @@ function WebInstance() {
                             </SoftBox>
                             <SoftBox>
                               <SoftTypography
-                                fontWeight="normal"
+                                fontWeight="medium"
                                 variant="caption"
                               >
                                 <SoftTypography
@@ -238,7 +241,7 @@ function WebInstance() {
                                   Expira em:{" "}
                                 </SoftTypography>
                                 <SoftTypography
-                                  fontWeight="normal"
+                                  fontWeight="medium"
                                   variant="caption"
                                 >
                                   Expirado!
@@ -423,7 +426,7 @@ function WebInstance() {
                     <SoftTypography fontWeight="bold" variant="h6" noWrap>
                       1. Realize o pagamento
                     </SoftTypography>
-                    <SoftTypography fontWeight="normal" variant="caption">
+                    <SoftTypography fontWeight="medium" variant="caption">
                       Para utilizar essa instância é necessário realizar o
                       pagamento da mesma. O valor é de R$ 99,00
                     </SoftTypography>
@@ -445,11 +448,11 @@ function WebInstance() {
                       </SoftTypography>
                     </SoftBox>
                     <SoftBox>
-                      <SoftTypography fontWeight="normal" variant="caption">
+                      <SoftTypography fontWeight="medium" variant="caption">
                         <SoftTypography fontWeight="bold" variant="caption">
                           Expira em:{" "}
                         </SoftTypography>
-                        <SoftTypography fontWeight="normal" variant="caption">
+                        <SoftTypography fontWeight="medium" variant="caption">
                           Expirado!
                         </SoftTypography>
                       </SoftTypography>
@@ -515,7 +518,7 @@ function WebInstance() {
                 <MenuItem
                   onClick={() => {
                     closeMenu();
-                    setOpenConfirmation(true);
+                    setOpen(true);
                     setConfirmationDetails({
                       title: "Realmente deseja reiniciar esta instância",
                     });
@@ -534,7 +537,7 @@ function WebInstance() {
                 <MenuItem
                   onClick={() => {
                     closeMenu();
-                    setOpenConfirmation(true);
+                    setOpen(true);
                     setConfirmationDetails({
                       title: "Realmente deseja desconectar esta instância",
                     });
@@ -543,10 +546,26 @@ function WebInstance() {
                   {" "}
                   <SoftBox color="text" px={2} display="flex">
                     <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                      power_setting_new
+                      power_off
                     </Icon>
                   </SoftBox>
                   Desconectar
+                </MenuItem>
+              )}
+              {paid && (
+                <MenuItem
+                  onClick={() => {
+                    closeMenu();
+                    setOpenSendMessage(true);
+                  }}
+                >
+                  {" "}
+                  <SoftBox color="text" px={2} display="flex">
+                    <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                      send
+                    </Icon>
+                  </SoftBox>
+                  Enviar mensagem
                 </MenuItem>
               )}
               <MenuItem
@@ -582,6 +601,12 @@ function WebInstance() {
           typeSecurity={confirmationDetails?.typeSecurity}
         ></ModalActionConfirmation>
       )}
+      <ModalSendMessage
+        handleModal={{
+          onClose: () => setOpenSendMessage(false),
+          open: openSendMessage,
+        }}
+      />
     </DashboardLayout>
   );
 }
