@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,7 +14,8 @@ import SoftTypography from "./SoftTypography";
 export const ModalActionConfirmation = ({
   handleModal: { open, onClose },
   title,
-  children,
+  description,
+  typeSecurity = false,
 }) => {
   const [value, setValue] = useState("");
 
@@ -36,14 +38,36 @@ export const ModalActionConfirmation = ({
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {children}
-          <div style={{ maxWidth: "300px", margin: "16px auto 0" }}>
-            <SoftInput
-              size="small"
-              placeholder="Digite o texto de confirmação aqui"
-              onChange={(e) => setValue(e.target.value)}
-            ></SoftInput>
-          </div>
+          <Box textAlign={"center"}>
+            <SoftTypography color="text" variant="caption" opacity={0.8}>
+              {description}
+            </SoftTypography>
+            {typeSecurity && (
+              <>
+                <br />
+                <SoftTypography color="text" variant="button">
+                  Para continuar digite{" "}
+                  <SoftTypography
+                    color="error"
+                    variant="caption"
+                    fontWeight="bold"
+                  >
+                    CANCELAR{" "}
+                  </SoftTypography>
+                  no campo abaixo
+                </SoftTypography>
+              </>
+            )}
+          </Box>
+          {typeSecurity && (
+            <div style={{ maxWidth: "300px", margin: "16px auto 0" }}>
+              <SoftInput
+                size="small"
+                placeholder="Digite o texto de confirmação aqui"
+                onChange={(e) => setValue(e.target.value)}
+              ></SoftInput>
+            </div>
+          )}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
