@@ -22,7 +22,6 @@ import authorsTableData from "layouts/web-instances/data/authorsTableData";
 import { Link, useSearchParams } from "react-router-dom";
 
 // Orange APi examples
-import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
 import Footer from "examples/Footer";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
