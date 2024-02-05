@@ -18,9 +18,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 // Data
 import authorsTableData from "layouts/web-instances/data/authorsTableData";
-import projectsTableData from "layouts/web-instances/data/projectsTableData";
 
-import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
 // Orange APi examples
