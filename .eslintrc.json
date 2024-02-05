@@ -2,15 +2,16 @@
   "extends": [
     // By extending from a plugin config, we can get recommended rules without having to add them manually.
     "eslint:recommended",
+    "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:@typescript-eslint/recommended",
     // This disables the formatting rules in ESLint that Prettier is going to be responsible for handling.
     // Make sure it's always the last config, so it gets the chance to override other configs.
-    "eslint-config-prettier",
-    "plugin:import/typescript"
+    "eslint-config-prettier"
   ],
-  "plugins": ["react"],
+  "plugins": [
+    "react"
+  ],
   "settings": {
     "react": {
       // Tells eslint-plugin-react to automatically detect the version of React to use.
@@ -18,29 +19,37 @@
     },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
       },
       "eslint-import-resolver-custom-alias": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"],
-        "packages": ["packages/*"]
+        "extensions": [
+          ".js",
+          ".jsx"
+        ],
+        "packages": [
+          "packages/*"
+        ]
       }
-    },
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
     }
   },
   "rules": {
     // Add your own rules here to override ones from the extended configs.
     // Suppress errors for missing 'import React' in files
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/no-unused-vars": "off",
     "react/prop-types": "off",
-    "no-debugger": "off"
+    "no-debugger": "off",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error",
+    "no-unused-vars": "off"
   },
-  "parser": "@typescript-eslint/parser",
-  "ignorePatterns": ["**/*.js", "**/*.css", "**/*.png"],
-  "root": true
+  "ignorePatterns": [
+    "**/*.js",
+    "**/*.css",
+    "**/*.png"
+  ],
+  "root": true,
+  "parser": "@babel/eslint-parser"
 }
