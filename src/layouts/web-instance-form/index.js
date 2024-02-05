@@ -27,6 +27,7 @@ import { textResume } from "utils/text.utils";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import uuid from "react-uuid";
 
 // Data
 // Orange APi examples
@@ -84,6 +85,7 @@ function WebInstanceForm() {
   } = useForm();
 
   const rejectCallWatch = useWatch({ control, name: "rejectCall" });
+  const nameWatch = useWatch({ control, name: "name" });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -199,11 +201,11 @@ function WebInstanceForm() {
                       <SoftInput
                         type="text"
                         icon={{ component: "grid_3x3", direction: "left" }}
-                        placeholder="Nome"
                         value={textResume(webInstanceId, 30)}
-                        disabled={!!webInstanceId}
+                        disabled
                         {...register("webInstanceId", { required: true })}
                         error={!!errors.webInstanceId}
+                        value={`${nameWatch}-${uuid()}`}
                       ></SoftInput>
                     </SoftBox>
                   </SoftBox>
@@ -250,11 +252,10 @@ function WebInstanceForm() {
                     <SoftInput
                       type="text"
                       icon={{ component: "link", direction: "left" }}
-                      placeholder="Nome"
-                      value={textResume(webInstanceId, 30)}
-                      disabled={!!webInstanceId}
+                      disabled
                       {...register("webInstanceToken", { required: true })}
                       error={!!errors.webInstanceToken}
+                      value={uuid()}
                     ></SoftInput>
                   </SoftBox>
                 </Grid>

@@ -181,14 +181,6 @@ const routes = [
     component: <WebInstanceForm />,
     dynamicRoute: true,
   },
-  {
-    type: "route",
-    name: "Edição da instância web",
-    key: "web-instances",
-    route: "/web-instances/:webInstanceId/edit",
-    component: <WebInstanceForm />,
-    dynamicRoute: true,
-  },
 ];
 
 export default routes;
