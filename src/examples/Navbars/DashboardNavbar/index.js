@@ -141,7 +141,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           />
         </SoftBox>
         {isMini ? null : (
-          <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
+          <SoftBox sx={(theme) => navbarRow(theme, { isMini })} gap="32px">
             <SoftBox color={light ? "white" : "inherit"}>
               <Link to="/account">
                 <IconButton sx={navbarIconButton} size="small">
@@ -172,16 +172,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 </Icon>
               </IconButton>
 
-              <IconButton
-                size="large"
-                color="inherit"
-                sx={navbarIconButton}
-                onClick={() => alert("logout")}
-              >
-                <Icon fontSize="20px">logout</Icon>
-              </IconButton>
               {renderMenu()}
             </SoftBox>
+            <IconButton
+              size="large"
+              color="inherit"
+              sx={navbarIconButton}
+              onClick={() => alert("logout")}
+            >
+              <Icon fontSize="20px">logout</Icon>
+            </IconButton>
           </SoftBox>
         )}
       </Toolbar>
