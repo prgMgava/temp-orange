@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -17,15 +17,16 @@ Coded by www.creative-tim.com
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Tooltip from "@mui/material/Tooltip";
-import SoftAvatar from "components/SoftAvatar";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
-import SoftTypography from "components/SoftTypography";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 import { Link } from "react-router-dom";
+
+import SoftAvatar from "components/SoftAvatar";
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftButton from "components/SoftButton";
+import SoftTypography from "components/SoftTypography";
 
 function DefaultProjectCard({
   image,

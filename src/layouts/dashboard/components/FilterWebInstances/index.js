@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { useSearchParams } from "react-router-dom";
 
 import SoftBadge from "components/SoftBadge";
-// Orange APi components
+// Orange API components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftSelect from "components/SoftSelect";

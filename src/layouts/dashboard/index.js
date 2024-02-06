@@ -10,12 +10,12 @@ import { useState } from "react";
 
 import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
 import Footer from "examples/Footer";
-// Orange APi examples
+// Orange API examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import WebInstancesInfo from "examples/WebInstances";
 
-// Orange APi components
+// Orange API components
 import SoftBox from "components/SoftBox";
 
 function Dashboard() {

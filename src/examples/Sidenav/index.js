@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -17,22 +17,24 @@ import Icon from "@mui/material/Icon";
 import Link from "@mui/material/Link";
 // @mui material components
 import List from "@mui/material/List";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-// Orange APi context
+// Orange API context
 import { useSoftUIController, setMiniSidenav } from "context";
-// Orange APi examples
-import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
-// Custom styles for the Sidenav
-import SidenavRoot from "examples/Sidenav/SidenavRoot";
-import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 
 import { useEffect } from "react";
 // react-router-dom components
 import { useLocation, NavLink } from "react-router-dom";
+
+// Orange API examples
+import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
+// Custom styles for the Sidenav
+import SidenavRoot from "examples/Sidenav/SidenavRoot";
+import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();

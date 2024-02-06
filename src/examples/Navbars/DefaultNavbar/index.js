@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,21 +15,24 @@ Coded by www.creative-tim.com
 // @mui material components
 import Container from "@mui/material/Container";
 import Icon from "@mui/material/Icon";
-// Orange APi base styles
-import breakpoints from "assets/theme/base/breakpoints";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
-import SoftTypography from "components/SoftTypography";
-// Orange APi examples
-import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
-import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMobile";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 
 import { useState, useEffect } from "react";
 // react-router components
 import { Link } from "react-router-dom";
+
+// Orange API examples
+import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
+import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMobile";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftButton from "components/SoftButton";
+import SoftTypography from "components/SoftTypography";
+
+// Orange API base styles
+import breakpoints from "assets/theme/base/breakpoints";
 
 function DefaultNavbar({ transparent, light, action }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -106,7 +109,7 @@ function DefaultNavbar({ transparent, light, action }) {
             fontWeight="bold"
             color={light ? "white" : "dark"}
           >
-            Orange APi
+            Orange API
           </SoftTypography>
         </SoftBox>
         <SoftBox

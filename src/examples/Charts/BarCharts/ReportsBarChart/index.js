@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,19 +15,21 @@ Coded by www.creative-tim.com
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-// Orange APi examples
-import BarReportsChartItem from "examples/Charts/BarCharts/ReportsBarChart/ReportsBarChartItem";
-// ReportsBarChart configurations
-import configs from "examples/Charts/BarCharts/ReportsBarChart/configs";
 // porp-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 import { useMemo } from "react";
 // react-chartjs-2 components
 import { Bar } from "react-chartjs-2";
+
+// Orange API examples
+import BarReportsChartItem from "examples/Charts/BarCharts/ReportsBarChart/ReportsBarChartItem";
+// ReportsBarChart configurations
+import configs from "examples/Charts/BarCharts/ReportsBarChart/configs";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 function ReportsBarChart({ color, title, description, chart, items }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});

@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v3.1.0
+* Orange API - v3.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-pro-react
@@ -14,13 +14,13 @@ Coded by www.creative-tim.com
 */
 
 /**
- * The base border styles for the Orange APi.
+ * The base border styles for the Orange API.
  * You can add new border width, border color or border radius using this file.
- * You can customized the borders value for the entire Orange APi using thie file.
+ * You can customized the borders value for the entire Orange API using thie file.
  */
-// Orange APi Base Styles
+// Orange API Base Styles
 import colors from "assets/theme/base/colors";
-// Orange APi Helper Functions
+// Orange API Helper Functions
 import pxToRem from "assets/theme/functions/pxToRem";
 
 const { grey } = colors;

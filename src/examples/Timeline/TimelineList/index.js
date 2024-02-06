@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,12 +15,14 @@ Coded by www.creative-tim.com
 // prop-types is a library for typechecking of props
 // @mui material components
 import Card from "@mui/material/Card";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
+import PropTypes from "prop-types";
+
 // Timeline context
 import { TimelineProvider } from "examples/Timeline/context";
-import PropTypes from "prop-types";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 function TimelineList({ title, dark, children }) {
   return (

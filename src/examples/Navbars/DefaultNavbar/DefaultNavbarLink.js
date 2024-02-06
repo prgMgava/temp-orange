@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,13 +15,14 @@ Coded by www.creative-tim.com
 // react-router-dom components
 // @mui material components
 import Icon from "@mui/material/Icon";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 import { Link } from "react-router-dom";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 function DefaultNavbarLink({ icon, name, route, light }) {
   return (

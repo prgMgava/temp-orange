@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 // react-router-dom components
 import { Link } from "react-router-dom";
 
-// Orange APi components
+// Orange API components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";

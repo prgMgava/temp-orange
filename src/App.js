@@ -2,13 +2,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
-// Orange APi contexts
+// Orange API contexts
 import {
   useSoftUIController,
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
-// Orange APi routes
+// Orange API routes
 import routes from "routes/routes";
 
 // RTL plugins
@@ -17,15 +17,15 @@ import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import Configurator from "examples/Configurator";
-// Orange APi examples
+// Orange API examples
 import Sidenav from "examples/Sidenav";
 
-// Orange APi components
+// Orange API components
 import SoftBox from "components/SoftBox";
 
 // Images
 import brand from "assets/images/logo-ct.png";
-// Orange APi themes
+// Orange API themes
 import theme from "assets/theme";
 
 export default function App() {
@@ -118,7 +118,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={brand}
-            brandName="Orange APi"
+            brandName="Orange API"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

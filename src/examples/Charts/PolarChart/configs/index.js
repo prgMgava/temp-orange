@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 /* eslint-disable no-dupe-keys */
-// Orange APi base styles
+// Orange API base styles
 import colors from "assets/theme/base/colors";
 
 const { gradients, dark } = colors;

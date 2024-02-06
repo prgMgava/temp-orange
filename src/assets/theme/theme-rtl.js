@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -14,10 +14,11 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import { createTheme } from "@mui/material/styles";
+
 import borders from "assets/theme/base/borders";
 import boxShadows from "assets/theme/base/boxShadows";
 import breakpoints from "assets/theme/base/breakpoints";
-// Orange APi base styles
+// Orange API base styles
 import colors from "assets/theme/base/colors";
 import globals from "assets/theme/base/globals";
 import typography from "assets/theme/base/typography";
@@ -50,7 +51,7 @@ import listItemText from "assets/theme/components/list/listItemText";
 import menu from "assets/theme/components/menu";
 import menuItem from "assets/theme/components/menu/menuItem";
 import popover from "assets/theme/components/popover";
-// Orange APi components base styles for @mui material components
+// Orange API components base styles for @mui material components
 import sidenav from "assets/theme/components/sidenav";
 import slider from "assets/theme/components/slider";
 import stepper from "assets/theme/components/stepper";
@@ -65,7 +66,7 @@ import tableHead from "assets/theme/components/table/tableHead";
 import tabs from "assets/theme/components/tabs";
 import tab from "assets/theme/components/tabs/tab";
 import tooltip from "assets/theme/components/tooltip";
-// Orange APi helper functions
+// Orange API helper functions
 import boxShadow from "assets/theme/functions/boxShadow";
 import hexToRgb from "assets/theme/functions/hexToRgb";
 import linearGradient from "assets/theme/functions/linearGradient";

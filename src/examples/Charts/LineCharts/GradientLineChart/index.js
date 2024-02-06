@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -14,21 +14,24 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import Card from "@mui/material/Card";
-// Orange APi base styles
-import colors from "assets/theme/base/colors";
-// Orange APi helper functions
-import gradientChartLine from "assets/theme/functions/gradientChartLine";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-// GradientLineChart configurations
-import configs from "examples/Charts/LineCharts/GradientLineChart/configs";
 // porp-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 import { useRef, useEffect, useState, useMemo } from "react";
 // react-chartjs-2 components
 import { Line } from "react-chartjs-2";
+
+// GradientLineChart configurations
+import configs from "examples/Charts/LineCharts/GradientLineChart/configs";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+
+// Orange API base styles
+import colors from "assets/theme/base/colors";
+// Orange API helper functions
+import gradientChartLine from "assets/theme/functions/gradientChartLine";
 
 function GradientLineChart({ title, description, height, chart }) {
   const chartRef = useRef(null);

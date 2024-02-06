@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -19,10 +19,10 @@ import Icon from "@mui/material/Icon";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-// Orange APi context
+// Orange API context
 import { useSoftUIController } from "context";
+import PropTypes from "prop-types";
+
 // Custom styles for the SidenavCollapse
 import {
   collapseItem,
@@ -30,7 +30,9 @@ import {
   collapseIcon,
   collapseText,
 } from "examples/Sidenav/styles/sidenavCollapse";
-import PropTypes from "prop-types";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
 
 function SidenavCollapse({
   color,

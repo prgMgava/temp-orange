@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -19,7 +19,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 
-// Orange APi Context Provider
+// Orange API Context Provider
 import { SoftUIControllerProvider } from "./context";
 import "./index.css";
 

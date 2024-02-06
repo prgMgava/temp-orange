@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-// Orange APi components
+// Orange API components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 

@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 /**
   The gradientChartLine() function helps you to create a gradient color for the chart line
  */
-// Orange APi helper functions
+// Orange API helper functions
 import rgba from "assets/theme/functions/rgba";
 
 function gradientChartLine(chart, color, opacity = 0.2) {

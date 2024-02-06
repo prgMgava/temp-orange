@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,15 +15,17 @@ Coded by www.creative-tim.com
 import Icon from "@mui/material/Icon";
 // @mui material components
 import MenuItem from "@mui/material/MenuItem";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-// custom styles for the NotificationItem
-import { menuItem, menuImage } from "examples/Items/NotificationItem/styles";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 
 import { forwardRef } from "react";
+
+// custom styles for the NotificationItem
+import { menuItem, menuImage } from "examples/Items/NotificationItem/styles";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 const NotificationItem = forwardRef(
   ({ color, image, title, date, ...rest }, ref) => (

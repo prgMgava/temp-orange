@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -13,11 +13,12 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 // Custom styles for SoftAvatar
-import SoftAvatarRoot from "components/SoftAvatar/SoftAvatarRoot";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 import { forwardRef } from "react";
+
+import SoftAvatarRoot from "components/SoftAvatar/SoftAvatarRoot";
 
 const SoftAvatar = forwardRef(({ bgColor, size, shadow, ...rest }, ref) => (
   <SoftAvatarRoot ref={ref} ownerState={{ shadow, bgColor, size }} {...rest} />

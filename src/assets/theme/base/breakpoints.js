@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v3.1.0
+* Orange API - v3.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-pro-react
@@ -14,9 +14,9 @@ Coded by www.creative-tim.com
 */
 
 /**
- * The base breakpoints for the Orange APi.
+ * The base breakpoints for the Orange API.
  * You can add new breakpoints using this file.
- * You can customized the breakpoints for the entire Orange APi using thie file.
+ * You can customized the breakpoints for the entire Orange API using thie file.
  */
 
 const breakpoints = {

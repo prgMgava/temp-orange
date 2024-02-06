@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 /** 
-  All of the routes for the Orange APi are added here,
+  All of the routes for the Orange API are added here,
   You can add a new route, customize the routes and delete the routes here.
 
   Once you add a new route on this file it will be visible automatically on
@@ -34,7 +34,7 @@ Coded by www.creative-tim.com
   10. The `title` key is only for the item with the type of `title` and its used for the title text on the Sidenav.
   10. The `component` key is used to store the component of its route.
 */
-// Orange APi layouts
+// Orange API layouts
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
@@ -43,7 +43,7 @@ import ForgotPassword from "layouts/authentication/forgot-password";
 import RecoveryPassword from "layouts/authentication/recovery-password";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-// Orange APi icons
+// Orange API icons
 import Billing from "layouts/billing";
 import Dashboard from "layouts/dashboard";
 import Profile from "layouts/profile";

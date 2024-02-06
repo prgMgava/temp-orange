@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v1.0.0
+* Orange API - v1.0.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-pro-react
@@ -13,11 +13,12 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 // Custom styles for SoftButton
-import SoftButtonRoot from "components/SoftButton/SoftButtonRoot";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 import { forwardRef } from "react";
+
+import SoftButtonRoot from "components/SoftButton/SoftButtonRoot";
 
 const SoftButton = forwardRef(
   ({ color, variant, size, circular, iconOnly, children, ...rest }, ref) => (

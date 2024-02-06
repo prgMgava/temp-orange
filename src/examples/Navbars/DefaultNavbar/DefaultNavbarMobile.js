@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,12 +15,14 @@ Coded by www.creative-tim.com
 // prop-types is a library for typechecking of props.
 // @mui material components
 import Menu from "@mui/material/Menu";
-// import Grid from "@mui/material/Grid";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-// Orange APi examples
-import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
 import PropTypes from "prop-types";
+
+// Orange API examples
+import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
+
+// import Grid from "@mui/material/Grid";
+// Orange API components
+import SoftBox from "components/SoftBox";
 
 function DefaultNavbarMobile({ open, close }) {
   const { width } = open && open.getBoundingClientRect();

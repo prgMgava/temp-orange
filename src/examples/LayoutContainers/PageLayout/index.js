@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -12,8 +12,8 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-// Orange APi components
-// Orange APi context
+// Orange API components
+// Orange API context
 import { useSoftUIController, setLayout } from "context";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";

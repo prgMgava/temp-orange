@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -14,17 +14,19 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import Card from "@mui/material/Card";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-// PieChart configurations
-import configs from "examples/Charts/PieChart/configs";
 // porp-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 import { useMemo } from "react";
 // react-chartjs-2 components
 import { Pie } from "react-chartjs-2";
+
+// PieChart configurations
+import configs from "examples/Charts/PieChart/configs";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 function PieChart({ title, description, height, chart }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});

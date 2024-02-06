@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -15,17 +15,20 @@ Coded by www.creative-tim.com
 // prop-types is a library for typechecking of props
 // @mui material components
 import Grid from "@mui/material/Grid";
-// Images
-import pattern from "assets/images/shapes/pattern-lines.svg";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import PageLayout from "examples/LayoutContainers/PageLayout";
-// Orange APi examples
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-// Orange APi page layout routes
+// Orange API page layout routes
 import pageRoutes from "page.routes";
 import PropTypes from "prop-types";
+
+import PageLayout from "examples/LayoutContainers/PageLayout";
+// Orange API examples
+import DefaultNavbar from "examples/Navbars/DefaultNavbar";
+
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+
+// Images
+import pattern from "assets/images/shapes/pattern-lines.svg";
 
 function IllustrationLayout({
   color,

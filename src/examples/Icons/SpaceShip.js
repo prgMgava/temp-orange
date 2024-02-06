@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -13,9 +13,10 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 // prop-types is a library for typechecking of props
-// Orange APi base styles
-import colors from "assets/theme/base/colors";
+// Orange API base styles
 import PropTypes from "prop-types";
+
+import colors from "assets/theme/base/colors";
 
 function SpaceShip({ color, size }) {
   return (

@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -18,7 +18,7 @@ import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-// Orange APi context
+// Orange API context
 import {
   useSoftUIController,
   setTransparentNavbar,
@@ -32,7 +32,7 @@ import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 
 import Breadcrumbs from "examples/Breadcrumbs";
-// Orange APi examples
+// Orange API examples
 import NotificationItem from "examples/Items/NotificationItem";
 // Custom styles for DashboardNavbar
 import {
@@ -43,7 +43,7 @@ import {
   navbarMobileMenu,
 } from "examples/Navbars/DashboardNavbar/styles";
 
-// Orange APi components
+// Orange API components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 

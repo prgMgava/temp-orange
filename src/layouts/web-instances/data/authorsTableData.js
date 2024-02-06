@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-// Orange APi components
+// Orange API components
 // Images
 import Icon from "@mui/material/Icon";
 import { textResume } from "utils/text.utils";

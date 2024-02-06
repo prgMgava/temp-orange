@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -17,15 +17,17 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
-// Images
-import masterCardLogo from "assets/images/logos/mastercard.png";
-import visaLogo from "assets/images/logos/visa.png";
-// Orange APi base styles
-import borders from "assets/theme/base/borders";
-// Orange APi components
+
+// Orange API components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
+
+// Images
+import masterCardLogo from "assets/images/logos/mastercard.png";
+import visaLogo from "assets/images/logos/visa.png";
+// Orange API base styles
+import borders from "assets/theme/base/borders";
 
 function PaymentMethod() {
   const { borderWidth, borderColor } = borders;

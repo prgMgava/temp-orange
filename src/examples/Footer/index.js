@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -18,11 +18,11 @@ import Icon from "@mui/material/Icon";
 import Link from "@mui/material/Link";
 import PropTypes from "prop-types";
 
-// Orange APi components
+// Orange API components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
-// Orange APi base styles
+// Orange API base styles
 import typography from "assets/theme/base/typography";
 
 function Footer({ company, links }) {

@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -14,12 +14,13 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import Card from "@mui/material/Card";
-// Orange APi components
+// Billing page components
+import Invoice from "layouts/billing/components/Invoice";
+
+// Orange API components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
-// Billing page components
-import Invoice from "layouts/billing/components/Invoice";
 
 function Invoices() {
   return (

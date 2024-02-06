@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Orange APi - v4.0.1
+* Orange API - v4.0.1
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
@@ -21,11 +21,7 @@ import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import Switch from "@mui/material/Switch";
-// Orange APi components
-import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
-import SoftTypography from "components/SoftTypography";
-// Orange APi context
+// Orange API context
 import {
   useSoftUIController,
   setOpenConfigurator,
@@ -33,10 +29,16 @@ import {
   setFixedNavbar,
   setSidenavColor,
 } from "context";
+
+import { useState, useEffect } from "react";
+
 // Custom styles for the Configurator
 import ConfiguratorRoot from "examples/Configurator/ConfiguratorRoot";
 
-import { useState, useEffect } from "react";
+// Orange API components
+import SoftBox from "components/SoftBox";
+import SoftButton from "components/SoftButton";
+import SoftTypography from "components/SoftTypography";
 
 function Configurator() {
   const [controller, dispatch] = useSoftUIController();
