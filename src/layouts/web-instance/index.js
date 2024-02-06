@@ -74,11 +74,25 @@ function WebInstance() {
           <Card sx={{ padding: "16px", display: "flex", flexDirection: "row" }}>
             <div style={{ flex: 1 }}>
               {paid ? (
-                <SoftBox>
-                  <SoftTypography fontWeight="bold" variant="h6" noWrap>
+                <SoftBox display="flex" flexDirection="column">
+                  <SoftTypography
+                    fontWeight="bold"
+                    variant="h6"
+                    display="flex"
+                    justifyContent="space-between"
+                  >
                     1. Dados da instância webInstanceName
+                    <SoftBox color="text" px={2}>
+                      <Icon
+                        sx={{ cursor: "pointer", fontWeight: "bold" }}
+                        fontSize="small"
+                        onClick={openMenu}
+                      >
+                        more_vert
+                      </Icon>
+                    </SoftBox>
                   </SoftTypography>
-                  <SoftTypography variant="caption">
+                  <SoftTypography variant="caption" wrap>
                     Essas são suas informações para integração com esta
                     instância, não compartilhe essas informações.
                   </SoftTypography>
@@ -91,8 +105,8 @@ function WebInstance() {
                           md={12}
                           display="flex"
                           flexDirection="column"
-                          width={"100%"}
                           sx={{ maxHeight: "max-content" }}
+                          width={"100%"}
                         >
                           <SoftBox
                             pt={1}
@@ -207,11 +221,7 @@ function WebInstance() {
 
                         <Grid item md={12} sm={12}>
                           <SoftBox mt="16px">
-                            <SoftTypography
-                              fontWeight="bold"
-                              variant="h6"
-                              noWrap
-                            >
+                            <SoftTypography fontWeight="bold" variant="h6">
                               2. Assinatura
                             </SoftTypography>
                             <SoftBox>
@@ -266,7 +276,6 @@ function WebInstance() {
                             fontWeight="bold"
                             variant="hr"
                             color="dark"
-                            noWrap
                             display="flex"
                             alignItems="center"
                             justifyContent="center"
@@ -285,7 +294,7 @@ function WebInstance() {
                           </SoftTypography>
                         </Grid>
 
-                        <Grid item md={12} mt={2}>
+                        <Grid item md={12} sm={6} mt={2}>
                           {connectWithPhoneNumber ? (
                             <>
                               {phoneCode ? (
@@ -371,11 +380,11 @@ function WebInstance() {
                                     defaultCountry="br"
                                     style={{
                                       justifyContent: "center",
-                                      maxWidth: "300px",
+                                      maxWidth: "250px",
                                       margin: "0 auto",
                                     }}
                                   />
-                                  <SoftTypography variant="caption" noWrap>
+                                  <SoftTypography variant="caption">
                                     Obs: Em caso de erro, tente solicitar o
                                     código sem o nono digito.
                                   </SoftTypography>
@@ -399,6 +408,7 @@ function WebInstance() {
                             <img
                               alt="QR CODE para conectar instância"
                               src={require("../../assets/images/qrCode.png")}
+                              width={"50%"}
                             />
                           )}
                         </Grid>
@@ -423,7 +433,7 @@ function WebInstance() {
               ) : (
                 <>
                   <SoftBox>
-                    <SoftTypography fontWeight="bold" variant="h6" noWrap>
+                    <SoftTypography fontWeight="bold" variant="h6">
                       1. Realize o pagamento
                     </SoftTypography>
                     <SoftTypography fontWeight="medium" variant="caption">
@@ -432,7 +442,7 @@ function WebInstance() {
                     </SoftTypography>
                   </SoftBox>
                   <SoftBox mt="16px">
-                    <SoftTypography fontWeight="bold" variant="h6" noWrap>
+                    <SoftTypography fontWeight="bold" variant="h6">
                       2. Assinatura
                     </SoftTypography>
                     <SoftBox>
@@ -464,15 +474,7 @@ function WebInstance() {
                 </>
               )}
             </div>
-            <SoftBox color="text" px={2}>
-              <Icon
-                sx={{ cursor: "pointer", fontWeight: "bold" }}
-                fontSize="small"
-                onClick={openMenu}
-              >
-                more_vert
-              </Icon>
-            </SoftBox>
+
             <Menu
               id="simple-menu"
               anchorEl={menu}

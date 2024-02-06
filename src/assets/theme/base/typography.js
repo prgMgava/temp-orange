@@ -182,7 +182,7 @@ const typography = {
   },
 
   lineHeight: {
-    sm: 1.25,
+    sm: 0.5,
     md: 1.5,
     lg: 2,
   },
