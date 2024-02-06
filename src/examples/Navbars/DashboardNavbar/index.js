@@ -86,7 +86,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
 
-  const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
+  const handleMiniSidenav = () => {
+    setMiniSidenav(dispatch, !miniSidenav);
+  };
   const handleCloseMenu = () => setOpenMenu(false);
 
   // Render the notifications menu

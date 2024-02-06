@@ -22,7 +22,7 @@ import { useSoftUIController, setMiniSidenav } from "context";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // react-router-dom components
 import { useLocation, NavLink } from "react-router-dom";
 
@@ -42,11 +42,16 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
+  const [aux, setAux] = useState(false);
 
-  const closeSidenav = () => setMiniSidenav(dispatch, true);
+  const closeSidenav = () => {
+    setMiniSidenav(dispatch, true);
+  };
 
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
+    setMiniSidenav(dispatch, true);
+
     function handleMiniSidenav() {
       setMiniSidenav(dispatch, window.innerWidth < 1200);
     }
@@ -59,6 +64,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     // Call the handleMiniSidenav function to set the state with the initial value.
     handleMiniSidenav();
 
+    setAux(true);
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
@@ -123,47 +129,64 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   );
 
   return (
-    <SidenavRoot
-      {...rest}
-      variant="permanent"
-      ownerState={{ transparentSidenav, miniSidenav }}
-    >
-      <SoftBox pt={3} pb={1} px={4} textAlign="center">
-        <SoftBox
-          display={{ xs: "block", xl: "none" }}
-          position="absolute"
-          top={0}
-          right={0}
-          p={1.625}
-          onClick={closeSidenav}
-          sx={{ cursor: "pointer" }}
+    <>
+      {aux ? (
+        <SidenavRoot
+          {...rest}
+          variant="permanent"
+          ownerState={{ transparentSidenav, miniSidenav }}
         >
-          <SoftTypography variant="h6" color="secondary">
-            <Icon sx={{ fontWeight: "bold" }}>close</Icon>
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && (
+          <SoftBox pt={3} pb={1} px={4} textAlign="center">
             <SoftBox
-              component="img"
-              src={brand}
-              alt="Soft UI Logo"
-              width="2rem"
-            />
-          )}
-          <SoftBox
-            width={!brandName && "100%"}
-            sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
-          >
-            <SoftTypography component="h6" variant="button" fontWeight="medium">
-              {brandName}
-            </SoftTypography>
+              display={{ xs: "block", xl: "none" }}
+              position="absolute"
+              top={0}
+              right={0}
+              p={1.625}
+              onClick={closeSidenav}
+              sx={{ cursor: "pointer" }}
+            >
+              <SoftTypography variant="h6" color="secondary">
+                <Icon sx={{ fontWeight: "bold" }}>close</Icon>
+              </SoftTypography>
+            </SoftBox>
+            <SoftBox
+              component={NavLink}
+              to="/"
+              display="flex"
+              alignItems="center"
+            >
+              {brand && (
+                <SoftBox
+                  component="img"
+                  src={brand}
+                  alt="Soft UI Logo"
+                  width="2rem"
+                />
+              )}
+              {aux && (
+                <SoftBox
+                  width={!brandName && "100%"}
+                  sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
+                >
+                  <SoftTypography
+                    component="h6"
+                    variant="button"
+                    fontWeight="medium"
+                  >
+                    {brandName}
+                  </SoftTypography>
+                </SoftBox>
+              )}
+            </SoftBox>
           </SoftBox>
-        </SoftBox>
-      </SoftBox>
-      <Divider />
-      <List>{renderRoutes}</List>
-    </SidenavRoot>
+          <Divider />
+          <List>{renderRoutes}</List>
+        </SidenavRoot>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
 
