@@ -74,7 +74,7 @@ function WebInstance() {
           <Card sx={{ padding: "16px", display: "flex", flexDirection: "row" }}>
             <div style={{ flex: 1 }}>
               {paid ? (
-                <SoftBox display="flex" flexDirection="column">
+                <SoftBox>
                   <SoftTypography
                     fontWeight="bold"
                     variant="h6"
@@ -92,7 +92,7 @@ function WebInstance() {
                       </Icon>
                     </SoftBox>
                   </SoftTypography>
-                  <SoftTypography variant="caption" wrap>
+                  <SoftTypography variant="caption">
                     Essas são suas informações para integração com esta
                     instância, não compartilhe essas informações.
                   </SoftTypography>
