@@ -86,30 +86,6 @@ export default function App() {
       return null;
     });
 
-  const configsButton = (
-    <SoftBox
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="3.5rem"
-      height="3.5rem"
-      bgColor="white"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      right="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
-    >
-      <Icon fontSize="default" color="inherit">
-        settings
-      </Icon>
-    </SoftBox>
-  );
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -129,7 +105,7 @@ export default function App() {
       )}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </ThemeProvider>
   );

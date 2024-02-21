@@ -5,11 +5,6 @@ export const handleSuccessResponse = (message) => {
 };
 
 export const handleErrorResponse = (message, error) => {
-  if (!!error && Object.keys(error).length) {
-    const mensagemFormatada = formataMsgError(error);
-    toast.error(mensagemFormatada);
-    return;
-  }
   toast.error(message);
 };
 

@@ -55,6 +55,8 @@ import WebInstances from "layouts/web-instances";
 import CreditCard from "examples/Icons/CreditCard";
 import Settings from "examples/Icons/Settings";
 
+import PrivateRoute from "./PrivateRoutes";
+
 const routes = [
   {
     type: "route",
@@ -105,7 +107,11 @@ const routes = [
     key: "dashboard",
     route: "/dashboard",
     icon: <EqualizerIcon size="12px" />,
-    component: <Dashboard />,
+    component: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     noCollapse: true,
   },
   {
@@ -114,7 +120,11 @@ const routes = [
     key: "web-instances",
     route: "/web-instances",
     icon: <LaptopMacIcon size="12px" />,
-    component: <WebInstances />,
+    component: (
+      <PrivateRoute>
+        <WebInstances />
+      </PrivateRoute>
+    ),
     noCollapse: true,
   },
 
@@ -134,7 +144,11 @@ const routes = [
     key: "account",
     route: "/account",
     icon: <Settings size="12px" />,
-    component: <Profile />,
+    component: (
+      <PrivateRoute>
+        <Profile />
+      </PrivateRoute>
+    ),
     noCollapse: true,
   },
 
@@ -154,7 +168,11 @@ const routes = [
     name: "Visualização de Instância Web",
     key: "web-instances",
     route: "/web-instances/:webInstanceId",
-    component: <WebInstance />,
+    component: (
+      <PrivateRoute>
+        <WebInstance />
+      </PrivateRoute>
+    ),
     dynamicRoute: true,
   },
   {
@@ -162,7 +180,11 @@ const routes = [
     name: "Lista de pagamentos",
     key: "web-instances",
     route: "/web-instances/:webInstanceId/payment",
-    component: <WebInstancePayment />,
+    component: (
+      <PrivateRoute>
+        <WebInstancePayment />
+      </PrivateRoute>
+    ),
     dynamicRoute: true,
   },
   {
@@ -170,7 +192,11 @@ const routes = [
     name: "Lista de pagamentos",
     key: "web-instances",
     route: "/web-instances/register",
-    component: <WebInstanceForm />,
+    component: (
+      <PrivateRoute>
+        <WebInstanceForm />
+      </PrivateRoute>
+    ),
     dynamicRoute: true,
   },
   {
@@ -178,7 +204,11 @@ const routes = [
     name: "Edição da instância web",
     key: "web-instances",
     route: "/web-instances/:webInstanceId/edit",
-    component: <WebInstanceForm />,
+    component: (
+      <PrivateRoute>
+        <WebInstanceForm />
+      </PrivateRoute>
+    ),
     dynamicRoute: true,
   },
 ];

@@ -1,7 +1,7 @@
 import { AuthService } from "../endpoints/AuthService";
 import { api } from "../orangeApi";
 
-const SIGNOUT_API = "jwt-refresh";
+const SIGNOUT_API = "auth/refresh";
 
 // A implementação do interceptor foi baseada nos exemplos abaixo:
 // https://medium.com/@sina.alizadeh120/repeating-failed-requests-after-token-refresh-in-axios-interceptors-for-react-js-apps-50feb54ddcbc
@@ -24,7 +24,6 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
     const originalRequest = error?.config;
 
     if (error.response && isUnauthorized) {
-      debugger;
       const url = originalRequest?.url ?? "";
       if (url.includes(SIGNOUT_API)) {
         // Esta checagem evita tentativas de refresh do token para quando a sessão já está expirada, o que impediria o usuário de efetuar logout.
@@ -49,7 +48,7 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
 
           return api.instance(originalRequest);
         } catch (refreshError) {
-          window.location.href = "/404";
+          window.location.href = "/login";
         } finally {
           isRefreshing = false;
         }

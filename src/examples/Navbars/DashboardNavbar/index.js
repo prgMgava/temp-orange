@@ -26,10 +26,13 @@ import {
 } from "context";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
+import { AuthService } from "services/api/orangeApi/endpoints/AuthService";
+import { handleErrorResponse } from "utils/handleResponses";
 
 import { useState, useEffect } from "react";
+import { useMutation } from "react-query";
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, Navigate, useNavigate } from "react-router-dom";
 
 import Breadcrumbs from "examples/Breadcrumbs";
 // Orange API examples
@@ -52,39 +55,23 @@ import SoftTypography from "components/SoftTypography";
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
+  const navigate = useNavigate();
+
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } =
     controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
 
-  useEffect(() => {
-    // Setting the navbar type
-    if (fixedNavbar) {
-      setNavbarType("sticky");
-    } else {
-      setNavbarType("static");
-    }
-
-    // A function that sets the transparent state of the navbar.
-    function handleTransparentNavbar() {
-      setTransparentNavbar(
-        dispatch,
-        (fixedNavbar && window.scrollY === 0) || !fixedNavbar
+  const { mutate: handleLogout } = useMutation({
+    mutationFn: () => AuthService.logout(),
+    onError: (e) => {
+      handleErrorResponse(
+        "Não foi possível obter o usuário logado",
+        e.response?.data
       );
-    }
-
-    /** 
-     The event listener that's calling the handleTransparentNavbar function when 
-     scrolling the window.
-    */
-    window.addEventListener("scroll", handleTransparentNavbar);
-
-    // Call the handleTransparentNavbar function to set the state with the initial value.
-    handleTransparentNavbar();
-
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("scroll", handleTransparentNavbar);
-  }, [dispatch, fixedNavbar]);
+    },
+    onSuccess: () => navigate("/login"),
+  });
 
   const handleMiniSidenav = () => {
     setMiniSidenav(dispatch, !miniSidenav);
@@ -120,6 +107,35 @@ function DashboardNavbar({ absolute, light, isMini }) {
       />
     </Menu>
   );
+
+  useEffect(() => {
+    // Setting the navbar type
+    if (fixedNavbar) {
+      setNavbarType("sticky");
+    } else {
+      setNavbarType("static");
+    }
+
+    // A function that sets the transparent state of the navbar.
+    function handleTransparentNavbar() {
+      setTransparentNavbar(
+        dispatch,
+        (fixedNavbar && window.scrollY === 0) || !fixedNavbar
+      );
+    }
+
+    /** 
+     The event listener that's calling the handleTransparentNavbar function when 
+     scrolling the window.
+    */
+    window.addEventListener("scroll", handleTransparentNavbar);
+
+    // Call the handleTransparentNavbar function to set the state with the initial value.
+    handleTransparentNavbar();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("scroll", handleTransparentNavbar);
+  }, [dispatch, fixedNavbar]);
 
   return (
     <AppBar
@@ -178,7 +194,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               size="large"
               color="inherit"
               sx={navbarIconButton}
-              onClick={() => alert("logout")}
+              onClick={handleLogout}
             >
               <Icon fontSize="20px">logout</Icon>
             </IconButton>

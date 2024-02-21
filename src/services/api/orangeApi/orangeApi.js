@@ -2,34 +2,19 @@ import axios from "axios";
 
 import applyAppTokenRefreshInterceptor from "./interceptors/TokenRefreshInterceptor";
 
-export const baseURLOrangeAPI = process.env.REACT_BACK_END_DOMAIN;
+export const baseURLOrangeAPI = process.env.REACT_APP_BACK_END_DOMAIN;
 
 export const baseURl = baseURLOrangeAPI;
 const axiosConfig = () => {
   const api = axios.create({
-    baseURL: baseURl,
+    baseURL: `${baseURl}/api/v1`,
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "http://localhost:3001/",
       "X-Requested-With": "XMLHttpRequest",
     },
     withCredentials: true,
   });
-
-  api.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      if (
-        (!error.response && error.message == "Network Error") ||
-        error.response?.status === 401
-      ) {
-        window.location.href = "/404";
-      }
-      return Promise.reject(error);
-    }
-  );
 
   applyAppTokenRefreshInterceptor(api);
 

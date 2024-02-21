@@ -1,18 +1,18 @@
-import { AuthService } from "@/services/endpoints/AuthService";
+import { AuthService } from "services/api/orangeApi/endpoints/AuthService";
 import { handleErrorResponse } from "utils/handleResponses";
 
 import { useQueries } from "react-query";
 import { Navigate, useLocation } from "react-router-dom";
 
-const PrivateRoute = ({ children, roles }) => {
+const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
   const queries = useQueries([
     {
       queryFn: () => {
-        return AuthService.obterUsuarioLogado();
+        return AuthService.me();
       },
-      queryKey: "usuario-logado",
+      queryKey: "auth-me",
       onError: (e) => {
         handleErrorResponse(
           "Não foi possível obter o usuário logado",
@@ -29,8 +29,8 @@ const PrivateRoute = ({ children, roles }) => {
     return <></>;
   }
 
-  if (!data || (roles.length && !roles.find((_) => _ == data?.tipoUsuario))) {
-    return <Navigate to="/404" state={{ from: location }} />;
+  if (!data) {
+    return <Navigate to="/login" state={{ from: location }} />;
   }
 
   return children;

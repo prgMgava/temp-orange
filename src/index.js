@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import "react-international-phone/style.css";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
@@ -23,12 +24,20 @@ import App from "./App";
 import { SoftUIControllerProvider } from "./context";
 import "./index.css";
 
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <SoftUIControllerProvider>
-      <Toaster />
-      <App />
+      <Toaster
+        toastOptions={{ style: { fontSize: "12px", fontWeight: "bold" } }}
+      />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </SoftUIControllerProvider>
   </BrowserRouter>
 );

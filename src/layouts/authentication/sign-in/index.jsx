@@ -1,11 +1,14 @@
 // @mui material components
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
+import { AuthService } from "services/api/orangeApi/endpoints/AuthService";
+import { handleErrorResponse } from "utils/handleResponses";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 // Orange API components
 import SoftBox from "components/SoftBox";
@@ -17,6 +20,7 @@ import SoftTypography from "components/SoftTypography";
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
 function SignIn() {
+  const navigate = useNavigate();
   const {
     handleSubmit,
     formState: { errors },
@@ -24,10 +28,21 @@ function SignIn() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    handleLogin(data);
   };
 
-  console.log(errors);
+  const { mutate: handleLogin } = useMutation({
+    mutationFn: (body) => AuthService.login(body),
+    onError: (e) => {
+      handleErrorResponse(
+        "Não foi possível realizar o login",
+        e.response?.data
+      );
+    },
+    onSuccess: () => {
+      navigate("/dashboard");
+    },
+  });
 
   return (
     <CoverLayout
