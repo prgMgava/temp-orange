@@ -43,7 +43,8 @@
   "ignorePatterns": [
     "**/*.js",
     "**/*.css",
-    "**/*.png"
+    "**/*.png",
+    "**/*.html"
   ],
   "root": true,
   "parser": "@babel/eslint-parser"

@@ -38,19 +38,20 @@ Coded by www.creative-tim.com
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import NotFound404 from "layouts/404";
-import ForgotPassword from "layouts/authentication/forgot-password";
-import RecoveryPassword from "layouts/authentication/recovery-password";
-import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
+
+import NotFound404 from "pages/404";
+import ForgotPassword from "pages/authentication/forgot-password";
+import RecoveryPassword from "pages/authentication/recovery-password";
+import SignIn from "pages/authentication/sign-in";
+import SignUp from "pages/authentication/sign-up";
 // Orange API icons
-import Billing from "layouts/billing";
-import Dashboard from "layouts/dashboard";
-import Profile from "layouts/profile";
-import WebInstance from "layouts/web-instance";
-import WebInstanceForm from "layouts/web-instance-form";
-import WebInstancePayment from "layouts/web-instance-payment";
-import WebInstances from "layouts/web-instances";
+import Billing from "pages/billing";
+import Dashboard from "pages/dashboard";
+import Profile from "pages/profile";
+import WebInstance from "pages/web-instance";
+import WebInstanceForm from "pages/web-instance-form";
+import WebInstancePayment from "pages/web-instance-payment";
+import WebInstances from "pages/web-instances";
 
 import CreditCard from "examples/Icons/CreditCard";
 import Settings from "examples/Icons/Settings";
