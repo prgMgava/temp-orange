@@ -24,6 +24,7 @@ export const AuthService = {
    * @param {string} body.password - The password for the user account.
    * @param {string} body.firstName - The first name of the user.
    * @param {string} body.lastName - The last name of the user.
+   * @param {string} body.token - The recaptcha token.
    * @returns {Promise<{webInstanceId: string}>} A promise resolving to an id that referes to web instance created.
    */
   register: async (body) => {

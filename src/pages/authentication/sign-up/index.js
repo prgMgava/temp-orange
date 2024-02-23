@@ -14,13 +14,18 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import Card from "@mui/material/Card";
+import { AuthService } from "services/api/orangeApi/endpoints/AuthService";
+import { handleErrorResponse } from "utils/handleResponses";
+import { validPhoneFormat } from "utils/phone.utils";
 
 import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { PhoneInput } from "react-international-phone";
+import { useMutation } from "react-query";
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Authentication layout components
 import BasicLayout from "pages/authentication/components/BasicLayout";
@@ -35,11 +40,10 @@ import SoftTypography from "components/SoftTypography";
 import curved6 from "assets/images/curved-images/curved14.jpg";
 
 function SignUp() {
-  const [agreement, setAgremment] = useState(true);
   const [phone, setPhone] = useState("");
+  const [phoneInvalid, setPhoneInvalid] = useState({});
   const captchaRef = useRef(null);
-
-  const handleSetAgremment = () => setAgremment(!agreement);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -48,22 +52,54 @@ function SignUp() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    const token = captchaRef.current.getValue();
+    const clonedData = {
+      ...data,
+      token: captchaRef.current.getValue(),
+      phoneNumber: phone,
+    };
+    if (!formValidator(clonedData)) {
+      return;
+    }
+
     captchaRef.current.reset();
+    registerUser(clonedData);
   };
 
-  //TODO: verify captcha
-  const [captcha, setCaptcha] = useState("");
+  const formValidator = (data) => {
+    if (!data.token) {
+      toast.error("reCAPTCHA não resolvido");
+      return false;
+    }
+    if (!validPhoneFormat(data.phoneNumber)) {
+      toast.error("Telefone inválido");
+      setPhoneInvalid({ border: "1px solid red", borderRadius: "8px" });
+      return false;
+    }
+    setPhoneInvalid({});
+    return true;
+  };
 
-  function onClick() {
-    if (captcha) alert("captcha resolvido");
-    else alert("captcha pendente");
-  }
+  const { mutate: registerUser } = useMutation({
+    mutationFn: (body) => AuthService.register(body),
+    onError: (e) => {
+      handleErrorResponse(
+        "Algo inesperado aconteceu. Tente mais tarde",
+        e.response.data
+      );
+    },
+    onSuccess: (_, body) => {
+      login(body);
+    },
+  });
 
-  console.log(captcha);
-
-  //TODO: validar telefone
+  const { mutate: login } = useMutation({
+    mutationFn: (body) =>
+      AuthService.login({ email: body.email, password: body.password }),
+    onSuccess: () => {
+      toast.success("Seja bem vindo 😊!");
+      navigate("/dashboard");
+    },
+  });
 
   return (
     <BasicLayout
@@ -71,11 +107,7 @@ function SignUp() {
       description="Com a Orange Api você tem inúmeras possibilidades de agregar funcionalidades ao seu negócio."
       image={curved6}
     >
-      <ReCAPTCHA
-        sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
-        ref={captchaRef}
-      />
-      <Card onSubmit={handleSubmit(onSubmit)}>
+      <Card>
         <SoftBox p={3} pb={2} textAlign="center">
           <SoftTypography variant="h5" fontWeight="medium">
             Registre sua conta
@@ -90,8 +122,8 @@ function SignUp() {
             <SoftBox mb={2}>
               <SoftInput
                 placeholder="Nome"
-                {...register("name", { required: true })}
-                error={!!errors?.name}
+                {...register("firstName", { required: true })}
+                error={!!errors?.firstName}
                 icon={{ component: "person", direction: "left" }}
               />
             </SoftBox>
@@ -100,7 +132,7 @@ function SignUp() {
                 type="email"
                 placeholder="Email"
                 {...register("email", { required: true })}
-                error={errors?.email}
+                error={!!errors?.email}
                 icon={{ component: "email", direction: "left" }}
               />
             </SoftBox>
@@ -110,6 +142,7 @@ function SignUp() {
                 onChange={(phone) => setPhone(phone)}
                 defaultCountry="br"
                 name="phoneNumber"
+                style={phoneInvalid}
               />
             </SoftBox>
             <SoftBox mb={2}>
@@ -117,11 +150,17 @@ function SignUp() {
                 type="password"
                 placeholder="Password"
                 {...register("password", { required: true })}
-                error={errors.password}
+                error={!!errors?.password}
                 icon={{ component: "lock", direction: "left" }}
+                autoComplete={"new-password"}
               />
             </SoftBox>
-            <SoftBox display="flex" alignItems="center"></SoftBox>
+            <SoftBox display="flex" alignItems="center">
+              <ReCAPTCHA
+                sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+                ref={captchaRef}
+              />
+            </SoftBox>
             <SoftBox mt={4} mb={1}>
               <SoftButton
                 variant="gradient"
