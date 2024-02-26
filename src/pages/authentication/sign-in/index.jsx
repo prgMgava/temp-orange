@@ -111,6 +111,21 @@ function SignIn() {
             </SoftTypography>
           </SoftTypography>
         </SoftBox>
+        <SoftBox textAlign="center">
+          <SoftTypography variant="button" color="text" fontWeight="regular">
+            Esqueceu sua senha?{" "}
+            <SoftTypography
+              component={Link}
+              to="/forgot-password"
+              variant="button"
+              color="primary"
+              fontWeight="medium"
+              textGradient
+            >
+              Redefinir
+            </SoftTypography>
+          </SoftTypography>
+        </SoftBox>
       </SoftBox>
     </CoverLayout>
   );

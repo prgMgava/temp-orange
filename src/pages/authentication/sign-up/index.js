@@ -155,13 +155,22 @@ function SignUp() {
                 autoComplete={"new-password"}
               />
             </SoftBox>
-            <SoftBox display="flex" alignItems="center">
+            <div
+              className="captcha"
+              style={{
+                transform: "scale(0.75)",
+                transformOrigin: "50% 0",
+              }}
+            >
               <ReCAPTCHA
                 sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
                 ref={captchaRef}
+                size=""
+                id="g-captcha"
+                style={{ display: "flex", justifyContent: "center" }}
               />
-            </SoftBox>
-            <SoftBox mt={4} mb={1}>
+            </div>
+            <SoftBox>
               <SoftButton
                 variant="gradient"
                 color="dark"

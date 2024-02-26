@@ -5,6 +5,7 @@ export const handleSuccessResponse = (message) => {
 };
 
 export const handleErrorResponse = (message, error) => {
+  debugger;
   toast.error(message);
 };
 

@@ -1,7 +1,11 @@
 // @mui material components
 // Authentication layout components
+import { AuthService } from "services/api/orangeApi/endpoints/AuthService";
+import { handleErrorResponse } from "utils/handleResponses";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 // react-router-dom components
 import { Link } from "react-router-dom";
 
@@ -28,9 +32,23 @@ function ForgotPassword() {
   } = useForm();
 
   const onSubmit = (data) => {
-    setOpen(true);
-    console.log(data);
+    forgotPassword(data);
   };
+
+  const { mutate: forgotPassword } = useMutation({
+    mutationFn: (body) => {
+      return AuthService.forgotPassword(body);
+    },
+    onError: (e) => {
+      handleErrorResponse(
+        "Não foi possível redefinir sua senha",
+        e.response?.data
+      );
+    },
+    onSuccess: () => {
+      setOpen(true);
+    },
+  });
 
   return (
     <>
