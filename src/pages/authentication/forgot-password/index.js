@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 
 import CoverLayout from "pages/authentication/components/CoverLayout";
 
-import { ModalActionConfirmation } from "components/ModalActionConfirmation";
 // Orange API components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
@@ -25,6 +24,7 @@ import { ModalEmailConfirmation } from "../components/ModalEmailConfirmation/Mod
 
 function ForgotPassword() {
   const [open, setOpen] = useState(false);
+
   const {
     handleSubmit,
     formState: { errors },

@@ -1,13 +1,16 @@
 // @mui material components
 // Authentication layout components
-import { useState } from "react";
+import { AuthService } from "services/api/orangeApi/endpoints/AuthService";
+import { handleErrorResponse } from "utils/handleResponses";
+
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useMutation } from "react-query";
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import CoverLayout from "pages/authentication/components/CoverLayout";
 
-import { ModalActionConfirmation } from "components/ModalActionConfirmation";
 // Orange API components
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
@@ -18,6 +21,9 @@ import SoftTypography from "components/SoftTypography";
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
 function RecoveryPassword() {
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const hash = params.get("hash");
   const {
     handleSubmit,
     formState: { errors },
@@ -27,7 +33,25 @@ function RecoveryPassword() {
 
   const onSubmit = (data) => {
     console.log(data);
+    const { password } = data;
+    recoveryPassword({ password, hash });
   };
+
+  const { mutate: recoveryPassword } = useMutation({
+    mutationFn: (body) => {
+      return AuthService.resetPassword(body);
+    },
+    onError: (e) => {
+      handleErrorResponse(
+        "Não foi possível redefinir sua senha",
+        e.response?.data
+      );
+    },
+    onSuccess: () => {
+      toast.success("Senha redefinida com sucesso");
+      navigate("/login");
+    },
+  });
 
   return (
     <>
@@ -66,7 +90,7 @@ function RecoveryPassword() {
               </SoftTypography>
             </SoftBox>
             <SoftInput
-              type="passwordConfirm"
+              type="password"
               placeholder="Confirme sua nova senha"
               {...register("passwordConfirm", {
                 required: true,
