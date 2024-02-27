@@ -105,6 +105,7 @@ export default function App() {
       )}
       <Routes>
         {getRoutes(routes)}
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </ThemeProvider>

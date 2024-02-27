@@ -16,7 +16,10 @@ Coded by www.creative-tim.com
 import { Icon } from "@mui/material";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
+import { WebInstanceService } from "services/api/orangeApi/endpoints/WebInstanceService";
 
+import { useState } from "react";
+import { useQueries } from "react-query";
 import { Link, useSearchParams } from "react-router-dom";
 
 // Data
@@ -37,7 +40,8 @@ import SoftInput from "components/SoftInput";
 import SoftTypography from "components/SoftTypography";
 
 function WebInstances() {
-  const { columns, rows } = authorsTableData;
+  const [columns, setColumns] = useState([]);
+  const [rows, setRows] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const stateParams = searchParams.get("state") || "all";
   const searchTextParams = searchParams.get("search") || "";
@@ -51,6 +55,26 @@ function WebInstances() {
       setSearchParams(searchParams);
     }
   };
+
+  const queries = useQueries([
+    {
+      queryFn: () => {
+        return WebInstanceService.findAll();
+      },
+      queryKey: `web-instances`,
+      onError: (e) => {
+        handleErrorResponse(
+          "Não foi possível obter as instâncias",
+          e.response?.data
+        );
+      },
+      onSuccess: (data) => {
+        const { rows, columns } = authorsTableData(data.data);
+        setRows(rows);
+        setColumns(columns);
+      },
+    },
+  ]);
 
   return (
     <>

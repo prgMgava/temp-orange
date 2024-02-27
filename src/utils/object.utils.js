@@ -6,3 +6,29 @@ export const isEmpty = (obj) => {
   }
   return Object.keys(obj).some((key) => !!obj[key]);
 };
+
+export const hasWebHook = (obj) => {
+  if (!isValid(obj)) {
+    return false;
+  }
+
+  const {
+    whChatPresence,
+    whConnecting,
+    whDisconnecting,
+    whReceiving,
+    whSending,
+    whStatusMessage,
+  } = obj;
+
+  const output = isEmpty({
+    whChatPresence,
+    whConnecting,
+    whDisconnecting,
+    whReceiving,
+    whSending,
+    whStatusMessage,
+  });
+
+  return !output;
+};

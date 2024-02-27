@@ -87,7 +87,7 @@ function ForgotPassword() {
             <SoftTypography variant="button" color="text" fontWeight="regular">
               <SoftTypography
                 component={Link}
-                to="/sign-in"
+                to="/login"
                 variant="button"
                 color="info"
                 fontWeight="medium"

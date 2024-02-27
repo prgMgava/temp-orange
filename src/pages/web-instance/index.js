@@ -27,10 +27,12 @@ import {
   Switch,
 } from "@mui/material";
 import Card from "@mui/material/Card";
+import { WebInstanceService } from "services/api/orangeApi/endpoints/WebInstanceService";
 import { textResume } from "utils/text.utils";
 
 import { useState } from "react";
 import { PhoneInput } from "react-international-phone";
+import { useQueries } from "react-query";
 import { useParams } from "react-router-dom";
 
 // Data
@@ -53,17 +55,34 @@ function WebInstance() {
   const [open, setOpen] = useState(false);
   const [paid, setPaid] = useState(true);
   const [openSendMessage, setOpenSendMessage] = useState(false);
+  const { webInstanceId } = useParams();
 
   const [confirmationDetails, setConfirmationDetails] = useState(null);
 
   const [connectWithPhoneNumber, setConnectWithPhoneNumber] = useState(true);
-  const params = useParams();
-  const webInstanceId = params["webInstanceId"];
+
   const [phone, setPhone] = useState("");
   const [phoneCode, setPhoneCode] = useState("");
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+
+  const queries = useQueries([
+    {
+      queryFn: () => {
+        return WebInstanceService.findOne(webInstanceId);
+      },
+      queryKey: `web-instance-${webInstanceId}`,
+      onError: (e) => {
+        handleErrorResponse(
+          "Não foi possível obter a instância",
+          e.response?.data
+        );
+      },
+    },
+  ]);
+
+  const { isLoading: isLoadingWebInstance, data: webInstance } = queries[0];
 
   return (
     <DashboardLayout>

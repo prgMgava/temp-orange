@@ -44,6 +44,7 @@ function SignUp() {
   const [phoneInvalid, setPhoneInvalid] = useState({});
   const captchaRef = useRef(null);
   const navigate = useNavigate();
+  const [webInstanceId, setWebInstanceId] = useState("");
 
   const {
     register,
@@ -87,7 +88,8 @@ function SignUp() {
         e.response.data
       );
     },
-    onSuccess: (_, body) => {
+    onSuccess: (webInstanceId, body) => {
+      setWebInstanceId(webInstanceId);
       login(body);
     },
   });
@@ -97,7 +99,7 @@ function SignUp() {
       AuthService.login({ email: body.email, password: body.password }),
     onSuccess: () => {
       toast.success("Seja bem vindo 😊!");
-      navigate("/dashboard");
+      navigate(`/web-instances/${webInstanceId}`);
     },
   });
 

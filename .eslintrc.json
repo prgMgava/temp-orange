@@ -15,19 +15,11 @@
     },
     "import/resolver": {
       "node": {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
+        "extensions": [".js", ".jsx"]
       },
       "eslint-import-resolver-custom-alias": {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ],
-        "packages": [
-          "packages/*"
-        ]
+        "extensions": [".js", ".jsx"],
+        "packages": ["packages/*"]
       }
     }
   },
@@ -44,7 +36,8 @@
     "**/*.js",
     "**/*.css",
     "**/*.png",
-    "**/*.html"
+    "**/*.html",
+    "**/*.json"
   ],
   "root": true,
   "parser": "@babel/eslint-parser"
