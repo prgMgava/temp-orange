@@ -65,7 +65,16 @@ export const WebInstanceService = {
    * @returns {Promise<{ data: WebInstance[], hasNextPage: boolean }>} A promise that resolves with an object containing the retrieved data and pagination information.
    */
   findAll: async (params) => {
-    const { data } = await api.get(`${resource}`, { params });
+    const serializedFilters = params.filters
+      ? JSON.stringify(params.filters)
+      : undefined;
+
+    const { data } = await api.get(`${resource}`, {
+      params: {
+        ...params,
+        filters: serializedFilters,
+      },
+    });
     return data;
   },
   /**

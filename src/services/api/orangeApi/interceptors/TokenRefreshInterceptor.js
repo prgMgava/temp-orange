@@ -1,5 +1,4 @@
 import { AuthService } from "../endpoints/AuthService";
-import { api } from "../orangeApi";
 
 const SIGNOUT_API = "auth/refresh";
 
@@ -18,8 +17,11 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
   let isRefreshing = false;
 
   async function rejectInterceptor(error) {
+    debugger;
     const status = error?.response?.status;
     const isUnauthorized = status === 401;
+
+    const api = require("../orangeApi");
 
     const originalRequest = error?.config;
 

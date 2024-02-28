@@ -17,6 +17,7 @@ import { Icon } from "@mui/material";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import { WebInstanceService } from "services/api/orangeApi/endpoints/WebInstanceService";
+import { handleErrorResponse } from "utils/handleResponses";
 
 import { useState } from "react";
 import { useQueries } from "react-query";
@@ -51,17 +52,24 @@ function WebInstances() {
     if (!params) {
       setSearchParams((prevParams) => [...prevParams.entries(), [key, value]]);
     } else {
-      searchParams.set(key, value);
-      setSearchParams(searchParams);
+      if (!value) {
+        searchParams.delete(key);
+        setSearchParams(searchParams);
+      } else {
+        searchParams.set(key, value);
+        setSearchParams(searchParams);
+      }
     }
   };
 
   const queries = useQueries([
     {
       queryFn: () => {
-        return WebInstanceService.findAll();
+        return WebInstanceService.findAll({
+          filters: getFilters(),
+        });
       },
-      queryKey: `web-instances`,
+      queryKey: [`web-instances`, stateParams, searchTextParams],
       onError: (e) => {
         handleErrorResponse(
           "Não foi possível obter as instâncias",
@@ -75,6 +83,21 @@ function WebInstances() {
       },
     },
   ]);
+
+  const getFilters = () => {
+    const filters = {};
+
+    if (searchTextParams) {
+      filters.searchable = searchTextParams;
+    }
+    if (stateParams && stateParams != "all") {
+      filters.state = {
+        id: stateParams == "connecting" ? 1 : stateParams == "close" ? 3 : null,
+      };
+    }
+
+    return filters;
+  };
 
   return (
     <>

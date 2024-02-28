@@ -28,6 +28,7 @@ import {
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import { WebInstanceService } from "services/api/orangeApi/endpoints/WebInstanceService";
+import { handleErrorResponse } from "utils/handleResponses";
 import { textResume } from "utils/text.utils";
 
 import { useState } from "react";
