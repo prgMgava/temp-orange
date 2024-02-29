@@ -17,7 +17,6 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
   let isRefreshing = false;
 
   async function rejectInterceptor(error) {
-    debugger;
     const status = error?.response?.status;
     const isUnauthorized = status === 401;
 

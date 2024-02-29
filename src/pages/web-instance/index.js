@@ -14,26 +14,27 @@ Coded by www.creative-tim.com
 */
 // @mui material components
 import {
-  Box,
   Grid,
   Icon,
   Link,
   Menu,
   MenuItem,
   Tooltip,
-  List,
   ListItem,
   Alert,
-  Switch,
 } from "@mui/material";
 import Card from "@mui/material/Card";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { AuthService } from "services/api/orangeApi/endpoints/AuthService";
 import { WebInstanceService } from "services/api/orangeApi/endpoints/WebInstanceService";
+import io from "socket.io-client";
 import { handleErrorResponse } from "utils/handleResponses";
 import { textResume } from "utils/text.utils";
 
 import { useState } from "react";
 import { PhoneInput } from "react-international-phone";
-import { useQueries } from "react-query";
+import { useMutation, useQueries } from "react-query";
 import { useParams } from "react-router-dom";
 
 // Data
@@ -51,16 +52,19 @@ import SoftTypography from "components/SoftTypography";
 
 import ModalSendMessage from "./components/ModalSendMessage";
 
+dayjs.extend(relativeTime);
 function WebInstance() {
   const [menu, setMenu] = useState(null);
   const [open, setOpen] = useState(false);
-  const [paid, setPaid] = useState(true);
+  const [paid, setPaid] = useState(false);
+  const [isTrial, setIsTrial] = useState(false);
+
   const [openSendMessage, setOpenSendMessage] = useState(false);
   const { webInstanceId } = useParams();
 
   const [confirmationDetails, setConfirmationDetails] = useState(null);
 
-  const [connectWithPhoneNumber, setConnectWithPhoneNumber] = useState(true);
+  const [connectWithPhoneNumber, setConnectWithPhoneNumber] = useState(false);
 
   const [phone, setPhone] = useState("");
   const [phoneCode, setPhoneCode] = useState("");
@@ -80,540 +84,618 @@ function WebInstance() {
           e.response?.data
         );
       },
+      onSuccess: (data) => {
+        setPaid(data.paid);
+        setIsTrial(data.isTrial);
+        if (data.state.id == 3 || data.state.id == 2) connectWebInstance(data);
+      },
+    },
+    {
+      queryFn: () => {
+        return AuthService.me();
+      },
+      queryKey: `auth-me`,
+      onError: (e) => {
+        handleErrorResponse(
+          "Não foi possível obter o usuário logado",
+          e.response?.data
+        );
+      },
     },
   ]);
 
-  const { isLoading: isLoadingWebInstance, data: webInstance } = queries[0];
+  const {
+    isLoading: isLoadingWebInstance,
+    data: webInstance,
+    refetch: refetchWebInstance,
+  } = queries[0];
+  const { data: user } = queries[1];
+
+  const { mutate: connectWebInstance, data: qrCodeData } = useMutation({
+    mutationFn: (body) =>
+      WebInstanceService.connect(body.id, {
+        qrCode: connectWithPhoneNumber,
+      }),
+    onError: (e) => {
+      handleErrorResponse(
+        "Não foi possível conectar a instância web",
+        e.response?.data
+      );
+    },
+    onSuccess: (_, request) => {
+      const socket = io("http://localhost:3456");
+      const timeoutId = setInterval(
+        () => connectWebInstance({ id: request.id }),
+        40000
+      );
+      socket.on("web-instance/connected", (message) => {
+        clearInterval(timeoutId);
+        refetchWebInstance();
+        socket.close();
+      });
+      socket.emit("web-instance/connect", {
+        instanceName: request.instanceName,
+        userId: user.id,
+      });
+    },
+  });
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
 
-      <SoftBox py={3}>
-        <SoftBox mb={3} pt={2} px={2}>
-          <Card sx={{ padding: "16px", display: "flex", flexDirection: "row" }}>
-            <div style={{ flex: 1 }}>
-              {paid ? (
-                <SoftBox>
-                  <SoftTypography
-                    fontWeight="bold"
-                    variant="h6"
-                    display="flex"
-                    justifyContent="space-between"
-                  >
-                    1. Dados da instância webInstanceName
-                    <SoftBox color="text" px={2}>
-                      <Icon
-                        sx={{ cursor: "pointer", fontWeight: "bold" }}
-                        fontSize="small"
-                        onClick={openMenu}
-                      >
-                        more_vert
-                      </Icon>
-                    </SoftBox>
-                  </SoftTypography>
-                  <SoftTypography variant="caption">
-                    Essas são suas informações para integração com esta
-                    instância, não compartilhe essas informações.
-                  </SoftTypography>
-                  <Grid container spacing={1} mt={3}>
-                    <Grid item sm={12} md={7} display={"flex"}>
-                      <Grid container spacing={2} alignItems={"center"}>
-                        <Grid
-                          item
-                          sm={12}
-                          md={12}
-                          display="flex"
-                          flexDirection="column"
-                          sx={{ maxHeight: "max-content" }}
-                          width={"100%"}
+      {webInstance && (
+        <SoftBox py={3}>
+          <SoftBox mb={3} pt={2} px={2}>
+            <Card
+              sx={{ padding: "16px", display: "flex", flexDirection: "row" }}
+            >
+              <div style={{ flex: 1 }}>
+                {paid || isTrial ? (
+                  <SoftBox>
+                    <SoftTypography
+                      fontWeight="bold"
+                      variant="h6"
+                      display="flex"
+                      justifyContent="space-between"
+                    >
+                      1. Dados da instância webInstanceName
+                      <SoftBox color="text" px={2}>
+                        <Icon
+                          sx={{ cursor: "pointer", fontWeight: "bold" }}
+                          fontSize="small"
+                          onClick={openMenu}
                         >
-                          <SoftBox
-                            pt={1}
-                            mb={1}
+                          more_vert
+                        </Icon>
+                      </SoftBox>
+                    </SoftTypography>
+                    <SoftTypography variant="caption">
+                      Essas são suas informações para integração com esta
+                      instância, não compartilhe essas informações.
+                    </SoftTypography>
+                    <Grid container spacing={1} mt={3}>
+                      <Grid item sm={12} md={7} display={"flex"}>
+                        <Grid container spacing={2} alignItems={"center"}>
+                          <Grid
+                            item
+                            sm={12}
+                            md={12}
                             display="flex"
-                            alignItems="center"
+                            flexDirection="column"
+                            sx={{ maxHeight: "max-content" }}
+                            width={"100%"}
                           >
-                            <SoftTypography variant="caption" color="text">
-                              API da instância
-                            </SoftTypography>
-                            <Tooltip title="Copiar texto">
-                              <button>
-                                <Icon fontSize="small" color="secondary">
-                                  copy
-                                </Icon>
-                              </button>
-                            </Tooltip>
-                          </SoftBox>
+                            <SoftBox
+                              pt={1}
+                              mb={1}
+                              display="flex"
+                              alignItems="center"
+                            >
+                              <SoftTypography variant="caption" color="text">
+                                API da instância
+                              </SoftTypography>
+                              <Tooltip title="Copiar texto">
+                                <button>
+                                  <Icon fontSize="small" color="secondary">
+                                    copy
+                                  </Icon>
+                                </button>
+                              </Tooltip>
+                            </SoftBox>
 
-                          <SoftBox mb={0}>
-                            <SoftInput
-                              type="text"
-                              icon={{ component: "storage", direction: "left" }}
-                              value={
-                                "https://orange-api.io/instances/3CA0ECAE8BC"
-                              }
-                              disabled
-                            ></SoftInput>
-                          </SoftBox>
-                        </Grid>
-
-                        <Grid
-                          item
-                          sm={12}
-                          md={6}
-                          display="flex"
-                          flexDirection="column"
-                          width={"100%"}
-                        >
-                          <SoftBox
-                            pt={1}
-                            mb={1}
-                            display="flex"
-                            gap="4px"
-                            alignItems="center"
-                          >
-                            <SoftTypography variant="caption" color="text">
-                              ID da instância{" "}
-                            </SoftTypography>
-                            <Tooltip title="Copiar texto">
-                              <button>
-                                <Icon fontSize="small" color="secondary">
-                                  copy
-                                </Icon>
-                              </button>
-                            </Tooltip>
-                          </SoftBox>
-
-                          <SoftBox>
                             <SoftBox mb={0}>
                               <SoftInput
                                 type="text"
                                 icon={{
-                                  component: "grid_3x3",
+                                  component: "storage",
                                   direction: "left",
                                 }}
-                                placeholder="Nome"
-                                value={textResume(webInstanceId, 30)}
+                                value={webInstance.serverUrl}
                                 disabled
                               ></SoftInput>
                             </SoftBox>
-                          </SoftBox>
-                        </Grid>
+                          </Grid>
 
-                        <Grid
-                          item
-                          sm={12}
-                          md={6}
-                          display="flex"
-                          flexDirection="column"
-                          width={"100%"}
-                        >
-                          <SoftBox
-                            pt={1}
-                            mb={1}
+                          <Grid
+                            item
+                            sm={12}
+                            md={6}
                             display="flex"
-                            gap="4px"
-                            alignItems="center"
+                            flexDirection="column"
+                            width={"100%"}
                           >
-                            <SoftTypography variant="caption" color="text">
-                              Token de integração{" "}
-                            </SoftTypography>
-                            <Tooltip title="Copiar texto">
-                              <button>
-                                <Icon fontSize="small" color="secondary">
-                                  copy
-                                </Icon>
-                              </button>
-                            </Tooltip>
-                          </SoftBox>
-
-                          <SoftBox mb={0}>
-                            <SoftInput
-                              type="text"
-                              icon={{ component: "link", direction: "left" }}
-                              placeholder="Nome"
-                              value={textResume(webInstanceId, 30)}
-                              disabled
-                            ></SoftInput>
-                          </SoftBox>
-                        </Grid>
-
-                        <Grid item md={12} sm={12}>
-                          <SoftBox mt="16px">
-                            <SoftTypography fontWeight="bold" variant="h6">
-                              2. Assinatura
-                            </SoftTypography>
-                            <SoftBox>
-                              <SoftTypography
-                                fontWeight="bold"
-                                variant="caption"
-                              >
-                                Status atual:{" "}
+                            <SoftBox
+                              pt={1}
+                              mb={1}
+                              display="flex"
+                              gap="4px"
+                              alignItems="center"
+                            >
+                              <SoftTypography variant="caption" color="text">
+                                ID da instância{" "}
                               </SoftTypography>
-                              <SoftTypography
-                                fontWeight="bold"
-                                variant="button"
-                                color="error"
-                              >
-                                PENDENTE ASSINATURA
-                              </SoftTypography>
+                              <Tooltip title="Copiar texto">
+                                <button>
+                                  <Icon fontSize="small" color="secondary">
+                                    copy
+                                  </Icon>
+                                </button>
+                              </Tooltip>
                             </SoftBox>
+
                             <SoftBox>
-                              <SoftTypography
-                                fontWeight="medium"
-                                variant="caption"
-                              >
+                              <SoftBox mb={0}>
+                                <SoftInput
+                                  type="text"
+                                  icon={{
+                                    component: "grid_3x3",
+                                    direction: "left",
+                                  }}
+                                  placeholder="Nome"
+                                  value={textResume(
+                                    webInstance.instanceName,
+                                    20
+                                  )}
+                                  disabled
+                                ></SoftInput>
+                              </SoftBox>
+                            </SoftBox>
+                          </Grid>
+
+                          <Grid
+                            item
+                            sm={12}
+                            md={6}
+                            display="flex"
+                            flexDirection="column"
+                            width={"100%"}
+                          >
+                            <SoftBox
+                              pt={1}
+                              mb={1}
+                              display="flex"
+                              gap="4px"
+                              alignItems="center"
+                            >
+                              <SoftTypography variant="caption" color="text">
+                                Token de integração{" "}
+                              </SoftTypography>
+                              <Tooltip title="Copiar texto">
+                                <button>
+                                  <Icon fontSize="small" color="secondary">
+                                    copy
+                                  </Icon>
+                                </button>
+                              </Tooltip>
+                            </SoftBox>
+
+                            <SoftBox mb={0}>
+                              <SoftInput
+                                type="text"
+                                icon={{ component: "link", direction: "left" }}
+                                placeholder="Nome"
+                                value={textResume(webInstance.token, 20)}
+                                disabled
+                              ></SoftInput>
+                            </SoftBox>
+                          </Grid>
+
+                          <Grid item md={12} sm={12}>
+                            <SoftBox mt="16px">
+                              <SoftTypography fontWeight="bold" variant="h6">
+                                2. Assinatura
+                              </SoftTypography>
+                              <SoftBox>
                                 <SoftTypography
                                   fontWeight="bold"
                                   variant="caption"
                                 >
-                                  Expira em:{" "}
+                                  Status atual:{" "}
                                 </SoftTypography>
+                                <SoftTypography
+                                  fontWeight="bold"
+                                  variant="button"
+                                  color={
+                                    isTrial
+                                      ? "primary"
+                                      : paid
+                                      ? "success"
+                                      : "error"
+                                  }
+                                >
+                                  {isTrial
+                                    ? "AVALIAÇÃO GRATUITA"
+                                    : paid
+                                    ? "PAGO"
+                                    : "PENDENTE ASSINATURA"}
+                                </SoftTypography>
+                              </SoftBox>
+                              <SoftBox>
                                 <SoftTypography
                                   fontWeight="medium"
                                   variant="caption"
                                 >
-                                  Expirado!
+                                  <SoftTypography
+                                    fontWeight="bold"
+                                    variant="caption"
+                                  >
+                                    Expira em:{" "}
+                                  </SoftTypography>
+                                  <SoftTypography
+                                    fontWeight="medium"
+                                    variant="caption"
+                                  >
+                                    {new Date(webInstance.dueDate) < new Date()
+                                      ? "Expirado!"
+                                      : dayjs(webInstance.dueDate).fromNow(
+                                          true
+                                        )}
+                                  </SoftTypography>
                                 </SoftTypography>
-                              </SoftTypography>
+                              </SoftBox>
                             </SoftBox>
-                          </SoftBox>
-                          <SoftBox mt="8px">
-                            <SoftButton color={"info"}>Assinar</SoftButton>
-                          </SoftBox>
+                            <SoftBox mt="8px">
+                              <SoftButton color={"info"}>Assinar</SoftButton>
+                            </SoftBox>
+                          </Grid>
                         </Grid>
                       </Grid>
-                    </Grid>
-                    <Grid item sm={12} md={5}>
-                      <Grid
-                        container
-                        justifyContent={"center"}
-                        textAlign={"center"}
-                      >
-                        <Grid mt="16px" sm={12} item>
-                          <SoftTypography
-                            fontWeight="bold"
-                            variant="hr"
-                            color="dark"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            gap={2}
-                          >
-                            {connectWithPhoneNumber
-                              ? "Conectar via telefone"
-                              : "Leia o QRCode"}
-                          </SoftTypography>
-                        </Grid>
-                        <Grid item sm={12} md={10} maxWidth={"200px"}>
-                          <SoftTypography variant="caption">
-                            {connectWithPhoneNumber
-                              ? "Conecte sua instância pelo número de telefone"
-                              : "Abra o aplicativo do whatsApp e leia o QRCode abaixo para se conectar a esta instância"}
-                          </SoftTypography>
-                        </Grid>
+                      <Grid item sm={12} md={5}>
+                        <Grid
+                          container
+                          justifyContent={"center"}
+                          textAlign={"center"}
+                        >
+                          <Grid mt="16px" sm={12} item>
+                            <SoftTypography
+                              fontWeight="bold"
+                              variant="hr"
+                              color="dark"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              gap={2}
+                            >
+                              {connectWithPhoneNumber
+                                ? "Conectar via telefone"
+                                : "Leia o QRCode"}
+                            </SoftTypography>
+                          </Grid>
+                          <Grid item sm={12} md={10} maxWidth={"200px"}>
+                            <SoftTypography variant="caption">
+                              {connectWithPhoneNumber
+                                ? "Conecte sua instância pelo número de telefone"
+                                : "Abra o aplicativo do whatsApp e leia o QRCode abaixo para se conectar a esta instância"}
+                            </SoftTypography>
+                          </Grid>
 
-                        <Grid item md={12} sm={6} mt={2}>
-                          {connectWithPhoneNumber ? (
-                            <>
-                              {phoneCode ? (
-                                <Grid item md={12}>
-                                  <SoftBox
-                                    display="flex"
-                                    justifyContent="center"
-                                    alignItems="center"
-                                  >
-                                    <SoftTypography variant="caption">
-                                      Número: {phone}
-                                    </SoftTypography>
-                                    <SoftButton
-                                      onClick={() => setPhoneCode("")}
-                                      variant="text"
-                                      color="dark"
-                                    >
-                                      Alterar
-                                    </SoftButton>
-                                  </SoftBox>
-                                  <SoftBox>
-                                    <SoftTypography
-                                      variant="caption"
+                          <Grid item md={12} sm={6} mt={2}>
+                            {connectWithPhoneNumber ? (
+                              <>
+                                {phoneCode ? (
+                                  <Grid item md={12}>
+                                    <SoftBox
                                       display="flex"
                                       justifyContent="center"
                                       alignItems="center"
                                     >
-                                      Código:
-                                      <Tooltip title="Copiar código">
-                                        <button>
-                                          <Icon
-                                            fontSize="small"
-                                            color="secondary"
-                                          >
-                                            copy
-                                          </Icon>
-                                        </button>
-                                      </Tooltip>
-                                    </SoftTypography>
+                                      <SoftTypography variant="caption">
+                                        Número: {phone}
+                                      </SoftTypography>
+                                      <SoftButton
+                                        onClick={() => setPhoneCode("")}
+                                        variant="text"
+                                        color="dark"
+                                      >
+                                        Alterar
+                                      </SoftButton>
+                                    </SoftBox>
+                                    <SoftBox>
+                                      <SoftTypography
+                                        variant="caption"
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                      >
+                                        Código:
+                                        <Tooltip title="Copiar código">
+                                          <button>
+                                            <Icon
+                                              fontSize="small"
+                                              color="secondary"
+                                            >
+                                              copy
+                                            </Icon>
+                                          </button>
+                                        </Tooltip>
+                                      </SoftTypography>
 
-                                    <SoftTypography
-                                      variant="h4"
-                                      fontWeight="bold"
+                                      <SoftTypography
+                                        variant="h4"
+                                        fontWeight="bold"
+                                      >
+                                        {phoneCode}
+                                      </SoftTypography>
+                                    </SoftBox>
+                                    <Alert
+                                      variant="outlined"
+                                      severity="info"
+                                      sx={{
+                                        marginTop: "16px",
+                                        fontSize: "12px",
+                                        textAlign: "center",
+                                      }}
                                     >
-                                      {phoneCode}
+                                      <ListItem>
+                                        1. Abre o aplicativo do <i>Whatsapp</i>;
+                                      </ListItem>
+                                      <ListItem>
+                                        2. No menu, selecione &nbsp;{" "}
+                                        <b>Aparelhos conectados</b>;
+                                      </ListItem>
+                                      <ListItem>
+                                        3. Clique em{" "}
+                                        <b>&nbsp;Conectar um aparelho</b>;
+                                      </ListItem>
+                                      <ListItem>
+                                        4. Selecione{" "}
+                                        <b>
+                                          &nbsp;Conectar com número de
+                                          telefone&nbsp;
+                                        </b>{" "}
+                                        e digite seu código.
+                                      </ListItem>
+                                    </Alert>
+                                  </Grid>
+                                ) : (
+                                  <>
+                                    <PhoneInput
+                                      value={phone}
+                                      onChange={(phone) => setPhone(phone)}
+                                      defaultCountry="br"
+                                      style={{
+                                        justifyContent: "center",
+                                        maxWidth: "250px",
+                                        margin: "0 auto",
+                                      }}
+                                    />
+                                    <SoftTypography variant="caption">
+                                      Obs: Em caso de erro, tente solicitar o
+                                      código sem o nono digito.
                                     </SoftTypography>
-                                  </SoftBox>
-                                  <Alert
-                                    variant="outlined"
-                                    severity="info"
-                                    sx={{
-                                      marginTop: "16px",
-                                      fontSize: "12px",
-                                      textAlign: "center",
-                                    }}
-                                  >
-                                    <ListItem>
-                                      1. Abre o aplicativo do <i>Whatsapp</i>;
-                                    </ListItem>
-                                    <ListItem>
-                                      2. No menu, selecione &nbsp;{" "}
-                                      <b>Aparelhos conectados</b>;
-                                    </ListItem>
-                                    <ListItem>
-                                      3. Clique em{" "}
-                                      <b>&nbsp;Conectar um aparelho</b>;
-                                    </ListItem>
-                                    <ListItem>
-                                      4. Selecione{" "}
-                                      <b>
-                                        &nbsp;Conectar com número de
-                                        telefone&nbsp;
-                                      </b>{" "}
-                                      e digite seu código.
-                                    </ListItem>
-                                  </Alert>
-                                </Grid>
-                              ) : (
-                                <>
-                                  <PhoneInput
-                                    value={phone}
-                                    onChange={(phone) => setPhone(phone)}
-                                    defaultCountry="br"
-                                    style={{
-                                      justifyContent: "center",
-                                      maxWidth: "250px",
-                                      margin: "0 auto",
-                                    }}
-                                  />
-                                  <SoftTypography variant="caption">
-                                    Obs: Em caso de erro, tente solicitar o
-                                    código sem o nono digito.
-                                  </SoftTypography>
-                                  <SoftBox style={{ marginTop: "16px" }}>
-                                    <SoftButton
-                                      variant="contained"
-                                      color="success"
-                                      circular
-                                      disabled={!phone}
-                                      onClick={() =>
-                                        setPhoneCode("FPR6K-OTK09")
-                                      }
-                                    >
-                                      Solicitar código
-                                    </SoftButton>
-                                  </SoftBox>
-                                </>
-                              )}
-                            </>
-                          ) : (
-                            <img
-                              alt="QR CODE para conectar instância"
-                              src={require("../../assets/images/qrCode.png")}
-                              width={"50%"}
-                            />
-                          )}
-                        </Grid>
+                                    <SoftBox style={{ marginTop: "16px" }}>
+                                      <SoftButton
+                                        variant="contained"
+                                        color="success"
+                                        circular
+                                        disabled={!phone}
+                                        onClick={() =>
+                                          setPhoneCode("FPR6K-OTK09")
+                                        }
+                                      >
+                                        Solicitar código
+                                      </SoftButton>
+                                    </SoftBox>
+                                  </>
+                                )}
+                              </>
+                            ) : (
+                              qrCodeData && (
+                                <img
+                                  alt="QR CODE para conectar instância"
+                                  src={qrCodeData.base64}
+                                  width={"50%"}
+                                />
+                              )
+                            )}
+                          </Grid>
 
-                        <Grid item sm={12} sx={{ marginTop: "24px" }}>
-                          <SoftButton
-                            variant="text"
-                            color="info"
-                            onClick={() =>
-                              setConnectWithPhoneNumber(!connectWithPhoneNumber)
-                            }
-                          >
-                            {connectWithPhoneNumber
-                              ? "Conectar com QR Code"
-                              : "Conectar com o número de telefone"}
-                          </SoftButton>
+                          <Grid item sm={12} sx={{ marginTop: "24px" }}>
+                            <SoftButton
+                              variant="text"
+                              color="info"
+                              onClick={() =>
+                                setConnectWithPhoneNumber(
+                                  !connectWithPhoneNumber
+                                )
+                              }
+                            >
+                              {connectWithPhoneNumber
+                                ? "Conectar com QR Code"
+                                : "Conectar com o número de telefone"}
+                            </SoftButton>
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                </SoftBox>
-              ) : (
-                <>
-                  <SoftBox>
-                    <SoftTypography fontWeight="bold" variant="h6">
-                      1. Realize o pagamento
-                    </SoftTypography>
-                    <SoftTypography fontWeight="medium" variant="caption">
-                      Para utilizar essa instância é necessário realizar o
-                      pagamento da mesma. O valor é de R$ 99,00
-                    </SoftTypography>
                   </SoftBox>
-                  <SoftBox mt="16px">
-                    <SoftTypography fontWeight="bold" variant="h6">
-                      2. Assinatura
-                    </SoftTypography>
+                ) : (
+                  <>
                     <SoftBox>
-                      <SoftTypography fontWeight="bold" variant="caption">
-                        Status atual:{" "}
+                      <SoftTypography fontWeight="bold" variant="h6">
+                        1. Realize o pagamento
                       </SoftTypography>
-                      <SoftTypography
-                        fontWeight="bold"
-                        variant="button"
-                        color="error"
-                      >
-                        PENDENTE ASSINATURA
-                      </SoftTypography>
-                    </SoftBox>
-                    <SoftBox>
                       <SoftTypography fontWeight="medium" variant="caption">
-                        <SoftTypography fontWeight="bold" variant="caption">
-                          Expira em:{" "}
-                        </SoftTypography>
-                        <SoftTypography fontWeight="medium" variant="caption">
-                          Expirado!
-                        </SoftTypography>
+                        Para utilizar essa instância é necessário realizar o
+                        pagamento da mesma. O valor é de R$ 99,00
                       </SoftTypography>
                     </SoftBox>
-                  </SoftBox>
-                  <SoftBox mt="8px">
-                    <SoftButton color={"info"}>Assinar</SoftButton>
-                  </SoftBox>
-                </>
-              )}
-            </div>
+                    <SoftBox mt="16px">
+                      <SoftTypography fontWeight="bold" variant="h6">
+                        2. Assinatura
+                      </SoftTypography>
+                      <SoftBox>
+                        <SoftTypography fontWeight="bold" variant="caption">
+                          Status atual:{" "}
+                        </SoftTypography>
+                        <SoftTypography
+                          fontWeight="bold"
+                          variant="button"
+                          color="error"
+                        >
+                          PENDENTE ASSINATURA
+                        </SoftTypography>
+                      </SoftBox>
+                      <SoftBox>
+                        <SoftTypography fontWeight="medium" variant="caption">
+                          <SoftTypography fontWeight="bold" variant="caption">
+                            Expira em:{" "}
+                          </SoftTypography>
+                          <SoftTypography fontWeight="medium" variant="caption">
+                            Expirado!
+                          </SoftTypography>
+                        </SoftTypography>
+                      </SoftBox>
+                    </SoftBox>
+                    <SoftBox mt="8px">
+                      <SoftButton color={"info"}>Assinar</SoftButton>
+                    </SoftBox>
+                  </>
+                )}
+              </div>
 
-            <Menu
-              id="simple-menu"
-              anchorEl={menu}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(menu)}
-              onClose={closeMenu}
-            >
-              <MenuItem onClick={closeMenu}>
-                {" "}
-                <Link
-                  href={`/web-instances/4260ea235/edit`}
-                  sx={{ display: "flex" }}
-                >
-                  <SoftTypography color="text" px={2} display="flex">
-                    <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                      edit
-                    </Icon>
-                  </SoftTypography>
-                  Editar
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={closeMenu}>
-                <Link
-                  href={`/web-instances/4260ea235/payment`}
-                  sx={{ display: "flex" }}
-                >
-                  <SoftTypography color="text" px={2} display="flex">
-                    <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                      credit_card
-                    </Icon>
-                  </SoftTypography>
-                  Pagamentos
-                </Link>
-              </MenuItem>
-              {paid && (
-                <MenuItem
-                  onClick={() => {
-                    closeMenu();
-                    setOpen(true);
-                    setConfirmationDetails({
-                      title: "Realmente deseja reiniciar esta instância",
-                    });
-                  }}
-                >
-                  {" "}
-                  <SoftBox color="text" px={2} display="flex">
-                    <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                      restart_alt
-                    </Icon>
-                  </SoftBox>
-                  Reiniciar
-                </MenuItem>
-              )}
-              {paid && (
-                <MenuItem
-                  onClick={() => {
-                    closeMenu();
-                    setOpen(true);
-                    setConfirmationDetails({
-                      title: "Realmente deseja desconectar esta instância",
-                    });
-                  }}
-                >
-                  {" "}
-                  <SoftBox color="text" px={2} display="flex">
-                    <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                      power_off
-                    </Icon>
-                  </SoftBox>
-                  Desconectar
-                </MenuItem>
-              )}
-              {paid && (
-                <MenuItem
-                  onClick={() => {
-                    closeMenu();
-                    setOpenSendMessage(true);
-                  }}
-                >
-                  {" "}
-                  <SoftBox color="text" px={2} display="flex">
-                    <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                      send
-                    </Icon>
-                  </SoftBox>
-                  Enviar mensagem
-                </MenuItem>
-              )}
-              <MenuItem
-                onClick={() => {
-                  closeMenu();
-                  setOpen(true);
-                  setConfirmationDetails({
-                    title: "Realmente deseja excluir",
-                    description:
-                      "A instância web será excluída, porém a assinatura não será reembolsada, permanecendo ativa até o momento do vencimento",
-                    typeSecurity: true,
-                  });
+              <Menu
+                id="simple-menu"
+                anchorEl={menu}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
                 }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(menu)}
+                onClose={closeMenu}
               >
-                {" "}
-                <SoftBox color="text" px={2} display="flex">
-                  <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                    delete_outlined
-                  </Icon>
-                </SoftBox>
-                Excluir
-              </MenuItem>
-            </Menu>
-          </Card>
+                <MenuItem onClick={closeMenu}>
+                  {" "}
+                  <Link
+                    href={`/web-instances/4260ea235/edit`}
+                    sx={{ display: "flex" }}
+                  >
+                    <SoftTypography color="text" px={2} display="flex">
+                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                        edit
+                      </Icon>
+                    </SoftTypography>
+                    Editar
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={closeMenu}>
+                  <Link
+                    href={`/web-instances/4260ea235/payment`}
+                    sx={{ display: "flex" }}
+                  >
+                    <SoftTypography color="text" px={2} display="flex">
+                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                        credit_card
+                      </Icon>
+                    </SoftTypography>
+                    Pagamentos
+                  </Link>
+                </MenuItem>
+                {paid && (
+                  <MenuItem
+                    onClick={() => {
+                      closeMenu();
+                      setOpen(true);
+                      setConfirmationDetails({
+                        title: "Realmente deseja reiniciar esta instância",
+                      });
+                    }}
+                  >
+                    {" "}
+                    <SoftBox color="text" px={2} display="flex">
+                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                        restart_alt
+                      </Icon>
+                    </SoftBox>
+                    Reiniciar
+                  </MenuItem>
+                )}
+                {paid && (
+                  <MenuItem
+                    onClick={() => {
+                      closeMenu();
+                      setOpen(true);
+                      setConfirmationDetails({
+                        title: "Realmente deseja desconectar esta instância",
+                      });
+                    }}
+                  >
+                    {" "}
+                    <SoftBox color="text" px={2} display="flex">
+                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                        power_off
+                      </Icon>
+                    </SoftBox>
+                    Desconectar
+                  </MenuItem>
+                )}
+                {paid && (
+                  <MenuItem
+                    onClick={() => {
+                      closeMenu();
+                      setOpenSendMessage(true);
+                    }}
+                  >
+                    {" "}
+                    <SoftBox color="text" px={2} display="flex">
+                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                        send
+                      </Icon>
+                    </SoftBox>
+                    Enviar mensagem
+                  </MenuItem>
+                )}
+                <MenuItem
+                  onClick={() => {
+                    closeMenu();
+                    setOpen(true);
+                    setConfirmationDetails({
+                      title: "Realmente deseja excluir",
+                      description:
+                        "A instância web será excluída, porém a assinatura não será reembolsada, permanecendo ativa até o momento do vencimento",
+                      typeSecurity: true,
+                    });
+                  }}
+                >
+                  {" "}
+                  <SoftBox color="text" px={2} display="flex">
+                    <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                      delete_outlined
+                    </Icon>
+                  </SoftBox>
+                  Excluir
+                </MenuItem>
+              </Menu>
+            </Card>
+          </SoftBox>
         </SoftBox>
-      </SoftBox>
+      )}
+
       <Footer />
       {open && (
         <ModalActionConfirmation

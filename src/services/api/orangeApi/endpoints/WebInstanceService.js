@@ -10,6 +10,7 @@ const resource = "web-instances";
  * @property {string} phoneNumber - The phone number associated with the web instance.
  * @property {string} instanceName - The instance name.
  * @property {string} token - The token associated with the web instance.
+ * @property {string} serverUrl - The server associated with the web instance.
  * @property {Object} settings - Settings for the web instance.
  * @property {number} settings.id - The ID of the settings.
  * @property {boolean} settings.rejectCall - Indicates if calls should be rejected.
@@ -85,6 +86,22 @@ export const WebInstanceService = {
    */
   findOne: async (webInstanceId) => {
     const { data } = await api.get(`${resource}/${webInstanceId}`);
+    return data;
+  },
+
+  /**
+   * Function that returns an object with the specified data.
+   * @typedef {Object} ConnectionReturnObj
+   * @property {string} pairingCode - The pairing code.
+   * @property {number} count - The count.
+   * @property {string} base64 - The value in base64.
+   * @property {string} token - The token.
+   * @returns {ConnectionReturnObj} Returns an object with the specified data.
+   */
+  connect: async (webInstanceId, params) => {
+    const { data } = await api.get(`${resource}/connect/${webInstanceId}`, {
+      params,
+    });
     return data;
   },
 };

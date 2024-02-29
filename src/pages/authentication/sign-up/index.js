@@ -88,8 +88,8 @@ function SignUp() {
         e.response.data
       );
     },
-    onSuccess: (webInstanceId, body) => {
-      setWebInstanceId(webInstanceId);
+    onSuccess: (data, body) => {
+      setWebInstanceId(data?.webInstanceId);
       login(body);
     },
   });
@@ -167,7 +167,6 @@ function SignUp() {
               <ReCAPTCHA
                 sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
                 ref={captchaRef}
-                size=""
                 id="g-captcha"
                 style={{ display: "flex", justifyContent: "center" }}
               />
