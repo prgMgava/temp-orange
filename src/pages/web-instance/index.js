@@ -33,6 +33,7 @@ import { handleErrorResponse } from "utils/handleResponses";
 import { textResume } from "utils/text.utils";
 
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { PhoneInput } from "react-international-phone";
 import { useMutation, useQueries } from "react-query";
 import { useParams } from "react-router-dom";
@@ -57,12 +58,16 @@ function WebInstance() {
   const [menu, setMenu] = useState(null);
   const [open, setOpen] = useState(false);
   const [paid, setPaid] = useState(false);
+  const [connected, setConnected] = useState(false);
+
   const [isTrial, setIsTrial] = useState(false);
 
   const [openSendMessage, setOpenSendMessage] = useState(false);
   const { webInstanceId } = useParams();
 
   const [confirmationDetails, setConfirmationDetails] = useState(null);
+  const [actionDescription, setActionDescription] = useState("");
+  const [action, setAction] = useState(() => {});
 
   const [connectWithPhoneNumber, setConnectWithPhoneNumber] = useState(false);
 
@@ -87,6 +92,7 @@ function WebInstance() {
       onSuccess: (data) => {
         setPaid(data.paid);
         setIsTrial(data.isTrial);
+        setConnected(data.state.id == 1);
         if (data.state.id == 3 || data.state.id == 2) connectWebInstance(data);
       },
     },
@@ -131,12 +137,26 @@ function WebInstance() {
       socket.on("web-instance/connected", (message) => {
         clearInterval(timeoutId);
         refetchWebInstance();
+        toast.success("Instância conectou com sucesso!");
         socket.close();
       });
       socket.emit("web-instance/connect", {
         instanceName: request.instanceName,
         userId: user.id,
       });
+    },
+  });
+
+  const { mutate: disconnectWebInstance } = useMutation({
+    mutationFn: () => WebInstanceService.disconnect(webInstance.id),
+    onError: (e) => {
+      handleErrorResponse(
+        "Não foi possível desconectar a instância web",
+        e.response?.data
+      );
+    },
+    onSuccess: (_, request) => {
+      refetchWebInstance();
     },
   });
 
@@ -175,7 +195,12 @@ function WebInstance() {
                       instância, não compartilhe essas informações.
                     </SoftTypography>
                     <Grid container spacing={1} mt={3}>
-                      <Grid item sm={12} md={7} display={"flex"}>
+                      <Grid
+                        item
+                        sm={12}
+                        md={!connected ? 7 : 12}
+                        display={"flex"}
+                      >
                         <Grid container spacing={2} alignItems={"center"}>
                           <Grid
                             item
@@ -361,173 +386,176 @@ function WebInstance() {
                           </Grid>
                         </Grid>
                       </Grid>
-                      <Grid item sm={12} md={5}>
-                        <Grid
-                          container
-                          justifyContent={"center"}
-                          textAlign={"center"}
-                        >
-                          <Grid mt="16px" sm={12} item>
-                            <SoftTypography
-                              fontWeight="bold"
-                              variant="hr"
-                              color="dark"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              gap={2}
-                            >
-                              {connectWithPhoneNumber
-                                ? "Conectar via telefone"
-                                : "Leia o QRCode"}
-                            </SoftTypography>
-                          </Grid>
-                          <Grid item sm={12} md={10} maxWidth={"200px"}>
-                            <SoftTypography variant="caption">
-                              {connectWithPhoneNumber
-                                ? "Conecte sua instância pelo número de telefone"
-                                : "Abra o aplicativo do whatsApp e leia o QRCode abaixo para se conectar a esta instância"}
-                            </SoftTypography>
-                          </Grid>
+                      {!connected && (
+                        <Grid item sm={12} md={5}>
+                          <Grid
+                            container
+                            justifyContent={"center"}
+                            textAlign={"center"}
+                          >
+                            <Grid mt="16px" sm={12} item>
+                              <SoftTypography
+                                fontWeight="bold"
+                                variant="hr"
+                                color="dark"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                gap={2}
+                              >
+                                {connectWithPhoneNumber
+                                  ? "Conectar via telefone"
+                                  : "Leia o QRCode"}
+                              </SoftTypography>
+                            </Grid>
+                            <Grid item sm={12} md={10} maxWidth={"200px"}>
+                              <SoftTypography variant="caption">
+                                {connectWithPhoneNumber
+                                  ? "Conecte sua instância pelo número de telefone"
+                                  : "Abra o aplicativo do whatsApp e leia o QRCode abaixo para se conectar a esta instância"}
+                              </SoftTypography>
+                            </Grid>
 
-                          <Grid item md={12} sm={6} mt={2}>
-                            {connectWithPhoneNumber ? (
-                              <>
-                                {phoneCode ? (
-                                  <Grid item md={12}>
-                                    <SoftBox
-                                      display="flex"
-                                      justifyContent="center"
-                                      alignItems="center"
-                                    >
-                                      <SoftTypography variant="caption">
-                                        Número: {phone}
-                                      </SoftTypography>
-                                      <SoftButton
-                                        onClick={() => setPhoneCode("")}
-                                        variant="text"
-                                        color="dark"
-                                      >
-                                        Alterar
-                                      </SoftButton>
-                                    </SoftBox>
-                                    <SoftBox>
-                                      <SoftTypography
-                                        variant="caption"
+                            <Grid item md={12} sm={6} mt={2}>
+                              {connectWithPhoneNumber ? (
+                                <>
+                                  {phoneCode ? (
+                                    <Grid item md={12}>
+                                      <SoftBox
                                         display="flex"
                                         justifyContent="center"
                                         alignItems="center"
                                       >
-                                        Código:
-                                        <Tooltip title="Copiar código">
-                                          <button>
-                                            <Icon
-                                              fontSize="small"
-                                              color="secondary"
-                                            >
-                                              copy
-                                            </Icon>
-                                          </button>
-                                        </Tooltip>
-                                      </SoftTypography>
+                                        <SoftTypography variant="caption">
+                                          Número: {phone}
+                                        </SoftTypography>
+                                        <SoftButton
+                                          onClick={() => setPhoneCode("")}
+                                          variant="text"
+                                          color="dark"
+                                        >
+                                          Alterar
+                                        </SoftButton>
+                                      </SoftBox>
+                                      <SoftBox>
+                                        <SoftTypography
+                                          variant="caption"
+                                          display="flex"
+                                          justifyContent="center"
+                                          alignItems="center"
+                                        >
+                                          Código:
+                                          <Tooltip title="Copiar código">
+                                            <button>
+                                              <Icon
+                                                fontSize="small"
+                                                color="secondary"
+                                              >
+                                                copy
+                                              </Icon>
+                                            </button>
+                                          </Tooltip>
+                                        </SoftTypography>
 
-                                      <SoftTypography
-                                        variant="h4"
-                                        fontWeight="bold"
+                                        <SoftTypography
+                                          variant="h4"
+                                          fontWeight="bold"
+                                        >
+                                          {phoneCode}
+                                        </SoftTypography>
+                                      </SoftBox>
+                                      <Alert
+                                        variant="outlined"
+                                        severity="info"
+                                        sx={{
+                                          marginTop: "16px",
+                                          fontSize: "12px",
+                                          textAlign: "center",
+                                        }}
                                       >
-                                        {phoneCode}
+                                        <ListItem>
+                                          1. Abre o aplicativo do{" "}
+                                          <i>Whatsapp</i>;
+                                        </ListItem>
+                                        <ListItem>
+                                          2. No menu, selecione &nbsp;{" "}
+                                          <b>Aparelhos conectados</b>;
+                                        </ListItem>
+                                        <ListItem>
+                                          3. Clique em{" "}
+                                          <b>&nbsp;Conectar um aparelho</b>;
+                                        </ListItem>
+                                        <ListItem>
+                                          4. Selecione{" "}
+                                          <b>
+                                            &nbsp;Conectar com número de
+                                            telefone&nbsp;
+                                          </b>{" "}
+                                          e digite seu código.
+                                        </ListItem>
+                                      </Alert>
+                                    </Grid>
+                                  ) : (
+                                    <>
+                                      <PhoneInput
+                                        value={phone}
+                                        onChange={(phone) => setPhone(phone)}
+                                        defaultCountry="br"
+                                        style={{
+                                          justifyContent: "center",
+                                          maxWidth: "250px",
+                                          margin: "0 auto",
+                                        }}
+                                      />
+                                      <SoftTypography variant="caption">
+                                        Obs: Em caso de erro, tente solicitar o
+                                        código sem o nono digito.
                                       </SoftTypography>
-                                    </SoftBox>
-                                    <Alert
-                                      variant="outlined"
-                                      severity="info"
-                                      sx={{
-                                        marginTop: "16px",
-                                        fontSize: "12px",
-                                        textAlign: "center",
-                                      }}
-                                    >
-                                      <ListItem>
-                                        1. Abre o aplicativo do <i>Whatsapp</i>;
-                                      </ListItem>
-                                      <ListItem>
-                                        2. No menu, selecione &nbsp;{" "}
-                                        <b>Aparelhos conectados</b>;
-                                      </ListItem>
-                                      <ListItem>
-                                        3. Clique em{" "}
-                                        <b>&nbsp;Conectar um aparelho</b>;
-                                      </ListItem>
-                                      <ListItem>
-                                        4. Selecione{" "}
-                                        <b>
-                                          &nbsp;Conectar com número de
-                                          telefone&nbsp;
-                                        </b>{" "}
-                                        e digite seu código.
-                                      </ListItem>
-                                    </Alert>
-                                  </Grid>
-                                ) : (
-                                  <>
-                                    <PhoneInput
-                                      value={phone}
-                                      onChange={(phone) => setPhone(phone)}
-                                      defaultCountry="br"
-                                      style={{
-                                        justifyContent: "center",
-                                        maxWidth: "250px",
-                                        margin: "0 auto",
-                                      }}
-                                    />
-                                    <SoftTypography variant="caption">
-                                      Obs: Em caso de erro, tente solicitar o
-                                      código sem o nono digito.
-                                    </SoftTypography>
-                                    <SoftBox style={{ marginTop: "16px" }}>
-                                      <SoftButton
-                                        variant="contained"
-                                        color="success"
-                                        circular
-                                        disabled={!phone}
-                                        onClick={() =>
-                                          setPhoneCode("FPR6K-OTK09")
-                                        }
-                                      >
-                                        Solicitar código
-                                      </SoftButton>
-                                    </SoftBox>
-                                  </>
-                                )}
-                              </>
-                            ) : (
-                              qrCodeData && (
-                                <img
-                                  alt="QR CODE para conectar instância"
-                                  src={qrCodeData.base64}
-                                  width={"50%"}
-                                />
-                              )
-                            )}
-                          </Grid>
-
-                          <Grid item sm={12} sx={{ marginTop: "24px" }}>
-                            <SoftButton
-                              variant="text"
-                              color="info"
-                              onClick={() =>
-                                setConnectWithPhoneNumber(
-                                  !connectWithPhoneNumber
+                                      <SoftBox style={{ marginTop: "16px" }}>
+                                        <SoftButton
+                                          variant="contained"
+                                          color="success"
+                                          circular
+                                          disabled={!phone}
+                                          onClick={() =>
+                                            setPhoneCode("FPR6K-OTK09")
+                                          }
+                                        >
+                                          Solicitar código
+                                        </SoftButton>
+                                      </SoftBox>
+                                    </>
+                                  )}
+                                </>
+                              ) : (
+                                qrCodeData && (
+                                  <img
+                                    alt="QR CODE para conectar instância"
+                                    src={qrCodeData.base64}
+                                    width={"50%"}
+                                  />
                                 )
-                              }
-                            >
-                              {connectWithPhoneNumber
-                                ? "Conectar com QR Code"
-                                : "Conectar com o número de telefone"}
-                            </SoftButton>
+                              )}
+                            </Grid>
+
+                            <Grid item sm={12} sx={{ marginTop: "24px" }}>
+                              <SoftButton
+                                variant="text"
+                                color="info"
+                                onClick={() =>
+                                  setConnectWithPhoneNumber(
+                                    !connectWithPhoneNumber
+                                  )
+                                }
+                              >
+                                {connectWithPhoneNumber
+                                  ? "Conectar com QR Code"
+                                  : "Conectar com o número de telefone"}
+                              </SoftButton>
+                            </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
+                      )}
                     </Grid>
                   </SoftBox>
                 ) : (
@@ -616,60 +644,65 @@ function WebInstance() {
                     Pagamentos
                   </Link>
                 </MenuItem>
-                {paid && (
-                  <MenuItem
-                    onClick={() => {
-                      closeMenu();
-                      setOpen(true);
-                      setConfirmationDetails({
-                        title: "Realmente deseja reiniciar esta instância",
-                      });
-                    }}
-                  >
-                    {" "}
-                    <SoftBox color="text" px={2} display="flex">
-                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                        restart_alt
-                      </Icon>
-                    </SoftBox>
-                    Reiniciar
-                  </MenuItem>
-                )}
-                {paid && (
-                  <MenuItem
-                    onClick={() => {
-                      closeMenu();
-                      setOpen(true);
-                      setConfirmationDetails({
-                        title: "Realmente deseja desconectar esta instância",
-                      });
-                    }}
-                  >
-                    {" "}
-                    <SoftBox color="text" px={2} display="flex">
-                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                        power_off
-                      </Icon>
-                    </SoftBox>
-                    Desconectar
-                  </MenuItem>
-                )}
-                {paid && (
-                  <MenuItem
-                    onClick={() => {
-                      closeMenu();
-                      setOpenSendMessage(true);
-                    }}
-                  >
-                    {" "}
-                    <SoftBox color="text" px={2} display="flex">
-                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                        send
-                      </Icon>
-                    </SoftBox>
-                    Enviar mensagem
-                  </MenuItem>
-                )}
+                {paid ||
+                  (isTrial && (
+                    <MenuItem
+                      onClick={() => {
+                        closeMenu();
+                        setOpen(true);
+                        setConfirmationDetails({
+                          title: "Realmente deseja reiniciar esta instância",
+                        });
+                      }}
+                    >
+                      {" "}
+                      <SoftBox color="text" px={2} display="flex">
+                        <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                          restart_alt
+                        </Icon>
+                      </SoftBox>
+                      Reiniciar
+                    </MenuItem>
+                  ))}
+                {paid ||
+                  (isTrial && (
+                    <MenuItem
+                      onClick={() => {
+                        closeMenu();
+                        setOpen(true);
+                        setConfirmationDetails({
+                          title: "Realmente deseja desconectar esta instância",
+                          actionDescription: "Desconectar",
+                          action: disconnectWebInstance,
+                        });
+                      }}
+                    >
+                      {" "}
+                      <SoftBox color="text" px={2} display="flex">
+                        <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                          power_off
+                        </Icon>
+                      </SoftBox>
+                      Desconectar
+                    </MenuItem>
+                  ))}
+                {paid ||
+                  (isTrial && (
+                    <MenuItem
+                      onClick={() => {
+                        closeMenu();
+                        setOpenSendMessage(true);
+                      }}
+                    >
+                      {" "}
+                      <SoftBox color="text" px={2} display="flex">
+                        <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                          send
+                        </Icon>
+                      </SoftBox>
+                      Enviar mensagem
+                    </MenuItem>
+                  ))}
                 <MenuItem
                   onClick={() => {
                     closeMenu();
@@ -703,6 +736,8 @@ function WebInstance() {
           handleModal={{ onClose: () => setOpen(false), open: open }}
           description={confirmationDetails?.description}
           typeSecurity={confirmationDetails?.typeSecurity}
+          handleAction={confirmationDetails.action}
+          actionDescription={confirmationDetails.actionDescriptionc}
         ></ModalActionConfirmation>
       )}
       <ModalSendMessage

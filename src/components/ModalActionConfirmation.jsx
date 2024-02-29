@@ -16,10 +16,13 @@ export const ModalActionConfirmation = ({
   title,
   description,
   typeSecurity = false,
+  handleAction,
+  actionDescription,
 }) => {
   const [value, setValue] = useState("");
 
   const handleClose = () => {
+    handleAction();
     onClose();
     setValue("");
   };
@@ -78,9 +81,9 @@ export const ModalActionConfirmation = ({
           onClick={handleClose}
           variant={"contained"}
           color="error"
-          disabled={"CANCELAR" != value.toUpperCase()}
+          disabled={typeSecurity ? "CANCELAR" != value.toUpperCase() : false}
         >
-          Excluir
+          {actionDescription ? actionDescription : "Confirmar"}
         </SoftButton>
       </DialogActions>
     </Dialog>

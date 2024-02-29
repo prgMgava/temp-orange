@@ -30,6 +30,7 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
         // Esta checagem evita tentativas de refresh do token para quando a sessão já está expirada, o que impediria o usuário de efetuar logout.
         return;
       }
+      debugger;
 
       if (!isRefreshing) {
         isRefreshing = true;
@@ -39,7 +40,7 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
 
           // Efetua tentativa de chamar todas as solicitações na fila com o novo access token.
           refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
-            api.instance
+            api
               .request(config)
               .then((response) => resolve(response))
               .catch((err) => reject(err));
@@ -47,7 +48,7 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
 
           refreshAndRetryQueue = [];
 
-          return api.instance(originalRequest);
+          return api(originalRequest);
         } catch (refreshError) {
           window.location.href = "/login";
         } finally {
