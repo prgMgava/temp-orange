@@ -13,7 +13,6 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 // @mui material components
-import StorageIcon from "@mui/icons-material/Storage";
 import { Grid, Link, Tooltip } from "@mui/material";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
@@ -21,12 +20,17 @@ import Switch from "@mui/material/Switch";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import PropTypes from "prop-types";
+import { WebInstanceService } from "services/api/orangeApi/endpoints/WebInstanceService";
+import { handleErrorResponse } from "utils/handleResponses";
 import { isEmpty } from "utils/object.utils";
-import { textResume } from "utils/text.utils";
+import { copyText, textResume } from "utils/text.utils";
 
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useMutation, useQueries } from "react-query";
 import { useParams } from "react-router-dom";
+import Loader from "react-spinner-loader";
 import uuid from "react-uuid";
 
 // Data
@@ -85,18 +89,65 @@ function WebInstanceForm() {
   } = useForm();
 
   const rejectCallWatch = useWatch({ control, name: "rejectCall" });
-  const nameWatch = useWatch({ control, name: "name" });
+  const readMessagesWatch = useWatch({ control, name: "readMessages" });
+
+  const queries = useQueries([
+    {
+      queryFn: () => {
+        return WebInstanceService.findOne(webInstanceId);
+      },
+      queryKey: `web-instance-${webInstanceId}`,
+      onError: (e) => {
+        handleErrorResponse(
+          "Não foi possível obter a instância",
+          e.response?.data
+        );
+      },
+      onSuccess: (data) => {
+        reset({
+          name: data.name,
+          rejectCall: data.settings?.rejectCall,
+          readMessages: data.settings?.readMessages,
+          whChatPresence: data.settings?.whChatPresence,
+          whConnecting: data.settings?.whConnecting,
+          whDisconnecting: data.settings?.whDisconnecting,
+          whReceiving: data.settings?.whReceiving,
+          whSending: data.settings?.whSending,
+          whStatusMessage: data.settings?.whStatusMessage,
+          defaultResponseMessage: data.settings?.defaultResponseMessage,
+        });
+      },
+    },
+  ]);
+
+  const { isLoading: isLoadingWebInstance, data: webInstance } = queries[0];
+
+  const { mutate: updateWebInstance } = useMutation({
+    mutationFn: (body) =>
+      WebInstanceService.update(body.webInstanceId, body.data),
+    onError: (e) => {
+      handleErrorResponse(
+        "Algo inesperado aconteceu ao tentar editar a instância",
+        e.response.data
+      );
+    },
+    onSuccess: (data, body) => {
+      //login({ ...body, webInstanceId: data.webInstanceId });
+      toast.success("Instância editada com sucesso");
+    },
+  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const copyTextToClipboard = async (field) => {
-    await navigator.clipboard.writeText(field);
-  };
-
   const onSubmit = (data) => {
-    console.log(data);
+    const { name, ...settings } = data;
+    const body = {
+      name: name,
+      settings: { ...settings },
+    };
+    updateWebInstance({ webInstanceId, data: body });
   };
 
   return (
@@ -118,239 +169,246 @@ function WebInstanceForm() {
           </Tabs>
         </SoftBox>
         <CustomTabPanel value={value} index={0} style={{ padding: 0 }}>
-          <Card>
-            <SoftBox
-              display="flex"
-              gap="16px"
-              sx={{ padding: "16px", flexDirection: "column", gap: "4px" }}
-            >
-              <SoftTypography color="dark">
-                1. Dados da instância
-              </SoftTypography>
-              <Grid container spacing={2}>
-                <Grid
-                  item
-                  sm={12}
-                  md={4}
-                  display="flex"
-                  flexDirection="column"
-                  height="100%"
-                  width={"100%"}
-                >
-                  <SoftBox pt={1} mb={1} display="flex" alignItems="center">
-                    <SoftTypography
-                      variant="caption"
-                      color="text"
-                      component="label"
-                      htmlFor="name"
-                    >
-                      Nome da instância <span>*</span>
-                    </SoftTypography>
-                    <button style={{ cursor: "auto" }}>
-                      <Icon
-                        fontSize="small"
-                        color="inherit"
-                        style={{ visibility: "hidden" }}
-                      >
-                        copy
-                      </Icon>
-                    </button>
-                  </SoftBox>
-
-                  <SoftBox mb={0}>
-                    <SoftInput
-                      type="text"
-                      icon={{ component: "storage", direction: "left" }}
-                      placeholder="Nome"
-                      {...register("name", { required: true })}
-                      error={!!errors.name}
-                      id="name"
-                    ></SoftInput>
-                  </SoftBox>
-                </Grid>
-
-                <Grid
-                  item
-                  sm={12}
-                  md={4}
-                  display="flex"
-                  flexDirection="column"
-                  width={"100%"}
-                >
-                  <SoftBox
-                    pt={1}
-                    mb={1}
-                    display="flex"
-                    gap="4px"
-                    alignItems="center"
-                  >
-                    <SoftTypography variant="caption" color="text">
-                      ID da instância{" "}
-                    </SoftTypography>
-                    <Tooltip title="Copiar texto">
-                      <button>
-                        <Icon fontSize="small" color="secondary">
-                          copy
-                        </Icon>
-                      </button>
-                    </Tooltip>
-                  </SoftBox>
-
-                  <SoftBox>
-                    <SoftBox mb={0}>
-                      <SoftInput
-                        type="text"
-                        icon={{ component: "grid_3x3", direction: "left" }}
-                        value={textResume(webInstanceId, 30)}
-                        disabled
-                        {...register("webInstanceId", { required: true })}
-                        error={!!errors.webInstanceId}
-                        value={`${nameWatch}-${uuid()}`}
-                      ></SoftInput>
-                    </SoftBox>
-                  </SoftBox>
-                </Grid>
-
-                <Grid
-                  item
-                  sm={12}
-                  md={4}
-                  display="flex"
-                  flexDirection="column"
-                  width={"100%"}
-                >
-                  <SoftBox
-                    pt={1}
-                    mb={1}
-                    display="flex"
-                    gap="4px"
-                    alignItems="center"
-                  >
-                    <SoftTypography variant="caption" color="text">
-                      Token de integração{" "}
-                    </SoftTypography>
-                    <Tooltip title="Copiar texto">
-                      <button>
-                        <Icon fontSize="small" color="secondary">
-                          copy
-                        </Icon>
-                      </button>
-                    </Tooltip>
-                    <Link
-                      variant="caption"
-                      color="inherit"
-                      href="#"
-                      underline="always"
-                      textAlign={"end"}
-                      flex={"auto"}
-                    >
-                      Gerar novo token{" "}
-                    </Link>
-                  </SoftBox>
-
-                  <SoftBox mb={0}>
-                    <SoftInput
-                      type="text"
-                      icon={{ component: "link", direction: "left" }}
-                      disabled
-                      {...register("webInstanceToken", { required: true })}
-                      error={!!errors.webInstanceToken}
-                      value={uuid()}
-                    ></SoftInput>
-                  </SoftBox>
-                </Grid>
-              </Grid>
-            </SoftBox>
-            <SoftBox
-              display="flex"
-              gap="16px"
-              sx={{ padding: "16px", flexDirection: "column", gap: "4px" }}
-            >
-              <SoftTypography color="dark">2. Configurações</SoftTypography>
-              <Grid container spacing={2}>
-                <Grid
-                  item
-                  sm={12}
-                  md={4}
-                  display="flex"
-                  flexDirection="column"
-                  height="100%"
-                  width={"100%"}
-                >
-                  <SoftBox
-                    pt={1}
-                    mb={1}
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                  >
-                    <Switch {...register("rejectCall")} id="rejectCall" />
-                    <SoftTypography
-                      variant="caption"
-                      component="label"
-                      htmlFor="rejectCall"
-                    >
-                      Rejeitar chamadas automático
-                    </SoftTypography>
-                  </SoftBox>
-                </Grid>
-
-                <Grid
-                  item
-                  sm={12}
-                  md={4}
-                  display="flex"
-                  flexDirection="column"
-                  width={"100%"}
-                >
-                  <SoftBox
-                    pt={1}
-                    mb={1}
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                  >
-                    <Switch {...register("readMessages")} id="readMessages" />
-                    <SoftTypography
-                      variant="caption"
-                      component="label"
-                      htmlFor="readMessages"
-                    >
-                      Ler mensagens automático
-                    </SoftTypography>
-                  </SoftBox>
-                </Grid>
-
-                {rejectCallWatch && (
+          {!webInstance ? (
+            <Loader show={isLoadingWebInstance}></Loader>
+          ) : (
+            <Card>
+              <SoftBox
+                display="flex"
+                gap="16px"
+                sx={{ padding: "16px", flexDirection: "column", gap: "4px" }}
+              >
+                <SoftTypography color="dark">
+                  1. Dados da instância
+                </SoftTypography>
+                <Grid container spacing={2}>
                   <Grid
                     item
                     sm={12}
-                    md={12}
+                    md={4}
+                    display="flex"
+                    flexDirection="column"
+                    height="100%"
+                    width={"100%"}
+                  >
+                    <SoftBox pt={1} mb={1} display="flex" alignItems="center">
+                      <SoftTypography
+                        variant="caption"
+                        color="text"
+                        component="label"
+                        htmlFor="name"
+                      >
+                        Nome da instância <span>*</span>
+                      </SoftTypography>
+                      <button style={{ cursor: "auto" }}>
+                        <Icon
+                          fontSize="small"
+                          color="inherit"
+                          style={{ visibility: "hidden" }}
+                        >
+                          copy
+                        </Icon>
+                      </button>
+                    </SoftBox>
+
+                    <SoftBox mb={0}>
+                      <SoftInput
+                        type="text"
+                        icon={{ component: "storage", direction: "left" }}
+                        placeholder="Nome"
+                        {...register("name", { required: true })}
+                        error={!!errors.name}
+                        id="name"
+                      ></SoftInput>
+                    </SoftBox>
+                  </Grid>
+
+                  <Grid
+                    item
+                    sm={12}
+                    md={4}
                     display="flex"
                     flexDirection="column"
                     width={"100%"}
                   >
+                    <SoftBox
+                      pt={1}
+                      mb={1}
+                      display="flex"
+                      gap="4px"
+                      alignItems="center"
+                    >
+                      <SoftTypography variant="caption" color="text">
+                        ID da instância{" "}
+                      </SoftTypography>
+                      <Tooltip title="Copiar texto">
+                        <button onClick={() => copyText(webInstance.id)}>
+                          <Icon fontSize="small" color="secondary">
+                            copy
+                          </Icon>
+                        </button>
+                      </Tooltip>
+                    </SoftBox>
+
+                    <SoftBox>
+                      <SoftBox mb={0}>
+                        <SoftInput
+                          type="text"
+                          icon={{ component: "grid_3x3", direction: "left" }}
+                          value={webInstance.id}
+                          disabled
+                        ></SoftInput>
+                      </SoftBox>
+                    </SoftBox>
+                  </Grid>
+
+                  <Grid
+                    item
+                    sm={12}
+                    md={4}
+                    display="flex"
+                    flexDirection="column"
+                    width={"100%"}
+                  >
+                    <SoftBox
+                      pt={1}
+                      mb={1}
+                      display="flex"
+                      gap="4px"
+                      alignItems="center"
+                    >
+                      <SoftTypography variant="caption" color="text">
+                        Token de integração{" "}
+                      </SoftTypography>
+                      <Tooltip title="Copiar texto">
+                        <button onClick={() => copyText(webInstance.token)}>
+                          <Icon fontSize="small" color="secondary">
+                            copy
+                          </Icon>
+                        </button>
+                      </Tooltip>
+                      {/* <Link
+                        variant="caption"
+                        color="inherit"
+                        href="#"
+                        underline="always"
+                        textAlign={"end"}
+                        flex={"auto"}
+                      >
+                        Gerar novo token{" "}
+                      </Link> */}
+                    </SoftBox>
+
                     <SoftBox mb={0}>
                       <SoftInput
                         type="text"
-                        icon={{ component: "sms", direction: "left" }}
-                        placeholder="Mensagem de resposta padrão"
-                        {...register("defaultResponseMessage")}
+                        icon={{ component: "link", direction: "left" }}
+                        disabled
+                        value={webInstance.token}
                       ></SoftInput>
                     </SoftBox>
                   </Grid>
-                )}
-              </Grid>
-            </SoftBox>
-            <SoftButton
-              color="dark"
-              type="button"
-              style={{ transform: "scale(1.02", marginTop: "16px" }}
-              onClick={() => setValue(1)}
-            >
-              {"Continuar"}
-            </SoftButton>
-          </Card>
+                </Grid>
+              </SoftBox>
+              <SoftBox
+                display="flex"
+                gap="16px"
+                sx={{ padding: "16px", flexDirection: "column", gap: "4px" }}
+              >
+                <SoftTypography color="dark">2. Configurações</SoftTypography>
+                <Grid container spacing={2}>
+                  <Grid
+                    item
+                    sm={12}
+                    md={4}
+                    display="flex"
+                    flexDirection="column"
+                    height="100%"
+                    width={"100%"}
+                  >
+                    <SoftBox
+                      pt={1}
+                      mb={1}
+                      display="flex"
+                      alignItems="center"
+                      gap="8px"
+                    >
+                      <Switch
+                        {...register("rejectCall")}
+                        id="rejectCall"
+                        checked={rejectCallWatch}
+                      />
+                      <SoftTypography
+                        variant="caption"
+                        component="label"
+                        htmlFor="rejectCall"
+                      >
+                        Rejeitar chamadas automático
+                      </SoftTypography>
+                    </SoftBox>
+                  </Grid>
+
+                  <Grid
+                    item
+                    sm={12}
+                    md={4}
+                    display="flex"
+                    flexDirection="column"
+                    width={"100%"}
+                  >
+                    <SoftBox
+                      pt={1}
+                      mb={1}
+                      display="flex"
+                      alignItems="center"
+                      gap="8px"
+                    >
+                      <Switch
+                        {...register("readMessages")}
+                        id="readMessages"
+                        checked={readMessagesWatch}
+                      />
+                      <SoftTypography
+                        variant="caption"
+                        component="label"
+                        htmlFor="readMessages"
+                      >
+                        Ler mensagens automático
+                      </SoftTypography>
+                    </SoftBox>
+                  </Grid>
+
+                  {rejectCallWatch && (
+                    <Grid
+                      item
+                      sm={12}
+                      md={12}
+                      display="flex"
+                      flexDirection="column"
+                      width={"100%"}
+                    >
+                      <SoftBox mb={0}>
+                        <SoftInput
+                          type="text"
+                          icon={{ component: "sms", direction: "left" }}
+                          placeholder="Mensagem de resposta padrão"
+                          {...register("defaultResponseMessage")}
+                        ></SoftInput>
+                      </SoftBox>
+                    </Grid>
+                  )}
+                </Grid>
+              </SoftBox>
+              <SoftButton
+                color="dark"
+                type="button"
+                style={{ transform: "scale(1.02", marginTop: "16px" }}
+                onClick={() => setValue(1)}
+              >
+                {"Continuar"}
+              </SoftButton>
+            </Card>
+          )}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <Card component={"form"} onSubmit={handleSubmit(onSubmit)}>
@@ -562,7 +620,7 @@ function WebInstanceForm() {
               onClick={() => setValue(1)}
               disabled={!isValid}
             >
-              {value == 0 ? "Continuar" : "Salvar"}
+              {value == 0 ? "Continuar" : webInstanceId ? "Editar" : "Salvar"}
             </SoftButton>
           </Card>
         </CustomTabPanel>

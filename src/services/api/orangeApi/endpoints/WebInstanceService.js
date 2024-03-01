@@ -55,6 +55,22 @@ export const WebInstanceService = {
     const { data } = await api.post(`${resource}`, body);
     return data;
   },
+
+  /**
+   * Performs updating using provided data.
+   * @async
+   * @param {Object} body - Object containing registration data.
+   * @param {string} body.name - The name for the web instance.
+   * @param {Object} body.settings - Settings for the web instance.
+   * @param {string} body.settings.someProperty - Description of some property.
+   * @param {User} [body.user] - Optional user data.
+   * @param {StatesDto} body.state - State data.
+   * @returns {Promise<WebInstance>} A promise that resolves with the registered web instance.
+   */
+  update: async function (webInstanceId, body) {
+    const { data } = await api.patch(`${resource}/${webInstanceId}`, body);
+    return data;
+  },
   /**
    * Retrieves a list of web instances based on provided parameters.
    * @async

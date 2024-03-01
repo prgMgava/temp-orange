@@ -33,7 +33,7 @@ import { handleErrorResponse } from "utils/handleResponses";
 import { removeCharacterFromPhone, validPhoneFormat } from "utils/phone.utils";
 import { copyText, textResume } from "utils/text.utils";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { PhoneInput } from "react-international-phone";
 import { useMutation, useQueries } from "react-query";
@@ -188,6 +188,7 @@ function WebInstance() {
     },
     onSuccess: () => {
       navigate("/web-instances");
+      clearInterval(timeoutIntervalId);
     },
   });
 
@@ -200,6 +201,14 @@ function WebInstance() {
     const phoneFormatted = removeCharacterFromPhone(phone);
     connectWebInstance({ id: webInstance.id, phoneNumber: phoneFormatted });
   };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutIntervalId) {
+        clearInterval(timeoutIntervalId);
+      }
+    };
+  }, []);
 
   return (
     <DashboardLayout>
@@ -220,7 +229,7 @@ function WebInstance() {
                       display="flex"
                       justifyContent="space-between"
                     >
-                      1. Dados da instância webInstanceName
+                      1. Dados da instância {webInstance.name}
                       <SoftBox color="text" px={2}>
                         <Icon
                           sx={{ cursor: "pointer", fontWeight: "bold" }}
@@ -668,7 +677,7 @@ function WebInstance() {
                 <MenuItem onClick={closeMenu}>
                   {" "}
                   <Link
-                    href={`/web-instances/4260ea235/edit`}
+                    href={`/web-instances/${webInstanceId}/edit`}
                     sx={{ display: "flex" }}
                   >
                     <SoftTypography color="text" px={2} display="flex">
@@ -681,7 +690,7 @@ function WebInstance() {
                 </MenuItem>
                 <MenuItem onClick={closeMenu}>
                   <Link
-                    href={`/web-instances/4260ea235/payment`}
+                    href={`/web-instances/${webInstanceId}/payment`}
                     sx={{ display: "flex" }}
                   >
                     <SoftTypography color="text" px={2} display="flex">
