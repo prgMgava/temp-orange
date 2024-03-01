@@ -30,13 +30,15 @@ import { AuthService } from "services/api/orangeApi/endpoints/AuthService";
 import { WebInstanceService } from "services/api/orangeApi/endpoints/WebInstanceService";
 import io from "socket.io-client";
 import { handleErrorResponse } from "utils/handleResponses";
-import { textResume } from "utils/text.utils";
+import { removeCharacterFromPhone, validPhoneFormat } from "utils/phone.utils";
+import { copyText, textResume } from "utils/text.utils";
 
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { PhoneInput } from "react-international-phone";
 import { useMutation, useQueries } from "react-query";
 import { useParams } from "react-router-dom";
+import Loader from "react-spinner-loader";
 
 // Data
 // Orange API examples
@@ -59,6 +61,7 @@ function WebInstance() {
   const [open, setOpen] = useState(false);
   const [paid, setPaid] = useState(false);
   const [connected, setConnected] = useState(false);
+  const [timeoutIntervalId, setTimeoutIntervalId] = useState();
 
   const [isTrial, setIsTrial] = useState(false);
 
@@ -117,10 +120,16 @@ function WebInstance() {
   } = queries[0];
   const { data: user } = queries[1];
 
-  const { mutate: connectWebInstance, data: qrCodeData } = useMutation({
+  const {
+    mutate: connectWebInstance,
+    data: qrCodeData,
+    isLoading: isLoadingQrCode,
+    reset: resetQrCodeData,
+  } = useMutation({
     mutationFn: (body) =>
       WebInstanceService.connect(body.id, {
-        qrCode: connectWithPhoneNumber,
+        qrCode: !connectWithPhoneNumber,
+        phoneNumber: body.phoneNumber || "",
       }),
     onError: (e) => {
       handleErrorResponse(
@@ -130,10 +139,20 @@ function WebInstance() {
     },
     onSuccess: (_, request) => {
       const socket = io("http://localhost:3456");
+      if (timeoutIntervalId) {
+        clearInterval(timeoutIntervalId);
+      }
       const timeoutId = setInterval(
-        () => connectWebInstance({ id: request.id }),
+        () =>
+          connectWebInstance({
+            id: request.id,
+            phoneNumber: connectWithPhoneNumber
+              ? removeCharacterFromPhone(phone)
+              : "",
+          }),
         40000
       );
+      setTimeoutIntervalId(timeoutId);
       socket.on("web-instance/connected", (message) => {
         clearInterval(timeoutId);
         refetchWebInstance();
@@ -160,11 +179,21 @@ function WebInstance() {
     },
   });
 
+  const handleConnectWithPhone = () => {
+    const phoneIsValid = validPhoneFormat(phone);
+    if (!phoneIsValid) {
+      toast.error("Formato de telefone inválido");
+      return;
+    }
+    const phoneFormatted = removeCharacterFromPhone(phone);
+    connectWebInstance({ id: webInstance.id, phoneNumber: phoneFormatted });
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
 
-      {webInstance && (
+      {webInstance ? (
         <SoftBox py={3}>
           <SoftBox mb={3} pt={2} px={2}>
             <Card
@@ -419,7 +448,7 @@ function WebInstance() {
                             <Grid item md={12} sm={6} mt={2}>
                               {connectWithPhoneNumber ? (
                                 <>
-                                  {phoneCode ? (
+                                  {qrCodeData ? (
                                     <Grid item md={12}>
                                       <SoftBox
                                         display="flex"
@@ -430,7 +459,7 @@ function WebInstance() {
                                           Número: {phone}
                                         </SoftTypography>
                                         <SoftButton
-                                          onClick={() => setPhoneCode("")}
+                                          onClick={() => resetQrCodeData()}
                                           variant="text"
                                           color="dark"
                                         >
@@ -446,7 +475,11 @@ function WebInstance() {
                                         >
                                           Código:
                                           <Tooltip title="Copiar código">
-                                            <button>
+                                            <button
+                                              onClick={() =>
+                                                copyText(qrCodeData.pairingCode)
+                                              }
+                                            >
                                               <Icon
                                                 fontSize="small"
                                                 color="secondary"
@@ -461,7 +494,7 @@ function WebInstance() {
                                           variant="h4"
                                           fontWeight="bold"
                                         >
-                                          {phoneCode}
+                                          {qrCodeData.pairingCode}
                                         </SoftTypography>
                                       </SoftBox>
                                       <Alert
@@ -486,15 +519,13 @@ function WebInstance() {
                                           <b>&nbsp;Conectar um aparelho</b>;
                                         </ListItem>
                                         <ListItem>
-                                          4. Selecione{" "}
-                                          <b>
-                                            &nbsp;Conectar com número de
-                                            telefone&nbsp;
-                                          </b>{" "}
-                                          e digite seu código.
+                                          4. Selecione "Conectar com número de
+                                          telefone" e digite seu código.
                                         </ListItem>
                                       </Alert>
                                     </Grid>
+                                  ) : isLoadingQrCode ? (
+                                    <Loader show={isLoadingQrCode}></Loader>
                                   ) : (
                                     <>
                                       <PhoneInput
@@ -517,9 +548,7 @@ function WebInstance() {
                                           color="success"
                                           circular
                                           disabled={!phone}
-                                          onClick={() =>
-                                            setPhoneCode("FPR6K-OTK09")
-                                          }
+                                          onClick={handleConnectWithPhone}
                                         >
                                           Solicitar código
                                         </SoftButton>
@@ -527,14 +556,14 @@ function WebInstance() {
                                     </>
                                   )}
                                 </>
+                              ) : qrCodeData ? (
+                                <img
+                                  alt="QR CODE para conectar instância"
+                                  src={qrCodeData.base64}
+                                  width={"50%"}
+                                />
                               ) : (
-                                qrCodeData && (
-                                  <img
-                                    alt="QR CODE para conectar instância"
-                                    src={qrCodeData.base64}
-                                    width={"50%"}
-                                  />
-                                )
+                                <Loader show={isLoadingQrCode}></Loader>
                               )}
                             </Grid>
 
@@ -542,11 +571,18 @@ function WebInstance() {
                               <SoftButton
                                 variant="text"
                                 color="info"
-                                onClick={() =>
+                                onClick={() => {
                                   setConnectWithPhoneNumber(
                                     !connectWithPhoneNumber
-                                  )
-                                }
+                                  );
+                                  if (!connectWithPhoneNumber) {
+                                    resetQrCodeData();
+                                    clearInterval(timeoutIntervalId);
+                                  } else {
+                                    connectWebInstance({ id: webInstance.id });
+                                  }
+                                }}
+                                disabled={isLoadingQrCode}
                               >
                                 {connectWithPhoneNumber
                                   ? "Conectar com QR Code"
@@ -727,6 +763,8 @@ function WebInstance() {
             </Card>
           </SoftBox>
         </SoftBox>
+      ) : (
+        <Loader show={isLoadingWebInstance}></Loader>
       )}
 
       <Footer />
