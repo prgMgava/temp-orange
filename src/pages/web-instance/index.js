@@ -182,6 +182,20 @@ function WebInstance() {
     },
   });
 
+  const { mutate: restartWebInstance } = useMutation({
+    mutationFn: () => WebInstanceService.restart(webInstance.id),
+    onError: (e) => {
+      handleErrorResponse(
+        "Não foi possível reiniciar a instância web",
+        e.response?.data
+      );
+    },
+    onSuccess: () => {
+      refetchWebInstance();
+      toast.success("Instância web reiniciada com sucesso");
+    },
+  });
+
   const { mutate: deleteWebInstance } = useMutation({
     mutationFn: () => WebInstanceService.delete(webInstance.id),
     onError: (e) => {
@@ -712,6 +726,8 @@ function WebInstance() {
                       setOpen(true);
                       setConfirmationDetails({
                         title: "Realmente deseja reiniciar esta instância",
+                        action: restartWebInstance,
+                        actionDescription: "Reiniciar",
                       });
                     }}
                   >
@@ -798,8 +814,8 @@ function WebInstance() {
           handleModal={{ onClose: () => setOpen(false), open: open }}
           description={confirmationDetails?.description}
           typeSecurity={confirmationDetails?.typeSecurity}
-          handleAction={confirmationDetails.action}
-          actionDescription={confirmationDetails.actionDescriptionc}
+          onAction={confirmationDetails?.action}
+          actionDescription={confirmationDetails?.actionDescription}
         ></ModalActionConfirmation>
       )}
       <ModalSendMessage

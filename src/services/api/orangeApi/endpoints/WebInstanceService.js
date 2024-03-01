@@ -138,4 +138,12 @@ export const WebInstanceService = {
   delete: async (webInstanceId) => {
     await api.delete(`${resource}/${webInstanceId}`);
   },
+
+  /**
+   * Function that returns an object with the specified data.
+   * @returns {void} Returns an object with the specified data.
+   */
+  restart: async (webInstanceId) => {
+    await api.put(`${resource}/${webInstanceId}`);
+  },
 };

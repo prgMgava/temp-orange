@@ -40,7 +40,8 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
 
           // Efetua tentativa de chamar todas as solicitações na fila com o novo access token.
           refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
-            api
+            debugger;
+            api.api
               .request(config)
               .then((response) => resolve(response))
               .catch((err) => reject(err));
@@ -48,7 +49,7 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
 
           refreshAndRetryQueue = [];
 
-          return api;
+          return api.api;
         } catch (refreshError) {
           window.location.href = "/login";
         } finally {
@@ -64,6 +65,7 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
     }
 
     // Se o status code não for 401, a Promise é rejeitada para evitar a propagação do erro.
+    debugger;
     return Promise.reject(error);
   }
 

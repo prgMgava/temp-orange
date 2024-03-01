@@ -16,13 +16,18 @@ export const ModalActionConfirmation = ({
   title,
   description,
   typeSecurity = false,
-  handleAction,
+  onAction,
   actionDescription,
 }) => {
   const [value, setValue] = useState("");
 
+  const handleAction = () => {
+    onAction && onAction();
+
+    handleClose();
+  };
+
   const handleClose = () => {
-    handleAction();
     onClose();
     setValue("");
   };
@@ -78,7 +83,7 @@ export const ModalActionConfirmation = ({
           Voltar
         </SoftButton>
         <SoftButton
-          onClick={handleClose}
+          onClick={handleAction}
           variant={"contained"}
           color="error"
           disabled={typeSecurity ? "CANCELAR" != value.toUpperCase() : false}
