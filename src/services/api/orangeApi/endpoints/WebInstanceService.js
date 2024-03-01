@@ -154,4 +154,17 @@ export const WebInstanceService = {
   sendTextMessage: async (webInstanceId, message) => {
     await api.post(`${resource}/send-text-message/${webInstanceId}`, message);
   },
+
+  /**
+   * Function that returns an object with the specified data.
+   * @typedef {Object} AmountInfoObj
+   * @property {number} connected - The pairing code.
+   * @property {number} total - The count.
+   * @property {number} disconnected - The value in base64.
+   * @returns {AmountInfoObj} Returns an object with the specified data.
+   */
+  amountInfo: async () => {
+    const { data } = await api.get(`${resource}/amount-info`);
+    return data;
+  },
 };
