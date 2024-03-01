@@ -100,7 +100,7 @@ function DefaultNavbar({ transparent, light, action }) {
       >
         <SoftBox
           component={Link}
-          to="/"
+          to="/dashboard"
           py={transparent ? 1.5 : 0.75}
           lineHeight={1}
         >

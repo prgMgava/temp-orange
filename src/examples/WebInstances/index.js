@@ -42,7 +42,7 @@ const WebInstancesInfo = () => {
   } = queries[0];
 
   useEffect(() => {
-    () => {
+    return () => {
       if (timeoutIntervalId) {
         clearInterval(timeoutIntervalId);
       }

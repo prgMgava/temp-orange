@@ -12,19 +12,12 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import AppBar from "@mui/material/AppBar";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 
 import { useState, useEffect } from "react";
 
-// Orange API icons
-import Cube from "examples/Icons/Cube";
-import Document from "examples/Icons/Document";
-import Settings from "examples/Icons/Settings";
 // Orange API examples
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
@@ -39,9 +32,8 @@ import curved0 from "assets/images/curved-images/curved0.jpg";
 // Orange API base styles
 import breakpoints from "assets/theme/base/breakpoints";
 
-function Header() {
+function Header({ user }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
-  const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -62,8 +54,6 @@ function Header() {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
-
-  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
 
   return (
     <SoftBox position="relative">
@@ -114,11 +104,11 @@ function Header() {
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">
-                Alex Thompson
+                {user?.firstName} {user?.lastName}
               </SoftTypography>
-              <SoftTypography variant="button" color="text" fontWeight="medium">
-                CEO / Co-Founder
-              </SoftTypography>
+              {/* <SoftTypography variant="button" color="text" fontWeight="medium">
+                TODO: user role
+              </SoftTypography> */}
             </SoftBox>
           </Grid>
         </Grid>

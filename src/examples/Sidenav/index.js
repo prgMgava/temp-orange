@@ -152,7 +152,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             </SoftBox>
             <SoftBox
               component={NavLink}
-              to="/"
+              to="/dashboard"
               display="flex"
               alignItems="center"
             >

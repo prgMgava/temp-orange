@@ -150,7 +150,6 @@ function WebInstanceForm() {
       );
     },
     onSuccess: (data, body) => {
-      debugger;
       toast.success("Instância criada com sucesso");
       navigate(`/web-instances/${data.id}`);
     },
