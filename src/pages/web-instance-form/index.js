@@ -29,7 +29,7 @@ import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useMutation, useQueries } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "react-spinner-loader";
 import uuid from "react-uuid";
 
@@ -78,6 +78,7 @@ function WebInstanceForm() {
   const params = useParams();
   const webInstanceId = params["webInstanceId"];
   const [value, setValue] = useState(0);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -94,7 +95,10 @@ function WebInstanceForm() {
   const queries = useQueries([
     {
       queryFn: () => {
-        return WebInstanceService.findOne(webInstanceId);
+        if (webInstanceId) {
+          return WebInstanceService.findOne(webInstanceId);
+        }
+        return {};
       },
       queryKey: `web-instance-${webInstanceId}`,
       onError: (e) => {
@@ -132,8 +136,23 @@ function WebInstanceForm() {
       );
     },
     onSuccess: (data, body) => {
-      //login({ ...body, webInstanceId: data.webInstanceId });
       toast.success("Instância editada com sucesso");
+      navigate(`/web-instances/${webInstance.id}`);
+    },
+  });
+
+  const { mutate: registerWebInstance } = useMutation({
+    mutationFn: (body) => WebInstanceService.register(body),
+    onError: (e) => {
+      handleErrorResponse(
+        "Algo inesperado aconteceu ao tentar criar uma instância",
+        e.response.data
+      );
+    },
+    onSuccess: (data, body) => {
+      debugger;
+      toast.success("Instância criada com sucesso");
+      navigate(`/web-instances/${data.id}`);
     },
   });
 
@@ -147,7 +166,11 @@ function WebInstanceForm() {
       name: name,
       settings: { ...settings },
     };
-    updateWebInstance({ webInstanceId, data: body });
+    if (webInstanceId) {
+      updateWebInstance({ webInstanceId, data: body });
+    } else {
+      registerWebInstance(body);
+    }
   };
 
   return (

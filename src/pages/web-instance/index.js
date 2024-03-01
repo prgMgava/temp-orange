@@ -95,7 +95,11 @@ function WebInstance() {
         setPaid(data.paid);
         setIsTrial(data.isTrial);
         setConnected(data.state.id == 1);
-        if (data.state.id == 3 || data.state.id == 2) connectWebInstance(data);
+        if (
+          (data.state.id == 3 || data.state.id == 2) &&
+          (data.isTrial || data.paid)
+        )
+          connectWebInstance(data);
       },
     },
     {
@@ -128,7 +132,7 @@ function WebInstance() {
     mutationFn: (body) =>
       WebInstanceService.connect(body.id, {
         qrCode: !connectWithPhoneNumber,
-        phoneNumber: body.phoneNumber || "",
+        phoneNumber: connectWithPhoneNumber ? body.phoneNumber : "",
       }),
     onError: (e) => {
       handleErrorResponse(
