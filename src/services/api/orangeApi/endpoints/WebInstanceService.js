@@ -110,12 +110,16 @@ export const WebInstanceService = {
    * @returns {void} Returns an object with the specified data.
    */
   disconnect: async (webInstanceId, params) => {
-    const { data } = await api.delete(
-      `${resource}/disconnect/${webInstanceId}`,
-      {
-        params,
-      }
-    );
-    return data;
+    await api.delete(`${resource}/disconnect/${webInstanceId}`, {
+      params,
+    });
+  },
+
+  /**
+   * Function that returns an object with the specified data.
+   * @returns {void} Returns an object with the specified data.
+   */
+  delete: async (webInstanceId) => {
+    await api.delete(`${resource}/${webInstanceId}`);
   },
 };

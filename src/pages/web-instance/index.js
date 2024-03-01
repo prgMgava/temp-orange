@@ -37,7 +37,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { PhoneInput } from "react-international-phone";
 import { useMutation, useQueries } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "react-spinner-loader";
 
 // Data
@@ -69,13 +69,12 @@ function WebInstance() {
   const { webInstanceId } = useParams();
 
   const [confirmationDetails, setConfirmationDetails] = useState(null);
-  const [actionDescription, setActionDescription] = useState("");
-  const [action, setAction] = useState(() => {});
 
   const [connectWithPhoneNumber, setConnectWithPhoneNumber] = useState(false);
 
   const [phone, setPhone] = useState("");
-  const [phoneCode, setPhoneCode] = useState("");
+
+  const navigate = useNavigate();
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
@@ -174,8 +173,21 @@ function WebInstance() {
         e.response?.data
       );
     },
-    onSuccess: (_, request) => {
+    onSuccess: () => {
       refetchWebInstance();
+    },
+  });
+
+  const { mutate: deleteWebInstance } = useMutation({
+    mutationFn: () => WebInstanceService.delete(webInstance.id),
+    onError: (e) => {
+      handleErrorResponse(
+        "Não foi possível excluir a instância web",
+        e.response?.data
+      );
+    },
+    onSuccess: () => {
+      navigate("/web-instances");
     },
   });
 
@@ -680,65 +692,62 @@ function WebInstance() {
                     Pagamentos
                   </Link>
                 </MenuItem>
-                {paid ||
-                  (isTrial && (
-                    <MenuItem
-                      onClick={() => {
-                        closeMenu();
-                        setOpen(true);
-                        setConfirmationDetails({
-                          title: "Realmente deseja reiniciar esta instância",
-                        });
-                      }}
-                    >
-                      {" "}
-                      <SoftBox color="text" px={2} display="flex">
-                        <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                          restart_alt
-                        </Icon>
-                      </SoftBox>
-                      Reiniciar
-                    </MenuItem>
-                  ))}
-                {paid ||
-                  (isTrial && (
-                    <MenuItem
-                      onClick={() => {
-                        closeMenu();
-                        setOpen(true);
-                        setConfirmationDetails({
-                          title: "Realmente deseja desconectar esta instância",
-                          actionDescription: "Desconectar",
-                          action: disconnectWebInstance,
-                        });
-                      }}
-                    >
-                      {" "}
-                      <SoftBox color="text" px={2} display="flex">
-                        <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                          power_off
-                        </Icon>
-                      </SoftBox>
-                      Desconectar
-                    </MenuItem>
-                  ))}
-                {paid ||
-                  (isTrial && (
-                    <MenuItem
-                      onClick={() => {
-                        closeMenu();
-                        setOpenSendMessage(true);
-                      }}
-                    >
-                      {" "}
-                      <SoftBox color="text" px={2} display="flex">
-                        <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                          send
-                        </Icon>
-                      </SoftBox>
-                      Enviar mensagem
-                    </MenuItem>
-                  ))}
+                {connected && (
+                  <MenuItem
+                    onClick={() => {
+                      closeMenu();
+                      setOpen(true);
+                      setConfirmationDetails({
+                        title: "Realmente deseja reiniciar esta instância",
+                      });
+                    }}
+                  >
+                    {" "}
+                    <SoftBox color="text" px={2} display="flex">
+                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                        restart_alt
+                      </Icon>
+                    </SoftBox>
+                    Reiniciar
+                  </MenuItem>
+                )}
+                {connected && (
+                  <MenuItem
+                    onClick={() => {
+                      closeMenu();
+                      setOpen(true);
+                      setConfirmationDetails({
+                        title: "Realmente deseja desconectar esta instância",
+                        actionDescription: "Desconectar",
+                        action: disconnectWebInstance,
+                      });
+                    }}
+                  >
+                    {" "}
+                    <SoftBox color="text" px={2} display="flex">
+                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                        power_off
+                      </Icon>
+                    </SoftBox>
+                    Desconectar
+                  </MenuItem>
+                )}
+                {connected && (
+                  <MenuItem
+                    onClick={() => {
+                      closeMenu();
+                      setOpenSendMessage(true);
+                    }}
+                  >
+                    {" "}
+                    <SoftBox color="text" px={2} display="flex">
+                      <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                        send
+                      </Icon>
+                    </SoftBox>
+                    Enviar mensagem
+                  </MenuItem>
+                )}
                 <MenuItem
                   onClick={() => {
                     closeMenu();
@@ -748,6 +757,8 @@ function WebInstance() {
                       description:
                         "A instância web será excluída, porém a assinatura não será reembolsada, permanecendo ativa até o momento do vencimento",
                       typeSecurity: true,
+                      actionDescription: "Excluir",
+                      action: deleteWebInstance,
                     });
                   }}
                 >
