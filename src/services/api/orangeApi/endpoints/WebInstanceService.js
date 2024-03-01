@@ -146,4 +146,12 @@ export const WebInstanceService = {
   restart: async (webInstanceId) => {
     await api.put(`${resource}/${webInstanceId}`);
   },
+
+  /**
+   * Function that returns an object with the specified data.
+   * @returns {void} Returns an object with the specified data.
+   */
+  sendTextMessage: async (webInstanceId, message) => {
+    await api.post(`${resource}/send-text-message/${webInstanceId}`, message);
+  },
 };
