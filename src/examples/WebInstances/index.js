@@ -43,6 +43,7 @@ const WebInstancesInfo = () => {
 
   useEffect(() => {
     return () => {
+      debugger;
       if (timeoutIntervalId) {
         clearInterval(timeoutIntervalId);
       }

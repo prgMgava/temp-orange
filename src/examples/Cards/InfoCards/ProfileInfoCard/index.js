@@ -26,12 +26,13 @@ import { handleErrorResponse } from "utils/handleResponses";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PhoneInput } from "react-international-phone";
-import { useQueries } from "react-query";
+import { useMutation, useQueries } from "react-query";
 
 import Header from "pages/profile/components/Header";
 
 // Orange API components
 import SoftBox from "components/SoftBox";
+import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
 import SoftTypography from "components/SoftTypography";
 
@@ -56,7 +57,7 @@ function ProfileInfoCard({ title, description, action }) {
     },
   ]);
 
-  const { data: user } = queries[0];
+  const { data: user, refetch: refetchMe } = queries[0];
   const {
     register,
     getValues,
@@ -67,8 +68,19 @@ function ProfileInfoCard({ title, description, action }) {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    updateUser(data);
   };
+
+  const { mutate: updateUser } = useMutation({
+    mutationFn: (body) => AuthService.update(body),
+    onError: (e) => {
+      handleErrorResponse(
+        "Não foi possível atualizar seus dados",
+        e.response?.data
+      );
+    },
+    onSuccess: () => refetchMe(),
+  });
 
   return (
     <>
@@ -98,7 +110,11 @@ function ProfileInfoCard({ title, description, action }) {
                   </Tooltip>
                 </SoftTypography>
               </SoftBox>
-              <SoftBox p={2}>
+              <SoftBox
+                p={2}
+                component={"form"}
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <SoftBox mb={2} lineHeight={1}>
                   <SoftTypography
                     variant="button"
@@ -108,110 +124,115 @@ function ProfileInfoCard({ title, description, action }) {
                     {description}
                   </SoftTypography>
                 </SoftBox>
-                <SoftBox>
+                <Grid container spacing={2}>
                   <Grid
-                    container
-                    spacing={2}
-                    component={"form"}
-                    onSubmit={handleSubmit(onSubmit)}
+                    item
+                    sm={12}
+                    md={4}
+                    display="flex"
+                    flexDirection="column"
+                    height="100%"
+                    width={"100%"}
                   >
-                    <Grid
-                      item
-                      sm={12}
-                      md={4}
-                      display="flex"
-                      flexDirection="column"
-                      height="100%"
-                      width={"100%"}
-                    >
-                      <SoftBox pt={1} mb={1} display="flex" alignItems="center">
-                        <SoftTypography
-                          variant="caption"
-                          color="text"
-                          component="label"
-                          htmlFor="name"
-                        >
-                          Nome completo
-                        </SoftTypography>
-                      </SoftBox>
+                    <SoftBox pt={1} mb={1} display="flex" alignItems="center">
+                      <SoftTypography
+                        variant="caption"
+                        color="text"
+                        component="label"
+                        htmlFor="name"
+                      >
+                        Nome completo
+                      </SoftTypography>
+                    </SoftBox>
 
+                    <SoftBox mb={0}>
+                      <SoftInput
+                        type="text"
+                        icon={{ component: "person", direction: "left" }}
+                        placeholder="Nome"
+                        {...register("firstName", { required: true })}
+                        error={!!errors.firstName}
+                        disabled={!edit}
+                        id="firstName"
+                      ></SoftInput>
+                    </SoftBox>
+                  </Grid>
+
+                  <Grid
+                    item
+                    sm={12}
+                    md={4}
+                    display="flex"
+                    flexDirection="column"
+                    width={"100%"}
+                  >
+                    <SoftBox
+                      pt={1}
+                      mb={1}
+                      display="flex"
+                      gap="4px"
+                      alignItems="center"
+                    >
+                      <SoftTypography variant="caption" color="text">
+                        Email
+                      </SoftTypography>
+                    </SoftBox>
+
+                    <SoftBox>
                       <SoftBox mb={0}>
                         <SoftInput
                           type="text"
-                          icon={{ component: "person", direction: "left" }}
-                          placeholder="Nome"
-                          {...register("firstName", { required: true })}
-                          error={!!errors.firstName}
-                          disabled={!edit}
-                          id="firstName"
+                          icon={{
+                            component: "grid_3x3",
+                            direction: "left",
+                          }}
+                          disabled
+                          {...register("email")}
+                          value={`email@example.com`}
                         ></SoftInput>
                       </SoftBox>
-                    </Grid>
-
-                    <Grid
-                      item
-                      sm={12}
-                      md={4}
-                      display="flex"
-                      flexDirection="column"
-                      width={"100%"}
-                    >
-                      <SoftBox
-                        pt={1}
-                        mb={1}
-                        display="flex"
-                        gap="4px"
-                        alignItems="center"
-                      >
-                        <SoftTypography variant="caption" color="text">
-                          Email
-                        </SoftTypography>
-                      </SoftBox>
-
-                      <SoftBox>
-                        <SoftBox mb={0}>
-                          <SoftInput
-                            type="text"
-                            icon={{ component: "grid_3x3", direction: "left" }}
-                            disabled
-                            {...register("email")}
-                            value={`email@example.com`}
-                          ></SoftInput>
-                        </SoftBox>
-                      </SoftBox>
-                    </Grid>
-
-                    <Grid
-                      item
-                      sm={12}
-                      md={4}
-                      display="flex"
-                      flexDirection="column"
-                      width={"100%"}
-                    >
-                      <SoftBox
-                        pt={1}
-                        mb={1}
-                        display="flex"
-                        gap="4px"
-                        alignItems="center"
-                      >
-                        <SoftTypography variant="caption" color="text">
-                          Telefone{" "}
-                        </SoftTypography>
-                      </SoftBox>
-
-                      <SoftBox mb={0}>
-                        <PhoneInput
-                          defaultCountry="br"
-                          name="phoneNumber"
-                          disabled
-                          value={user?.phoneNumber}
-                        />
-                      </SoftBox>
-                    </Grid>
+                    </SoftBox>
                   </Grid>
-                </SoftBox>
+
+                  <Grid
+                    item
+                    sm={12}
+                    md={4}
+                    display="flex"
+                    flexDirection="column"
+                    width={"100%"}
+                  >
+                    <SoftBox
+                      pt={1}
+                      mb={1}
+                      display="flex"
+                      gap="4px"
+                      alignItems="center"
+                    >
+                      <SoftTypography variant="caption" color="text">
+                        Telefone{" "}
+                      </SoftTypography>
+                    </SoftBox>
+
+                    <SoftBox mb={0}>
+                      <PhoneInput
+                        defaultCountry="br"
+                        name="phoneNumber"
+                        disabled
+                        value={user?.phoneNumber}
+                      />
+                    </SoftBox>
+                  </Grid>
+                </Grid>
+                {edit && (
+                  <SoftBox>
+                    <SoftBox mt={2} textAlign="end">
+                      <SoftButton variant="gradient" color="dark" type="submit">
+                        Editar
+                      </SoftButton>
+                    </SoftBox>
+                  </SoftBox>
+                )}
               </SoftBox>
             </Card>
           </Grid>

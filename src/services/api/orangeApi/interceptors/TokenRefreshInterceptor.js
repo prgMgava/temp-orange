@@ -49,7 +49,7 @@ function applyAppTokenRefreshInterceptor(axiosClient) {
 
           refreshAndRetryQueue = [];
 
-          return api.api;
+          //return api.api;
         } catch (refreshError) {
           window.location.href = "/login";
         } finally {

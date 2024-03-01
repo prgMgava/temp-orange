@@ -73,6 +73,16 @@ export const AuthService = {
     const { data } = await api.get(`${resource}/me`);
     return data;
   },
+
+  /**
+   * Get data from authenticated use
+   * @returns {{ id: number, phoneNumber: string, email: string, provider: string, firstName: string, lastName: string, role: { id: number, name: string }, status: { id: number }, createdAt: string, updatedAt: string, deletedAt: string }}
+   */
+  update: async (user) => {
+    const { data } = await api.patch(`${resource}/me`, user);
+    return data;
+  },
+
   refreshToken: async () => {
     await api.post(`${resource}/refresh`);
   },
